@@ -53,7 +53,7 @@ function sniff(b) {
 async function uploadApi(request, env, url) {
   if (!env || !env.PHOTOS) return jres({ error: 'storage not configured' }, 503);
   const origin = request.headers.get('origin') || '';
-  if (!/^https:\/\/((www|card)\.)?nexbizrise\.com$/.test(origin)) return jres({ error: 'forbidden' }, 403);
+  if (!/^https:\/\/(((www|card)\.)?nexbizrise\.com|[a-z0-9-]+\.nexbizrise\.pages\.dev)$/.test(origin)) return jres({ error: 'forbidden' }, 403);
   const len = Number(request.headers.get('content-length') || 0);
   if (len > IMG_MAX) return jres({ error: 'too large' }, 413);
   const buf = new Uint8Array(await request.arrayBuffer());
@@ -84,15 +84,17 @@ export default {
     if (url.protocol === 'http:') { url.protocol = 'https:'; return Response.redirect(url.toString(), 301); }
     let p = '/';
     try { p = decodeURIComponent(url.pathname); } catch (e) { p = url.pathname; }
-    if (p === '/__health') return new Response('ok v57', { headers: { 'content-type': 'text/plain' } });
+    if (p === '/__health') return new Response('ok v59', { headers: { 'content-type': 'text/plain' } });
     const im = p.match(/^\/img\/(p\/[a-f0-9]{24}\.(?:webp|jpg|png|gif))$/);
     if (im) return await imgServe(im[1], env, request, ctx);
     const am = p.match(/^\/api\/card\/(nbr_[a-f0-9]{6}|[a-z0-9]+(?:-[a-z0-9]+)*)$/);
     if (am) { try { return await cardApi(am[1], url.origin, ctx); } catch (e) { return new Response('{"error":"upstream"}', { status: 502, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } }); } }
-    const card = url.hostname.startsWith('card.');
+    if (/^\/c\/.+/.test(p) && !/^\/c\/nbr_[a-f0-9]{6}\/?$/.test(p)) p = p.slice(2);
+    const preview = url.hostname.endsWith('.pages.dev');  // test branch: test.nexbizrise.pages.dev (/ = website, /<slug> = card)
+    const card = url.hostname.startsWith('card.') || preview;
     if (p.length > 1 && p.endsWith('/')) p = p.replace(/\/+$/, '');
     if (card && p === '/order') p = '/order.html';
-    else if (/^\/c\/nbr_[a-f0-9]{6}$/.test(p) || (card && (p === '/' || /^\/[a-z0-9]+(-[a-z0-9]+)*$/.test(p)))) p = '/card.html';
+    else if (/^\/c\/nbr_[a-f0-9]{6}$/.test(p) || (card && ((p === '/' && !preview) || /^\/[a-z0-9]+(-[a-z0-9]+)*$/.test(p)))) p = '/card.html';
     else if (p === '/') p = '/index.html';
     else if (p === '/card' || p === '/order' || p === '/index') p = p + '.html';
     const r = send(p);
