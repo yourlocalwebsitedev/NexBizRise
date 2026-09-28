@@ -421,7 +421,7 @@ const nbrCompress = file => new Promise((res, rej) => {
 });
 /* Upload to Cloudflare R2 via the site's /api/upload. Returns '' when R2 isn't available (caller falls back to Supabase storage). */
 const nbrUpload = async blob => {
-  if (!/(^|\.)nexbizrise\.com$/.test(location.hostname)) return '';
+  if (!/(^|\.)nexbizrise\.com$|\.pages\.dev$/.test(location.hostname)) return '';
   try { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': blob.type }, body: blob }); if (!r.ok) return ''; const j = await r.json(); return j.url || ''; } catch (e) { return ''; }
 };
 
