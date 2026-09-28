@@ -1,0 +1,6 @@
+name = "nexbizrise"            # ← set to your existing Worker's name in Cloudflare
+main = "deploy/single/_worker.js"
+compatibility_date = "2026-09-01"
+workers_dev = false
+
+# Routes are managed in the Cloudflare dashboard (nexbizrise.com, www, card.nexbizrise.com).

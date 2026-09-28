@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Sandeep Koppisetty · NexBizRise</title>
+<meta name="theme-color" content="#06120d">
+<meta name="description" content="Digital business card. Save my contact or follow along.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&amp;family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&amp;family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="./qrcode.js"></script>
+<style>
+html,body{margin:0;background:#040c08;overscroll-behavior-y:none;}
+*{box-sizing:border-box;}
+body{-webkit-font-smoothing:antialiased;font-family:Figtree,system-ui,sans-serif;color:#f3efe6;}
+a{color:var(--accent,#f2c98a);text-decoration:none;}
+a:hover{color:#f3efe6;}
+:focus-visible{outline:2px solid var(--accent,#f2c98a);outline-offset:3px;}
+@keyframes nbrFall{0%{transform:translate3d(0,-10vh,0)}100%{transform:translate3d(var(--dx,20px),110vh,0)}}
+@keyframes nbrTwinkle{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1)}}
+</style>
+</helmet>
+
+<div style="min-height:100svh;display:flex;justify-content:center;background:var(--pageBg, radial-gradient(90% 60% at 50% 0%, var(--bgTop,#0b2a1d) 0%, var(--bg,#06120d) 55%, #040c08 100%));">
+  <main style="width:100%;max-width:440px;min-height:100svh;background:var(--mainBg, var(--bg,#06120d));position:relative;padding-bottom:calc(20px + env(safe-area-inset-bottom));box-shadow:0 0 0 1px rgba(243,239,230,0.06), 0 40px 120px -40px rgba(0,0,0,0.8);">
+    <sc-if value="{{ hasSeason }}" hint-placeholder-val="{{ false }}">
+      <div role="note" aria-label="{{ seasonText }}" style="position:relative;z-index:6;min-height:40px;padding:8px 16px 11px;display:flex;align-items:center;justify-content:center;gap:10px;background:{{ seasonBg }};color:{{ seasonInk }};font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.04em;text-align:center;box-shadow:inset 0 -1px 0 {{ seasonLine }};">
+        <span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:4px;background:{{ seasonStripe }};"></span>
+        <span aria-hidden="true" style="width:18px;height:1px;background:{{ seasonAccent }};flex:none;"></span>
+        <span style="text-wrap:balance;">{{ seasonText }}</span>
+        <span aria-hidden="true" style="width:18px;height:1px;background:{{ seasonAccent }};flex:none;"></span>
+      </div>
+    </sc-if>
+    {{ seasonFx }}
+    <sc-if value="{{ remoteLoading }}" hint-placeholder-val="{{ false }}">
+      <div role="status" style="position:fixed;inset:0;z-index:80;background:#06120d;display:grid;place-items:center;"><span style="font-size:13px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(243,239,230,0.7);">Loading card…</span></div>
+    </sc-if>
+    <sc-if value="{{ remoteMissing }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;z-index:80;background:#06120d;display:grid;place-items:center;padding:24px;">
+        <div style="max-width:320px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;">
+          <h1 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:34px;color:#f3efe6;">{{ missingTitle }}</h1>
+          <p style="margin:0;font-size:15px;line-height:1.5;color:rgba(243,239,230,0.75);">{{ missingText }}</p>
+          <a href="/" style="margin-top:8px;min-height:48px;padding:0 20px;border-radius:12px;background:#f2c98a;color:#15120a;font-size:15px;font-weight:700;display:flex;align-items:center;">Get your own card</a>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isOriginal }}" hint-placeholder-val="{{ true }}">
+    <sc-if value="{{ fullBleed }}" hint-placeholder-val="{{ true }}">
+      <header style="position:relative;aspect-ratio:1 / 1;perspective:1600px;">
+        <div role="button" tabindex="0" aria-pressed="{{ flipped }}" aria-label="{{ flipLabel }}" onClick="{{ toggleFlip }}" onKeyDown="{{ flipKey }}" style="position:absolute;inset:0;transform-style:preserve-3d;cursor:pointer;transform:{{ flipTransform }};transition:{{ flipTransition }};-webkit-tap-highlight-color:transparent;">
+
+          <div aria-hidden="{{ flipped }}" style="position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:translateZ(1px);visibility:{{ frontVis }};transition:{{ frontVisT }};">
+            <sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}">
+              <div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div>
+            </sc-if>
+            <sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}">
+              <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 30%, var(--bgBack,#134a33) 0%, var(--bgTop,#0b2a1d) 55%, var(--bg,#06120d) 100%);display:flex;justify-content:center;align-items:flex-start;padding-top:9%;">
+                <div style="width:50%;aspect-ratio:1;border-radius:50%;border:1px solid color-mix(in srgb, var(--accent,#f2c98a) 35%, transparent);box-shadow:0 0 0 14px color-mix(in srgb, var(--accent,#f2c98a) 5%, transparent);display:grid;place-items:center;">
+                  <span style="font-family:Newsreader,Georgia,serif;font-weight:400;font-size:84px;line-height:1;letter-spacing:-0.03em;color:var(--accent,#f2c98a);">{{ initials }}</span>
+                </div>
+              </div>
+            </sc-if>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--bg,#06120d) 70%, transparent) 75%, var(--bg,#06120d) 100%);pointer-events:none;"></div>
+            <div style="position:absolute;left:0;right:0;bottom:0;padding:0 24px 8px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;">
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0;">
+                <p style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent,#f2c98a);">{{ category }}</p>
+                <h1 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:44px;line-height:1.02;letter-spacing:-0.015em;text-wrap:balance;">{{ displayName }}</h1>
+                <p style="margin:0;font-size:16px;line-height:1.45;color:rgba(243,239,230,0.78);text-wrap:pretty;"><strong style="font-weight:600;color:#f3efe6;">{{ title }}</strong>{{ companyPart }}</p>
+                <sc-if value="{{ hasTagline }}" hint-placeholder-val="{{ true }}">
+                  <p style="margin:2px 0 0;font-size:11px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent,#f2c98a);">{{ tagline }}</p>
+                </sc-if>
+              </div>
+              <span style="flex:none;min-height:36px;padding:0 12px;border-radius:999px;background:color-mix(in srgb, var(--bg,#06120d) 72%, transparent);border:1px solid rgba(243,239,230,0.18);display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#f3efe6;margin-bottom:4px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"></path><path d="M3 21v-5h5"></path><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"></path><path d="M21 3v5h-5"></path></svg>
+                Tap
+              </span>
+            </div>
+          </div>
+
+          <div aria-hidden="{{ notFlipped }}" style="position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg) translateZ(1px);visibility:{{ backVis }};transition:{{ backVisT }};background:radial-gradient(120% 90% at 20% 0%, var(--bgBack,#134a33) 0%, var(--bgTop,#0b2a1d) 50%, var(--bg,#06120d) 100%);padding:32px 28px 24px;display:flex;flex-direction:column;justify-content:center;gap:20px;">
+            <p style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:36px;line-height:1.1;letter-spacing:-0.01em;color:#f3efe6;text-wrap:balance;">{{ quote }}</p>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:rgba(243,239,230,0.78);text-wrap:pretty;">{{ bio }}</p>
+            <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;">
+              <p style="margin:0;font-family:Newsreader,Georgia,serif;font-style:italic;font-size:20px;color:var(--accent,#f2c98a);">{{ signature }}</p>
+              <p style="margin:0;font-size:13px;line-height:1.4;color:rgba(243,239,230,0.7);">{{ titles }}</p>
+            </div>
+            <span style="position:absolute;right:20px;bottom:18px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(243,239,230,0.7);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"></path><path d="M3 21v-5h5"></path><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"></path><path d="M21 3v5h-5"></path></svg>
+              Tap to flip back
+            </span>
+          </div>
+        </div>
+      </header>
+    </sc-if>
+
+    <sc-if value="{{ framed }}" hint-placeholder-val="{{ false }}">
+      <header style="padding:40px 24px 0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;">
+        <sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}">
+          <div role="img" aria-label="{{ photoAlt }}" style="width:132px;height:132px;flex:none;border-radius:50%;background-image:{{ photoBg }};background-size:{{ photoSizeFramed }};background-position:{{ photoPos }};box-shadow:0 0 0 1px color-mix(in srgb, var(--accent,#f2c98a) 35%, transparent), 0 0 0 6px var(--bg,#06120d), 0 0 0 7px color-mix(in srgb, var(--accent,#f2c98a) 14%, transparent);margin-bottom:12px;"></div>
+        </sc-if>
+        <sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}">
+          <div aria-hidden="true" style="width:132px;height:132px;border-radius:50%;background:var(--bgBack,#134a33);display:grid;place-items:center;font-family:Newsreader,Georgia,serif;font-size:52px;color:var(--accent,#f2c98a);box-shadow:0 0 0 1px color-mix(in srgb, var(--accent,#f2c98a) 35%, transparent), 0 0 0 6px var(--bg,#06120d), 0 0 0 7px color-mix(in srgb, var(--accent,#f2c98a) 14%, transparent);margin-bottom:12px;">{{ initials }}</div>
+        </sc-if>
+        <p style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent,#f2c98a);">{{ category }}</p>
+        <h1 style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:40px;line-height:1.05;letter-spacing:-0.015em;text-wrap:balance;">{{ displayName }}</h1>
+        <p style="margin:0;font-size:16px;line-height:1.45;color:rgba(243,239,230,0.78);"><strong style="font-weight:600;color:#f3efe6;">{{ title }}</strong>{{ companyPart }}</p>
+        <sc-if value="{{ hasTagline }}" hint-placeholder-val="{{ true }}">
+          <p style="margin:2px 0 0;font-size:11px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent,#f2c98a);">{{ tagline }}</p>
+        </sc-if>
+      </header>
+    </sc-if>
+
+    <div style="padding:24px 20px 0;display:flex;flex-direction:column;gap:12px;">
+      <button type="button" onClick="{{ saveContact }}" style="height:56px;width:100%;border:0;border-radius:14px;background:var(--accent,#f2c98a);color:#15120a;font-family:Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;box-shadow:0 12px 30px -14px color-mix(in srgb, var(--accent,#f2c98a) 60%, transparent);transition:background .15s ease, transform .1s ease;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 82%, white);" style-active="transform:scale(0.99);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6M22 11h-6"></path></svg>
+        <span>{{ saveLabel }}</span>
+      </button>
+
+      <sc-if value="{{ hasCta }}" hint-placeholder-val="{{ false }}">
+        <a href="{{ ctaUrl }}" target="_blank" rel="noopener" style="height:52px;width:100%;border-radius:14px;border:1px solid color-mix(in srgb, var(--accent,#f2c98a) 55%, transparent);background:color-mix(in srgb, var(--accent,#f2c98a) 8%, transparent);color:var(--accent,#f2c98a);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .15s ease;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 16%, transparent);color:var(--accent,#f2c98a);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9 15l2 2 4-4"></path></svg>
+          <span>{{ ctaLabel }}</span>
+        </a>
+      </sc-if>
+
+      <nav aria-label="Contact" style="display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:8px;">
+        <a href="{{ telHref }}" aria-label="{{ callAria }}" style="min-height:68px;border-radius:14px;background:rgba(243,239,230,0.05);border:1px solid rgba(243,239,230,0.08);color:#f3efe6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;transition:background .15s ease;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 10%, transparent);color:#f3efe6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+          <span>Call</span>
+        </a>
+        <a href="{{ msgHref }}" target="{{ msgTarget }}" rel="noopener" aria-label="{{ msgAria }}" style="min-height:68px;border-radius:14px;background:rgba(243,239,230,0.05);border:1px solid rgba(243,239,230,0.08);color:#f3efe6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;transition:background .15s ease;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 10%, transparent);color:#f3efe6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"></path><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"></path></svg>
+          <span>{{ msgLabel }}</span>
+        </a>
+        <a href="{{ mailHref }}" aria-label="{{ mailAria }}" style="min-height:68px;border-radius:14px;background:rgba(243,239,230,0.05);border:1px solid rgba(243,239,230,0.08);color:#f3efe6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;transition:background .15s ease;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 10%, transparent);color:#f3efe6;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+          <span>Email</span>
+        </a>
+      </nav>
+
+      <sc-if value="{{ hasReLinks }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:8px;">
+          <sc-if value="{{ hasListingsUrl }}"><a href="{{ listingsHref }}" target="_blank" rel="noopener" style="grid-column:{{ listingsSpan }};min-height:48px;border-radius:12px;border:1px solid rgba(243,239,230,0.14);color:#f3efe6;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;" style-hover="background:rgba(243,239,230,0.06);color:#f3efe6;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"></path><path d="M5 10v10h14V10"></path><path d="M10 20v-5h4v5"></path></svg>View my listings</a></sc-if>
+          <sc-if value="{{ hasDirections }}"><a href="{{ directionsHref }}" target="_blank" rel="noopener" style="grid-column:{{ dirSpan }};min-height:48px;border-radius:12px;border:1px solid rgba(243,239,230,0.14);color:#f3efe6;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;" style-hover="background:rgba(243,239,230,0.06);color:#f3efe6;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>Get directions</a></sc-if>
+        </div>
+      </sc-if>
+      <sc-if value="{{ leadOn }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ openLead }}" aria-haspopup="dialog" style="height:52px;width:100%;border-radius:14px;border:1px solid color-mix(in srgb, var(--accent,#f2c98a) 55%, transparent);background:transparent;color:var(--accent,#f2c98a);font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 10%, transparent);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8M8 13h5"></path></svg><span>{{ leadBtn }}</span></button>
+      </sc-if>
+
+      <sc-if value="{{ showShareRow }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:8px;">
+          <button type="button" onClick="{{ share }}" style="height:48px;border-radius:12px;border:1px solid rgba(243,239,230,0.14);background:transparent;color:#f3efe6;font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:background .15s ease;" style-hover="background:rgba(243,239,230,0.06);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"></path><path d="M16 6l-4-4-4 4M12 2v13"></path></svg>
+            <span>Share card</span>
+          </button>
+          <button type="button" onClick="{{ openQR }}" aria-haspopup="dialog" style="height:48px;border-radius:12px;border:1px solid rgba(243,239,230,0.14);background:transparent;color:#f3efe6;font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:background .15s ease;" style-hover="background:rgba(243,239,230,0.06);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><path d="M14 14h3v3M21 14v.01M14 21h.01M17 21h4v-4"></path></svg>
+            <span>Show QR</span>
+          </button>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ hasSocials }}" hint-placeholder-val="{{ true }}">
+      <section aria-labelledby="follow-h" style="padding:32px 20px 0;display:flex;flex-direction:column;gap:12px;">
+        <h2 id="follow-h" style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(243,239,230,0.66);">Follow along</h2>
+        <div style="display:flex;flex-direction:column;gap:1px;border-radius:14px;overflow:hidden;background:rgba(243,239,230,0.08);border:1px solid rgba(243,239,230,0.08);">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="2">
+            <a href="{{ s.url }}" target="_blank" rel="noopener" style="min-height:64px;padding:12px 16px;display:flex;align-items:center;gap:14px;color:#f3efe6;background:color-mix(in srgb, #f3efe6 4%, var(--bg,#06120d));transition:background .15s ease;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 9%, var(--bg,#06120d));color:#f3efe6;">
+              <span style="width:40px;height:40px;border-radius:10px;background:rgba(243,239,230,0.08);display:grid;place-items:center;flex:none;">
+                <sc-if value="{{ s.isLinkedin }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 5.9V21h-4v-5.5c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9V9Z"></path></svg></sc-if>
+                <sc-if value="{{ s.isInstagram }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="#f3efe6" stroke="none"></circle></svg></sc-if>
+                <sc-if value="{{ s.isFacebook }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M14 22v-8h2.7l.4-3.2H14V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.3c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.8V14h2.8v8H14Z"></path></svg></sc-if>
+                <sc-if value="{{ s.isYoutube }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.7-1.7C19.3 5.2 12 5.2 12 5.2s-7.3 0-8.9.4A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.7 1.7c1.6.4 8.9.4 8.9.4s7.3 0 8.9-.4a2.5 2.5 0 0 0 1.7-1.7C23 15.2 23 12 23 12Zm-13 3.2V8.8l5.5 3.2-5.5 3.2Z"></path></svg></sc-if>
+                <sc-if value="{{ s.isWebsite }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"></path></svg></sc-if>
+              </span>
+              <span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;"><span style="font-size:15px;font-weight:600;">{{ s.label }}</span><span style="font-size:13px;color:rgba(243,239,230,0.66);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ s.handle }}</span></span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(243,239,230,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <section aria-labelledby="details-h" style="padding:32px 20px 0;display:flex;flex-direction:column;gap:12px;">
+      <h2 id="details-h" style="margin:0;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(243,239,230,0.66);">Details</h2>
+      <dl style="margin:0;display:flex;flex-direction:column;gap:1px;border-radius:14px;overflow:hidden;background:rgba(243,239,230,0.08);border:1px solid rgba(243,239,230,0.08);">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+          <div style="min-height:60px;padding:10px 8px 10px 16px;display:flex;align-items:center;gap:12px;background:color-mix(in srgb, #f3efe6 4%, var(--bg,#06120d));">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;"><dt style="font-size:12px;color:rgba(243,239,230,0.66);">{{ r.label }}</dt><dd style="margin:0;font-size:15px;font-weight:500;line-height:1.4;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;">{{ r.value }}</dd></div>
+            <sc-if value="{{ r.hasCopy }}">
+              <button type="button" onClick="{{ r.onCopy }}" aria-label="{{ r.copyAria }}" style="width:44px;height:44px;flex:none;border:0;border-radius:10px;background:transparent;color:rgba(243,239,230,0.7);display:grid;place-items:center;cursor:pointer;" style-hover="background:rgba(243,239,230,0.06);color:var(--accent,#f2c98a);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button>
+            </sc-if>
+            <sc-if value="{{ r.hasLink }}">
+              <a href="{{ r.href }}" target="_blank" rel="noopener" aria-label="{{ r.linkAria }}" style="width:44px;height:44px;flex:none;border-radius:10px;color:rgba(243,239,230,0.7);display:grid;place-items:center;" style-hover="background:rgba(243,239,230,0.06);color:var(--accent,#f2c98a);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></a>
+            </sc-if>
+          </div>
+        </sc-for>
+      </dl>
+    </section>
+
+    <footer style="padding:36px 24px 0;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
+      <p style="margin:0;font-family:Newsreader,Georgia,serif;font-style:italic;font-size:16px;color:rgba(243,239,230,0.66);text-wrap:balance;">{{ footerLine }}</p>
+      <sc-if value="{{ hasCompliance }}" hint-placeholder-val="{{ false }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.5;color:rgba(243,239,230,0.66);"><span style="text-wrap:balance;">{{ complianceLine }}</span><sc-if value="{{ isTX }}"><span style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;"><sc-if value="{{ hasIabs }}"><a href="{{ iabsUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Information About Brokerage Services</a></sc-if><a href="{{ cpnUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Consumer Protection Notice</a></span></sc-if></div></sc-if>
+      <sc-if value="{{ showPlans }}" hint-placeholder-val="{{ true }}">
+        <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:4px;">
+          <div aria-hidden="true" style="width:100%;height:1px;background:rgba(243,239,230,0.1);"></div>
+          <button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="width:100%;min-height:64px;padding:12px 16px;border-radius:14px;border:1px solid rgba(243,239,230,0.12);background:rgba(243,239,230,0.04);color:#f3efe6;font-family:Figtree,system-ui,sans-serif;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;transition:background .15s ease;" style-hover="background:color-mix(in srgb, var(--accent,#f2c98a) 9%, transparent);">
+            <span style="width:40px;height:40px;border-radius:10px;background:color-mix(in srgb, var(--accent,#f2c98a) 12%, transparent);display:grid;place-items:center;flex:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"></rect><circle cx="8" cy="11" r="2"></circle><path d="M5 16c.6-1.4 1.7-2 3-2s2.4.6 3 2M14 10h5M14 14h3"></path></svg></span>
+            <span style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;"><span style="font-size:15px;font-weight:600;">Get a card like this</span><span style="font-size:13px;color:rgba(243,239,230,0.66);">Launch offer · from {{ fromPrice }} / year</span></span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(243,239,230,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+          </button>
+          <p style="margin:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(243,239,230,0.55);">Powered by<span style="font-size:13px;letter-spacing:0.08em;text-transform:none;color:var(--accent,#f2c98a);">NexBizRise</span></p>
+        </div>
+      </sc-if>
+    </footer>
+
+    </sc-if>
+
+    <sc-if value="{{ isLuxury }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100svh;background:var(--lxBg,#f4efe6);color:var(--lxInk,#1c1a17);padding:44px 28px 28px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;">
+        <div style="width:100%;display:flex;align-items:center;gap:12px;"><span style="flex:1;height:1px;background:color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));"></span><span style="font-size:11px;font-weight:700;letter-spacing:0.32em;text-transform:uppercase;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">{{ luxTop }}</span><span style="flex:1;height:1px;background:color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));"></span></div>
+        <div style="width:var(--lxW,150px);height:var(--lxH,190px);border-radius:var(--lxR1,75px 75px 6px 6px);border:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));padding:5px;margin-top:10px;flex:none;">
+          <div style="width:100%;height:100%;border-radius:var(--lxR2,70px 70px 3px 3px);overflow:hidden;background:color-mix(in srgb, var(--lxInk,#1c1a17) 8%, var(--lxBg,#f4efe6));">
+            <sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if>
+              <sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:var(--lxFont,'Cormorant Garamond',serif);font-size:56px;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">{{ initials }}</div></sc-if>
+          </div>
+        </div>
+        <p style="margin:6px 0 0;font-size:11px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">{{ category }}</p>
+        <h1 style="margin:0;font-family:var(--lxFont,'Cormorant Garamond',serif);font-weight:600;font-size:46px;line-height:1;text-wrap:balance;">{{ displayName }}</h1>
+        <p style="margin:0;font-size:15px;line-height:1.4;color:color-mix(in srgb, var(--lxInk,#1c1a17) 72%, var(--lxBg,#f4efe6));">{{ title }}</p>
+        <sc-if value="{{ hasTagline }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-family:var(--lxFont,'Cormorant Garamond',serif);font-style:italic;font-size:19px;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">{{ tagline }}</p></sc-if>
+        <sc-if value="{{ hasBio }}"><p style="margin:4px 0 0;max-width:320px;font-size:14px;line-height:1.6;color:color-mix(in srgb, var(--lxInk,#1c1a17) 75%, var(--lxBg,#f4efe6));text-wrap:pretty;">{{ bio }}</p></sc-if>
+        <div style="width:100%;display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+          <button type="button" onClick="{{ saveContact }}" style="height:52px;border:0;border-radius:2px;background:var(--lxInk,#1c1a17);color:var(--lxBg,#f4efe6);font-family:Figtree,system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;">{{ saveLabel }}</button>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <a href="{{ telHref }}" aria-label="{{ callAria }}" style="height:48px;border-radius:2px;border:1px solid color-mix(in srgb, var(--lxInk,var(--lxInk,#1c1a17)) 25%, transparent);color:var(--lxInk,#1c1a17);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;">Call</a>
+            <a href="{{ msgHref }}" target="{{ msgTarget }}" rel="noopener" aria-label="{{ msgAria }}" style="height:48px;border-radius:2px;border:1px solid color-mix(in srgb, var(--lxInk,var(--lxInk,#1c1a17)) 25%, transparent);color:var(--lxInk,#1c1a17);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;">{{ msgLabel }}</a>
+            <a href="{{ mailHref }}" aria-label="{{ mailAria }}" style="height:48px;border-radius:2px;border:1px solid color-mix(in srgb, var(--lxInk,var(--lxInk,#1c1a17)) 25%, transparent);color:var(--lxInk,#1c1a17);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;">Email</a>
+          </div>
+        <div style="display:flex;justify-content:center;gap:24px;">
+          <button type="button" onClick="{{ share }}" style="min-height:44px;border:0;background:transparent;color:color-mix(in srgb, var(--lxInk,#1c1a17) 72%, var(--lxBg,#f4efe6));font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;">Share</button>
+          <button type="button" onClick="{{ openQR }}" aria-haspopup="dialog" style="min-height:44px;border:0;background:transparent;color:color-mix(in srgb, var(--lxInk,#1c1a17) 72%, var(--lxBg,#f4efe6));font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;">Show QR</button>
+        </div>
+        </div>
+        <sc-if value="{{ leadOn }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ openLead }}" aria-haspopup="dialog" style="width:100%;height:48px;border-radius:2px;border:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));background:transparent;color:var(--lxInk,#1c1a17);font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;">{{ leadBtn }}</button></sc-if>
+        <dl aria-label="Details" style="width:100%;margin:6px 0 4px;display:flex;flex-direction:column;text-align:left;border-top:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3"><div style="min-height:62px;padding:8px 0;display:flex;align-items:center;gap:10px;border-bottom:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;"><dt style="font-size:10px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">{{ r.label }}</dt><dd style="margin:0;font-family:var(--lxFont,'Cormorant Garamond',serif);font-size:19px;font-weight:600;line-height:1.3;color:var(--lxInk,#1c1a17);overflow-wrap:anywhere;font-variant-numeric:lining-nums;">{{ r.value }}</dd></div>
+            <sc-if value="{{ r.hasCopy }}"><button type="button" onClick="{{ r.onCopy }}" aria-label="{{ r.copyAria }}" style="width:44px;height:44px;flex:none;border:0;border-radius:2px;background:transparent;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));display:grid;place-items:center;cursor:pointer;" style-hover="background:color-mix(in srgb, var(--lxInk,#1c1a17) 6%, transparent);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button></sc-if>
+            <sc-if value="{{ r.hasLink }}"><a href="{{ r.href }}" target="_blank" rel="noopener" aria-label="{{ r.linkAria }}" style="width:44px;height:44px;flex:none;border-radius:2px;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));display:grid;place-items:center;" style-hover="background:color-mix(in srgb, var(--lxInk,#1c1a17) 6%, transparent);color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></a></sc-if>
+          </div></sc-for>
+        </dl>
+        <div style="width:100%;display:flex;flex-direction:column;border-top:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));">
+          <sc-if value="{{ hasListings }}"><a href="{{ listingsHref }}" target="_blank" rel="noopener" style="min-height:50px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));color:var(--lxInk,#1c1a17);font-family:var(--lxFont,'Cormorant Garamond',serif);font-size:20px;font-weight:600;">{{ listingsLabel }}<span style="color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">→</span></a></sc-if>
+          <a href="{{ ctaHref }}" target="_blank" rel="noopener" style="min-height:50px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));color:var(--lxInk,#1c1a17);font-family:var(--lxFont,'Cormorant Garamond',serif);font-size:20px;font-weight:600;">{{ ctaText }}<span style="color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">→</span></a>
+          <sc-for list="{{ socialsNoWeb }}" as="s"><a href="{{ s.url }}" target="_blank" rel="noopener" style="min-height:50px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid color-mix(in srgb, var(--accent,#f2c98a) 75%, var(--lxInk,#6b5a44));color:var(--lxInk,#1c1a17);font-family:var(--lxFont,'Cormorant Garamond',serif);font-size:20px;font-weight:600;">{{ s.label }}<span style="color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lxInk,#3a2f22));">→</span></a></sc-for>
+        </div>
+        <sc-if value="{{ hasCompliance }}" hint-placeholder-val="{{ false }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.5;color:color-mix(in srgb, var(--lxInk,#1c1a17) 72%, var(--lxBg,#f4efe6));"><span style="text-wrap:balance;">{{ complianceLine }}</span><sc-if value="{{ isTX }}"><span style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;"><sc-if value="{{ hasIabs }}"><a href="{{ iabsUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Information About Brokerage Services</a></sc-if><a href="{{ cpnUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Consumer Protection Notice</a></span></sc-if></div></sc-if>
+        <sc-if value="{{ showPlans }}">
+          <button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="min-height:44px;padding:0 12px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;">
+            <span style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:color-mix(in srgb, var(--lxInk,#1c1a17) 62%, var(--lxBg,#f4efe6));">Powered by NexBizRise</span>
+            <span style="font-size:12px;font-weight:600;color:var(--lxInk,#1c1a17);text-decoration:underline;text-underline-offset:3px;">Get a card like this</span>
+          </button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+
+    <sc-if value="{{ isPro }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100svh;background:var(--pBg);color:var(--pInk);display:flex;flex-direction:column;font-family:Figtree,system-ui,sans-serif;padding-bottom:28px;">
+        <sc-if value="{{ proBanner }}"><div style="height:250px;flex:none;overflow:hidden;"><sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if><sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:var(--pFont);font-size:48px;font-weight:600;color:var(--pAcc);background:var(--pCard);">{{ initials }}</div></sc-if></div></sc-if>
+        <sc-if value="{{ proHero }}"><div style="position:relative;height:440px;flex:none;overflow:hidden;"><sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if><sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:var(--pFont);font-size:48px;font-weight:600;color:var(--pAcc);background:var(--pCard);">{{ initials }}</div></sc-if><div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg, transparent 45%, var(--pBg) 100%);"></div></div><div aria-hidden="true" style="height:0;margin-top:-110px;"></div></sc-if>
+        <sc-if value="{{ proBand }}"><div aria-hidden="true" style="height:150px;flex:none;background:var(--pAcc);"></div><div style="width:124px;height:124px;margin:-62px auto 0;border-radius:50%;overflow:hidden;border:5px solid var(--pBg);flex:none;position:relative;"><sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if><sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:var(--pFont);font-size:48px;font-weight:600;color:var(--pAcc);background:var(--pCard);">{{ initials }}</div></sc-if></div></sc-if>
+        <sc-if value="{{ proRing }}"><div style="width:156px;height:156px;margin:48px auto 0;border-radius:50%;padding:5px;border:1px solid var(--pAcc);flex:none;"><div style="width:100%;height:100%;border-radius:50%;overflow:hidden;"><sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if><sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:var(--pFont);font-size:48px;font-weight:600;color:var(--pAcc);background:var(--pCard);">{{ initials }}</div></sc-if></div></div></sc-if>
+        <sc-if value="{{ proTile }}"><div style="width:168px;height:168px;margin:44px 0 0 24px;border-radius:22px;overflow:hidden;flex:none;box-shadow:12px 12px 0 var(--pAcc);"><sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if><sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:var(--pFont);font-size:48px;font-weight:600;color:var(--pAcc);background:var(--pCard);">{{ initials }}</div></sc-if></div></sc-if>
+        <div style="position:relative;padding:22px 22px 0;display:flex;gap:16px;align-items:center;flex-direction:{{ proHeadDir }};text-align:var(--pTA);">
+          <sc-if value="{{ proSide }}"><div style="width:84px;height:84px;margin-top:26px;border-radius:50%;overflow:hidden;flex:none;align-self:flex-start;"><sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if><sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:var(--pFont);font-size:48px;font-weight:600;color:var(--pAcc);background:var(--pCard);">{{ initials }}</div></sc-if></div></sc-if>
+          <div style="display:flex;flex-direction:column;gap:5px;align-items:var(--pAI);flex:1;min-width:0;padding-top:{{ proHeadPad }};">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:color-mix(in srgb, var(--pAcc) 70%, var(--pInk));">{{ category }}</span>
+            <h1 style="margin:0;font-family:var(--pFont);font-weight:700;font-size:38px;line-height:1.02;letter-spacing:-0.01em;text-wrap:balance;">{{ displayName }}</h1>
+            <span style="font-size:15px;line-height:1.4;color:color-mix(in srgb, var(--pInk) 72%, var(--pBg));">{{ title }}{{ companyPart }}</span>
+            <sc-if value="{{ hasTagline }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;font-style:italic;color:color-mix(in srgb, var(--pInk) 60%, var(--pBg));">{{ tagline }}</span></sc-if>
+          </div>
+        </div>
+        <div style="padding:20px 22px 0;display:flex;flex-direction:column;gap:10px;">
+          <a href="{{ ctaHref }}" target="_blank" rel="noopener" style="min-height:54px;border-radius:var(--pRad);background:var(--pAcc);color:var(--pOn);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;">{{ ctaText }} <span aria-hidden="true">→</span></a>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <a href="{{ telHref }}" aria-label="{{ callAria }}" style="min-height:48px;border-radius:var(--pRad);border:1px solid color-mix(in srgb, var(--pInk) 22%, transparent);color:var(--pInk);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;">Call</a>
+            <a href="{{ msgHref }}" target="{{ msgTarget }}" rel="noopener" aria-label="{{ msgAria }}" style="min-height:48px;border-radius:var(--pRad);border:1px solid color-mix(in srgb, var(--pInk) 22%, transparent);color:var(--pInk);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ msgLabel }}</a>
+            <a href="{{ mailHref }}" aria-label="{{ mailAria }}" style="min-height:48px;border-radius:var(--pRad);border:1px solid color-mix(in srgb, var(--pInk) 22%, transparent);color:var(--pInk);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;">Email</a>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+            <button type="button" onClick="{{ share }}" style="min-height:46px;border-radius:var(--pRad);border:0;background:color-mix(in srgb, var(--pInk) 7%, transparent);color:var(--pInk);font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Share card</button>
+            <button type="button" onClick="{{ openQR }}" aria-haspopup="dialog" style="min-height:46px;border-radius:var(--pRad);border:0;background:color-mix(in srgb, var(--pInk) 7%, transparent);color:var(--pInk);font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Show QR</button>
+          </div>
+          <button type="button" onClick="{{ saveContact }}" style="min-height:52px;border:0;border-radius:var(--pRad);background:var(--pInk);color:var(--pBg);font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">{{ saveLabel }}</button>
+          <sc-if value="{{ leadOn }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ openLead }}" aria-haspopup="dialog" style="min-height:52px;border-radius:var(--pRad);border:1.5px solid var(--pAcc);background:transparent;color:var(--pInk);font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8M8 13h5"></path></svg>{{ leadBtn }}</button></sc-if>
+          <dl aria-label="Details" style="margin:6px 0 0;display:flex;flex-direction:column;text-align:left;background:var(--pBoxBg);padding:var(--pBoxPad);border-radius:min(var(--pRad), 18px);">
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3"><div style="min-height:60px;padding:8px 0;display:flex;align-items:center;gap:10px;border-bottom:1px solid color-mix(in srgb, var(--pInk) 10%, transparent);">
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;"><dt style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:color-mix(in srgb, var(--pInk) 58%, var(--pBg));">{{ r.label }}</dt><dd style="margin:0;font-family:var(--pFont);font-size:16px;font-weight:600;line-height:1.35;color:var(--pInk);overflow-wrap:anywhere;font-variant-numeric:tabular-nums;">{{ r.value }}</dd></div>
+              <sc-if value="{{ r.hasCopy }}"><button type="button" onClick="{{ r.onCopy }}" aria-label="{{ r.copyAria }}" style="width:44px;height:44px;flex:none;border:0;border-radius:min(var(--pRad), 12px);background:transparent;color:var(--pAcc);display:grid;place-items:center;cursor:pointer;" style-hover="background:color-mix(in srgb, var(--pInk) 7%, transparent);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg></button></sc-if>
+              <sc-if value="{{ r.hasLink }}"><a href="{{ r.href }}" target="_blank" rel="noopener" aria-label="{{ r.linkAria }}" style="width:44px;height:44px;flex:none;border-radius:min(var(--pRad), 12px);color:var(--pAcc);display:grid;place-items:center;" style-hover="background:color-mix(in srgb, var(--pInk) 7%, transparent);color:var(--pAcc);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></a></sc-if>
+            </div></sc-for>
+          </dl>
+          <sc-if value="{{ hasBio }}"><div style="margin-top:6px;display:flex;flex-direction:column;gap:6px;text-align:var(--pTA);background:var(--pBoxBg);padding:var(--pBoxPad);border-radius:min(var(--pRad), 18px);">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:color-mix(in srgb, var(--pInk) 55%, var(--pBg));">About</span>
+            <p style="margin:0;font-size:15px;line-height:1.55;color:color-mix(in srgb, var(--pInk) 85%, var(--pBg));text-wrap:pretty;">{{ bio }}</p>
+          </div></sc-if>
+          <sc-if value="{{ hasLinks }}"><div style="display:flex;flex-direction:column;background:var(--pBoxBg);padding:var(--pBoxPad);border-radius:min(var(--pRad), 18px);">
+            <sc-if value="{{ hasListings }}"><a href="{{ listingsHref }}" target="_blank" rel="noopener" style="min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--pInk);font-size:15px;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--pInk) 10%, transparent);">{{ listingsLabel }}<span aria-hidden="true" style="color:var(--pAcc);">→</span></a></sc-if>
+            <sc-for list="{{ socialsNoWeb }}" as="s"><a href="{{ s.url }}" target="_blank" rel="noopener" style="min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--pInk);font-size:15px;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--pInk) 10%, transparent);">{{ s.label }}<span aria-hidden="true" style="color:var(--pAcc);">→</span></a></sc-for>
+          </div></sc-if>
+          <sc-if value="{{ hasCompliance }}" hint-placeholder-val="{{ false }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.5;color:color-mix(in srgb, var(--pInk) 65%, var(--pBg));"><span style="text-wrap:balance;">{{ complianceLine }}</span><sc-if value="{{ isTX }}"><span style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;"><sc-if value="{{ hasIabs }}"><a href="{{ iabsUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Information About Brokerage Services</a></sc-if><a href="{{ cpnUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Consumer Protection Notice</a></span></sc-if></div></sc-if>
+          <sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="margin-top:6px;min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:var(--pInk);">
+            <span style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:color-mix(in srgb, var(--pInk) 55%, var(--pBg));">Powered by NexBizRise</span>
+            <span style="font-size:12px;font-weight:600;text-decoration:underline;text-underline-offset:3px;">Get a card like this</span>
+          </button></sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isListing }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:100svh;background:var(--lsBg,#f6f4f0);color:var(--lsInk,#13233f);display:flex;flex-direction:column;">
+        <div style="position:relative;height:280px;flex:none;overflow:hidden;background:color-mix(in srgb, var(--lsInk,#13233f) 18%, var(--lsBg,#f6f4f0));">
+          <sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};transform:scale({{ photoZoom }});transform-origin:{{ photoPos }};"></div></sc-if>
+              <sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;font-family:'Bricolage Grotesque',sans-serif;font-size:96px;color:var(--lsInk,#13233f);">{{ initials }}</div></sc-if>
+        </div>
+        <div style="margin:-44px 16px 0;position:relative;background:var(--lsCard,#fff);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:4px;box-shadow:0 16px 30px -18px color-mix(in srgb, var(--lsInk,var(--lsInk,#13233f)) 50%, transparent);">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:color-mix(in srgb, var(--accent,#f2c98a) 50%, var(--lsInk,#3a2f22));">{{ category }}</span>
+          <h1 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1.05;letter-spacing:-0.02em;">{{ displayName }}</h1>
+          <span style="font-size:14px;color:color-mix(in srgb, var(--lsInk,#13233f) 72%, var(--lsBg,#f6f4f0));">{{ title }}{{ companyPart }}</span>
+        </div>
+        <div style="padding:16px 16px 24px;display:flex;flex-direction:column;gap:9px;flex:1;">
+          <sc-if value="{{ hasTagline }}" hint-placeholder-val="{{ true }}"><p style="margin:0 0 2px;font-size:12px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:color-mix(in srgb, var(--lsInk,#13233f) 72%, var(--lsBg,#f6f4f0));text-align:center;">{{ tagline }}</p></sc-if>
+          <a href="{{ ctaHref }}" target="_blank" rel="noopener" style="height:54px;border-radius:14px;background:var(--accent,#f2c98a);color:#15120a;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ ctaText }}</a>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <a href="{{ telHref }}" aria-label="{{ callAria }}" style="height:50px;border-radius:12px;background:var(--lsCard,#fff);border:1px solid color-mix(in srgb, var(--lsInk,var(--lsInk,#13233f)) 12%, transparent);color:var(--lsInk,#13233f);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;">Call</a>
+            <a href="{{ msgHref }}" target="{{ msgTarget }}" rel="noopener" aria-label="{{ msgAria }}" style="height:50px;border-radius:12px;background:var(--lsCard,#fff);border:1px solid color-mix(in srgb, var(--lsInk,var(--lsInk,#13233f)) 12%, transparent);color:var(--lsInk,#13233f);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ msgLabel }}</a>
+            <a href="{{ mailHref }}" aria-label="{{ mailAria }}" style="height:50px;border-radius:12px;background:var(--lsCard,#fff);border:1px solid color-mix(in srgb, var(--lsInk,var(--lsInk,#13233f)) 12%, transparent);color:var(--lsInk,#13233f);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;">Email</a>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+            <button type="button" onClick="{{ share }}" style="height:46px;border-radius:12px;border:0;background:color-mix(in srgb, var(--lsInk,var(--lsInk,#13233f)) 6%, transparent);color:var(--lsInk,#13233f);font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Share card</button>
+            <button type="button" onClick="{{ openQR }}" aria-haspopup="dialog" style="height:46px;border-radius:12px;border:0;background:color-mix(in srgb, var(--lsInk,var(--lsInk,#13233f)) 6%, transparent);color:var(--lsInk,#13233f);font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Show QR</button>
+          </div>
+          <button type="button" onClick="{{ saveContact }}" style="height:52px;border:0;border-radius:14px;background:var(--lsInk,#13233f);color:var(--lsBg,#fff);font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">{{ saveLabel }}</button>
+          <sc-if value="{{ leadOn }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ openLead }}" aria-haspopup="dialog" style="height:52px;border-radius:14px;border:1.5px solid var(--accent,#f2c98a);background:color-mix(in srgb, var(--accent,#f2c98a) 12%, var(--lsCard,#fff));color:var(--lsInk,#13233f);font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8M8 13h5"></path></svg>{{ leadBtn }}</button></sc-if>
+          <sc-if value="{{ hasListings }}"><a href="{{ listingsHref }}" target="_blank" rel="noopener" style="height:50px;border-radius:14px;border:1.5px solid var(--lsInk,#13233f);color:var(--lsInk,#13233f);font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ listingsLabel }}</a></sc-if>
+          <sc-if value="{{ hasDirections }}"><a href="{{ directionsHref }}" target="_blank" rel="noopener" style="height:50px;border-radius:14px;border:1.5px solid color-mix(in srgb, var(--lsInk,#13233f) 20%, transparent);color:var(--lsInk,#13233f);font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>Get directions</a></sc-if>
+          <sc-for list="{{ socialsNoWeb }}" as="s"><a href="{{ s.url }}" target="_blank" rel="noopener" style="height:50px;border-radius:14px;border:1.5px solid color-mix(in srgb, var(--lsInk,var(--lsInk,#13233f)) 20%, transparent);color:var(--lsInk,#13233f);font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ s.label }}</a></sc-for>
+          <sc-if value="{{ hasCompliance }}" hint-placeholder-val="{{ false }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.5;color:color-mix(in srgb, var(--lsInk,#13233f) 72%, var(--lsBg,#f6f4f0));"><span style="text-wrap:balance;">{{ complianceLine }}</span><sc-if value="{{ isTX }}"><span style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;"><sc-if value="{{ hasIabs }}"><a href="{{ iabsUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Information About Brokerage Services</a></sc-if><a href="{{ cpnUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Consumer Protection Notice</a></span></sc-if></div></sc-if>
+          <div style="margin-top:auto;padding-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:color-mix(in srgb, var(--lsInk,#13233f) 72%, var(--lsBg,#f6f4f0));">
+            <span>{{ cityLine }}</span>
+            <sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="min-height:44px;border:0;background:transparent;color:var(--lsInk,#13233f);font-family:Figtree,system-ui,sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;">Powered by NexBizRise</button></sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div role="status" aria-live="polite" style="position:fixed;left:50%;bottom:max(24px, env(safe-area-inset-bottom));transform:translateX(-50%);z-index:50;pointer-events:none;">
+      <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#f3efe6;color:#10231a;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 16px 40px -12px rgba(0,0,0,0.6);white-space:nowrap;">{{ toast }}</div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ qrOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeQR }}" style="position:fixed;inset:0;z-index:60;background:rgba(3,10,7,0.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;">
+        <div role="dialog" aria-modal="true" aria-labelledby="qr-h" onClick="{{ stop }}" style="width:100%;max-width:320px;background:#f3efe6;color:#10231a;border-radius:20px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;box-shadow:0 30px 80px -20px rgba(0,0,0,0.8);">
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <h3 id="qr-h" style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:24px;">Scan to connect</h3>
+            <p style="margin:0;font-size:13px;color:#4a5c52;">Point a phone camera at the code</p>
+          </div>
+          <div style="width:100%;aspect-ratio:1;">{{ qrNode }}</div>
+          <button type="button" ref="{{ closeRef }}" onClick="{{ closeQR }}" style="height:48px;width:100%;border:0;border-radius:12px;background:#10231a;color:#f3efe6;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:600;cursor:pointer;" style-hover="background:#1b3a2b;">Done</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ leadOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeLead }}" style="position:fixed;inset:0;z-index:60;background:rgba(3,10,7,0.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;">
+        <div role="dialog" aria-modal="true" aria-labelledby="lead-h" onClick="{{ stop }}" style="width:100%;max-width:440px;max-height:92svh;overflow-y:auto;box-sizing:border-box;background:#f3efe6;color:#10231a;border-radius:24px 24px 0 0;padding:12px 24px max(24px, env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:16px;font-family:Figtree,system-ui,sans-serif;box-shadow:0 -20px 60px -20px rgba(0,0,0,0.7);">
+          <div aria-hidden="true" style="width:40px;height:5px;border-radius:3px;background:rgba(16,35,26,0.18);align-self:center;"></div>
+          <sc-if value="{{ leadDone }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:12px 0 4px;">
+              <span aria-hidden="true" style="width:56px;height:56px;border-radius:50%;background:#10231a;color:#f3efe6;display:grid;place-items:center;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>
+              <h3 id="lead-h" style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:26px;line-height:1.15;">Thanks, {{ leadFirst }}.</h3>
+              <p style="margin:0;font-size:15px;line-height:1.5;color:#4a5c52;text-wrap:pretty;">{{ leadDoneMsg }}</p>
+              <button type="button" onClick="{{ closeLead }}" style="margin-top:8px;height:50px;width:100%;border:0;border-radius:12px;background:#10231a;color:#f3efe6;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:600;cursor:pointer;">Done</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ leadForm }}" hint-placeholder-val="{{ false }}">
+            <form onSubmit="{{ submitLead }}" noValidate="{{ true }}" style="display:flex;flex-direction:column;gap:14px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <h3 id="lead-h" style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:26px;line-height:1.15;">{{ leadTitle }}</h3>
+                <p style="margin:0;font-size:14px;line-height:1.45;color:#4a5c52;">{{ leadSub }}</p>
+              </div>
+              <sc-if value="{{ hasLeadTopics }}" hint-placeholder-val="{{ false }}">
+                <div role="radiogroup" aria-label="I'm interested in" style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <sc-for list="{{ leadTopics }}" as="tp"><button type="button" role="radio" aria-checked="{{ tp.checked }}" onClick="{{ tp.pick }}" style="min-height:44px;padding:0 16px;border-radius:999px;border:{{ tp.border }};background:{{ tp.bg }};color:{{ tp.fg }};font-family:Figtree,system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">{{ tp.label }}</button></sc-for>
+                </div>
+              </sc-if>
+              <div style="display:flex;flex-direction:column;gap:6px;"><label for="lead-name" style="font-size:14px;font-weight:600;color:#10231a;">Your name *</label><input id="lead-name" name="name" type="text" autoComplete="name" value="{{ leadName }}" onChange="{{ onLeadName }}" style="height:50px;width:100%;box-sizing:border-box;padding:0 14px;border-radius:12px;border:1px solid rgba(16,35,26,0.22);background:#fff;color:#10231a;font-family:Figtree,system-ui,sans-serif;font-size:16px;"></div>
+              <div style="display:flex;flex-direction:column;gap:6px;"><label for="lead-phone" style="font-size:14px;font-weight:600;color:#10231a;">Mobile *</label><input id="lead-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" value="{{ leadPhone }}" onChange="{{ onLeadPhone }}" style="height:50px;width:100%;box-sizing:border-box;padding:0 14px;border-radius:12px;border:1px solid rgba(16,35,26,0.22);background:#fff;color:#10231a;font-family:Figtree,system-ui,sans-serif;font-size:16px;"></div>
+              <div style="display:flex;flex-direction:column;gap:6px;"><label for="lead-email" style="font-size:14px;font-weight:600;color:#10231a;">Email</label><input id="lead-email" name="email" type="email" inputMode="email" autoComplete="email" value="{{ leadEmail }}" onChange="{{ onLeadEmail }}" style="height:50px;width:100%;box-sizing:border-box;padding:0 14px;border-radius:12px;border:1px solid rgba(16,35,26,0.22);background:#fff;color:#10231a;font-family:Figtree,system-ui,sans-serif;font-size:16px;"></div>
+              <div style="display:flex;flex-direction:column;gap:6px;"><label for="lead-msg" style="font-size:14px;font-weight:600;color:#10231a;">Message</label><textarea id="lead-msg" name="message" rows="3" value="{{ leadMsg }}" onChange="{{ onLeadMsg }}" placeholder="{{ leadMsgPh }}" style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:12px;border:1px solid rgba(16,35,26,0.22);background:#fff;color:#10231a;font-family:Figtree,system-ui,sans-serif;font-size:16px;resize:vertical;"></textarea></div>
+              <p aria-live="polite" style="margin:0;font-size:14px;font-weight:600;color:#b3261e;">{{ leadErr }}</p>
+              <button type="submit" disabled="{{ leadBusy }}" style="height:54px;width:100%;border:0;border-radius:14px;background:#10231a;color:#f3efe6;font-family:Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;cursor:pointer;">{{ leadSubmitLabel }}</button>
+              <p style="margin:0;font-size:12px;line-height:1.5;color:#4a5c52;">{{ leadConsent }}</p>
+            </form>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ guideOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeGuide }}" style="position:fixed;inset:0;z-index:60;background:rgba(3,10,7,0.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;">
+        <div role="dialog" aria-modal="true" aria-labelledby="guide-h" onClick="{{ stop }}" style="width:100%;max-width:440px;background:#f3efe6;color:#10231a;border-radius:24px 24px 0 0;padding:12px 24px max(24px, env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:20px;box-shadow:0 -20px 60px -20px rgba(0,0,0,0.7);">
+          <div aria-hidden="true" style="width:40px;height:5px;border-radius:3px;background:rgba(16,35,26,0.18);align-self:center;"></div>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <sc-if value="{{ hasContactPhoto }}" hint-placeholder-val="{{ false }}">
+              <div aria-hidden="true" style="width:52px;height:52px;border-radius:50%;background-image:{{ contactPhotoBg }};background-size:cover;background-position:50% 18%;flex:none;"></div>
+            </sc-if>
+            <sc-if value="{{ noContactPhoto }}">
+              <div aria-hidden="true" style="width:52px;height:52px;border-radius:50%;background:#10231a;color:var(--accent,#f2c98a);display:grid;place-items:center;font-family:Newsreader,Georgia,serif;font-size:22px;flex:none;">{{ initials }}</div>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <h3 id="guide-h" style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:24px;line-height:1.1;">Save to Contacts</h3>
+              <p style="margin:0;font-size:14px;color:#4a5c52;">Two taps on iPhone</p>
+            </div>
+          </div>
+          <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;">
+            <li style="display:flex;align-items:center;gap:14px;">
+              <span style="width:32px;height:32px;border-radius:50%;background:#10231a;color:var(--accent,#f2c98a);font-size:14px;font-weight:700;display:grid;place-items:center;flex:none;">1</span>
+              <span style="font-size:15px;line-height:1.4;">Tap <strong style="font-weight:600;">Open contact</strong> below</span>
+            </li>
+            <li style="display:flex;align-items:center;gap:14px;">
+              <span style="width:32px;height:32px;border-radius:50%;background:#10231a;color:var(--accent,#f2c98a);font-size:14px;font-weight:700;display:grid;place-items:center;flex:none;">2</span>
+              <span style="font-size:15px;line-height:1.4;">Scroll to the bottom and tap <strong style="font-weight:600;color:#0a6cff;">Create New Contact</strong></span>
+            </li>
+          </ol>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button type="button" ref="{{ guideRef }}" onClick="{{ confirmSave }}" style="height:54px;width:100%;border:0;border-radius:14px;background:#10231a;color:#f3efe6;font-family:Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;cursor:pointer;" style-hover="background:#1b3a2b;">Open contact</button>
+            <button type="button" onClick="{{ closeGuide }}" style="height:44px;width:100%;border:0;border-radius:12px;background:transparent;color:#4a5c52;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:600;cursor:pointer;">Not now</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ plansOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closePlans }}" style="position:fixed;left:0;right:0;top:{{ vvTop }};height:{{ vvH }};z-index:60;background:rgba(3,10,7,0.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;">
+        <div role="dialog" aria-modal="true" aria-labelledby="plans-h" ref="{{ plansSheetRef }}" onClick="{{ stop }}" style="width:100%;max-width:440px;max-height:{{ sheetMax }};overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-padding:24px 0;background:#F5F2EC;color:#101820;border-radius:24px 24px 0 0;padding:12px 20px max(24px, env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:18px;box-shadow:0 -20px 60px -20px rgba(0,0,0,0.7);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <sc-if value="{{ onForm }}">
+              <button type="button" onClick="{{ backToPlans }}" aria-label="Back to plans" style="width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#5A6068;display:grid;place-items:center;cursor:pointer;" style-hover="background:rgba(16,24,32,0.06);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
+            </sc-if>
+            <sc-if value="{{ onPlans }}"><span style="width:44px;"></span></sc-if>
+            <div aria-hidden="true" style="width:40px;height:5px;border-radius:3px;background:rgba(16,24,32,0.18);"></div>
+            <button type="button" onClick="{{ closePlans }}" aria-label="Close" style="width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#5A6068;display:grid;place-items:center;cursor:pointer;" style-hover="background:rgba(16,24,32,0.06);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+          </div>
+
+          <sc-if value="{{ onPlans }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <h3 id="plans-h" style="margin:0 0 2px;text-align:center;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:26px;line-height:1.15;">Choose your card</h3>
+              <div style="border-radius:18px;padding:22px 20px;background:#FFFFFF;border:1.5px solid #101820;color:#101820;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;">
+                <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#0B7C86;">Build your digital identity</p>
+                <p style="margin:0;font-size:15px;line-height:1.45;color:#2E3440;text-wrap:balance;">Turn your contact information<br>into a professional digital profile.</p>
+                <div style="margin:6px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                  <span style="padding:4px 10px;border-radius:999px;background:#E6F1F2;color:#086670;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Launch offer · Save {{ basicSave }}</span>
+                  <p style="margin:0;display:flex;align-items:baseline;gap:8px;"><s aria-label="Was {{ basicWas }}" style="font-size:18px;color:#6B7078;text-decoration-thickness:1.5px;">{{ basicWas }}</s><span style="font-family:Newsreader,Georgia,serif;font-size:40px;line-height:1;font-weight:500;letter-spacing:-0.02em;">{{ basicNow }}</span><span style="font-size:15px;color:#5A6068;">{{ perYear }}</span></p>
+                </div>
+                <button type="button" ref="{{ plansRef }}" onClick="{{ pickBasic }}" style="margin-top:8px;height:52px;width:100%;border:0;border-radius:999px;background:#101820;color:#F5F2EC;font-family:'Plus Jakarta Sans',Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;" style-hover="background:#2A333D;">Create My Card <span aria-hidden="true">→</span></button>
+              </div>
+              <p style="margin:4px 0 0;text-align:center;font-size:14px;color:#5A6068;">Need something more premium?</p>
+              <div style="border-radius:18px;padding:22px 20px;background:#FBF9F5;border:1px solid rgba(16,24,32,0.12);color:#101820;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;">
+                <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#101820;">Motion card</p>
+                <p style="margin:0;font-size:15px;line-height:1.45;color:#2E3440;">Animated background + premium design</p>
+                <div style="margin:6px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                  <span style="padding:4px 10px;border-radius:999px;background:#E6F1F2;color:#086670;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Launch offer · Save {{ motionSave }}</span>
+                  <p style="margin:0;display:flex;align-items:baseline;gap:8px;"><s aria-label="Was {{ motionWas }}" style="font-size:18px;color:#6B7078;text-decoration-thickness:1.5px;">{{ motionWas }}</s><span style="font-family:Newsreader,Georgia,serif;font-size:40px;line-height:1;font-weight:500;letter-spacing:-0.02em;">{{ motionNow }}</span><span style="font-size:15px;color:#5A6068;">{{ perYear }}</span></p>
+                </div>
+                <button type="button" onClick="{{ pickMotion }}" style="margin-top:8px;height:52px;width:100%;border:0;border-radius:999px;background:transparent;border:1.5px solid #101820;color:#101820;font-family:'Plus Jakarta Sans',Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;" style-hover="background:rgba(16,24,32,0.05);">Upgrade / Create <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onForm }}" hint-placeholder-val="{{ false }}">
+            <div role="form" aria-labelledby="plans-h" style="display:flex;flex-direction:column;gap:16px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <h3 id="plans-h" style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:26px;line-height:1.15;">Your card details</h3>
+                <p style="margin:0;font-size:14px;line-height:1.45;color:#5A6068;">{{ sendNote }} Fields marked * are required.</p>
+              </div>
+
+              <div role="radiogroup" aria-label="Plan" style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:8px;">
+                <button type="button" role="radio" aria-checked="{{ isBasic }}" onClick="{{ setBasic }}" style="min-height:60px;padding:8px 12px;border-radius:12px;border:{{ basicBorder }};background:{{ basicBg }};color:#101820;font-family:Figtree,system-ui,sans-serif;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;cursor:pointer;text-align:left;"><span style="font-size:14px;font-weight:700;">Digital Card</span><span style="font-size:13px;color:#5A6068;"><s style="opacity:0.7;">{{ basicWas }}</s> {{ basicNow }} / year</span></button>
+                <button type="button" role="radio" aria-checked="{{ isMotion }}" onClick="{{ setMotion }}" style="min-height:60px;padding:8px 12px;border-radius:12px;border:{{ motionBorder }};background:{{ motionBg }};color:#101820;font-family:Figtree,system-ui,sans-serif;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;cursor:pointer;text-align:left;"><span style="font-size:14px;font-weight:700;">Motion Card</span><span style="font-size:13px;color:#5A6068;"><s style="opacity:0.7;">{{ motionWas }}</s> {{ motionNow }} / year</span></button>
+              </div>
+
+              <div role="radiogroup" aria-labelledby="colour-h" style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;">
+                  <span id="colour-h" style="font-size:14px;font-weight:600;color:#101820;">Card colour</span>
+                  <span style="font-size:13px;font-weight:600;color:#5A6068;">{{ colourName }}</span>
+                </div>
+                <div style="display:flex;gap:10px;overflow-x:auto;margin:0 -20px;padding:12px 20px 10px;scroll-padding-inline:20px;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+                  <sc-for list="{{ colourOptions }}" as="c" hint-placeholder-count="8">
+                    <button type="button" role="radio" aria-checked="{{ c.selected }}" aria-label="{{ c.name }}" onClick="{{ c.pick }}" style="flex:none;width:84px;border:0;padding:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;scroll-snap-align:start;font-family:Figtree,system-ui,sans-serif;">
+                      <span style="position:relative;width:84px;height:120px;border-radius:14px;background:{{ c.bg }};box-shadow:{{ c.ring }};padding:12px 10px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:box-shadow .15s ease, transform .15s ease;transform:{{ c.lift }};">
+                        <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(160deg, {{ c.accent }}, {{ c.bg }});box-shadow:0 0 0 1.5px {{ c.accent }};"></span>
+                        <span style="width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,0.85);"></span>
+                        <span style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);"></span>
+                        <span style="margin-top:auto;width:100%;height:14px;border-radius:5px;background:{{ c.accent }};"></span>
+                        <span style="width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;"><span style="height:10px;border-radius:3px;background:rgba(255,255,255,0.12);"></span><span style="height:10px;border-radius:3px;background:rgba(255,255,255,0.12);"></span><span style="height:10px;border-radius:3px;background:rgba(255,255,255,0.12);"></span></span>
+                        <sc-if value="{{ c.isSel }}">
+                          <span style="position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:#101820;color:#ffffff;display:grid;place-items:center;box-shadow:0 0 0 2px #F5F2EC;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg></span>
+                        </sc-if>
+                      </span>
+                      <span style="font-size:12px;line-height:1.25;font-weight:{{ c.weight }};color:#101820;text-align:center;">{{ c.name }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div role="radiogroup" aria-labelledby="design-h" style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;">
+                  <span id="design-h" style="font-size:14px;font-weight:600;color:#101820;">Card design</span>
+                  <span style="font-size:13px;font-weight:600;color:#5A6068;">{{ designName }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <sc-for list="{{ designOptions }}" as="o" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:12px;padding:8px;border-radius:14px;border:{{ o.border }};background:{{ o.bg }};">
+                      <button type="button" role="radio" aria-checked="{{ o.selected }}" aria-label="{{ o.name }}" onClick="{{ o.pick }}" style="flex:1;min-width:0;min-height:56px;border:0;padding:0;background:transparent;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:#101820;">
+                        <span aria-hidden="true" style="width:44px;height:60px;border-radius:8px;flex:none;background:{{ o.thumb }};box-shadow:inset 0 0 0 1px rgba(16,24,32,0.1);"></span>
+                        <span style="display:flex;flex-direction:column;gap:2px;min-width:0;">
+                          <span style="font-size:15px;font-weight:700;">{{ o.name }}</span>
+                          <span style="font-size:13px;color:#5A6068;">{{ o.tag }}</span>
+                        </span>
+                      </button>
+                      <a href="{{ o.previewHref }}" target="_blank" rel="noopener" aria-label="{{ o.previewAria }}" style="flex:none;min-height:44px;padding:0 12px;border-radius:10px;border:1px solid rgba(16,24,32,0.18);background:#ffffff;color:#101820;font-size:13px;font-weight:700;display:flex;align-items:center;gap:4px;text-decoration:none;">Preview ↗</a>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="name" style="font-size:14px;font-weight:600;color:#101820;">Full name *</label>
+                <input id="name" name="name" type="text" inputMode="text" autoComplete="name" placeholder="e.g. Rahul Sharma" value="{{ ff_name_value }}" onChange="{{ ff_name_onChange }}" aria-invalid="{{ ff_name_invalid }}" aria-describedby="name-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_name_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p id="name-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_name_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="profession" style="font-size:14px;font-weight:600;color:#101820;">Profession *</label>
+                <select id="profession" name="profession" value="{{ ff_profession_value }}" onChange="{{ ff_profession_onChange }}" aria-invalid="{{ ff_profession_invalid }}" aria-describedby="profession-err" style="height:50px;padding:0 12px;border:1px solid {{ ff_profession_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;appearance:auto;">
+                  <sc-for list="{{ professionOptions }}" as="o"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+                </select>
+                <p id="profession-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_profession_error }}</p>
+              </div>
+              <sc-if value="{{ showOtherProf }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <label for="professionOther" style="font-size:14px;font-weight:600;color:#101820;">Your profession *</label>
+                  <input id="professionOther" name="professionOther" type="text" autoComplete="off" placeholder="e.g. Chartered Accountant, Photographer" value="{{ ff_professionOther_value }}" onChange="{{ ff_professionOther_onChange }}" aria-invalid="{{ ff_professionOther_invalid }}" aria-describedby="professionOther-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_professionOther_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                  <p id="professionOther-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_professionOther_error }}</p>
+                </div>
+              </sc-if>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="title" style="font-size:14px;font-weight:600;color:#101820;">Job title</label>
+                <input id="title" name="title" type="text" inputMode="text" autoComplete="organization-title" placeholder="e.g. Senior Property Consultant" value="{{ ff_title_value }}" onChange="{{ ff_title_onChange }}" aria-invalid="{{ ff_title_invalid }}" aria-describedby="title-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_title_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p id="title-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_title_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="company" style="font-size:14px;font-weight:600;color:#101820;">Business name</label>
+                <input id="company" name="company" type="text" inputMode="text" autoComplete="organization" placeholder="e.g. Skyline Realty" value="{{ ff_company_value }}" onChange="{{ ff_company_onChange }}" aria-invalid="{{ ff_company_invalid }}" aria-describedby="company-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_company_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p id="company-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_company_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="phone" style="font-size:14px;font-weight:600;color:#101820;">Mobile number *</label>
+                <input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="{{ phonePlaceholder }}" value="{{ ff_phone_value }}" onChange="{{ ff_phone_onChange }}" aria-invalid="{{ ff_phone_invalid }}" aria-describedby="phone-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_phone_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p id="phone-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_phone_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="whatsapp" style="font-size:14px;font-weight:600;color:#101820;">WhatsApp number</label>
+                <input id="whatsapp" name="whatsapp" type="tel" inputMode="tel" autoComplete="tel" placeholder="Leave blank if same as mobile" value="{{ ff_whatsapp_value }}" onChange="{{ ff_whatsapp_onChange }}" aria-invalid="{{ ff_whatsapp_invalid }}" aria-describedby="whatsapp-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_whatsapp_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p id="whatsapp-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_whatsapp_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="email" style="font-size:14px;font-weight:600;color:#101820;">Email</label>
+                <input id="email" name="email" type="email" inputMode="email" autoComplete="email" placeholder="you@business.com" value="{{ ff_email_value }}" onChange="{{ ff_email_onChange }}" aria-invalid="{{ ff_email_invalid }}" aria-describedby="email-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_email_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p id="email-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_email_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="city" style="font-size:14px;font-weight:600;color:#101820;">City</label>
+                <input id="city" name="city" type="text" inputMode="text" autoComplete="address-level2" placeholder="e.g. Hyderabad" value="{{ ff_city_value }}" onChange="{{ ff_city_onChange }}" aria-invalid="{{ ff_city_invalid }}" aria-describedby="city-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_city_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p id="city-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_city_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="links" style="font-size:14px;font-weight:600;color:#101820;">Website / social links</label>
+                <input id="links" name="links" type="url" inputMode="url" autoComplete="off" placeholder="Instagram, LinkedIn, website…" value="{{ ff_links_value }}" onChange="{{ ff_links_onChange }}" aria-invalid="{{ ff_links_invalid }}" aria-describedby="links-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_links_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
+                <p style="margin:0;font-size:13px;color:#5A6068;">Separate several links with commas</p>
+                <p id="links-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_links_error }}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <label for="notes" style="font-size:14px;font-weight:600;color:#101820;">Anything else?</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="Tagline, services, colours you like…" value="{{ ff_notes_value }}" onChange="{{ ff_notes_onChange }}" style="padding:12px 14px;border:1px solid rgba(16,24,32,0.22);width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;line-height:1.4;resize:vertical;"></textarea>
+                <p id="notes-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_notes_error }}</p>
+              </div>
+
+              <div style="padding:14px;border-radius:12px;background:rgba(16,24,32,0.06);display:flex;flex-direction:column;gap:10px;">
+                <p style="margin:0;font-size:14px;font-weight:600;color:#101820;">After you submit, send these in the same WhatsApp chat:</p>
+                <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;">
+                  <li style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.45;color:#2c3d34;"><span style="width:22px;height:22px;border-radius:50%;background:#101820;color:var(--accent,#f2c98a);font-size:12px;font-weight:700;display:grid;place-items:center;flex:none;">2</span><span><strong style="font-weight:600;color:#101820;">Face photos</strong> — clear, front-facing, good light, plain background</span></li>
+                  <li style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.45;color:#2c3d34;"><span style="width:22px;height:22px;border-radius:50%;background:#101820;color:var(--accent,#f2c98a);font-size:12px;font-weight:700;display:grid;place-items:center;flex:none;">1</span><span><strong style="font-weight:600;color:#101820;">Logo</strong> — PNG or JPG, highest quality you have</span></li>
+                </ul>
+              </div>
+
+              <sc-if value="{{ isIN }}" hint-placeholder-val="{{ true }}">
+              <button type="button" onClick="{{ submitWA }}" style="height:54px;width:100%;border:0;border-radius:14px;background:#101820;color:#F5F2EC;font-family:Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;" style-hover="background:#1b3a2b;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"></path></svg>
+                Submit on WhatsApp
+              </button>
+              </sc-if>
+              <sc-if value="{{ isUS }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <button type="button" onClick="{{ submitSMS }}" style="height:52px;width:100%;border:0;border-radius:14px;background:#101820;color:#F5F2EC;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">Send by text message</button>
+                  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+                    <button type="button" onClick="{{ submitWA }}" style="height:52px;width:100%;border:1.5px solid #101820;border-radius:14px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">WhatsApp</button>
+                    <button type="button" onClick="{{ submitEmail }}" style="height:52px;width:100%;border:1.5px solid #101820;border-radius:14px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">Email</button>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <div aria-hidden="true" style="height:1px;background:rgba(16,24,32,0.12);"></div>
+          <p style="margin:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#5A6068;">Powered by<span style="font-family:Newsreader,Georgia,serif;font-size:18px;font-weight:500;letter-spacing:0;text-transform:none;color:#101820;">NexBizRise</span></p>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:900},&quot;demo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Live card&quot;,&quot;US Realtor demo&quot;,&quot;Real Estate demo&quot;,&quot;Services demo&quot;,&quot;Healthcare demo&quot;],&quot;default&quot;:&quot;Live card&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;(from data)&quot;,&quot;Original&quot;,&quot;Luxury Estate&quot;,&quot;Listing Showcase&quot;],&quot;default&quot;:&quot;(from data)&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;colour&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;Forest Green&quot;,&quot;Burgundy Rose&quot;,&quot;Deep Teal&quot;,&quot;Royal Plum&quot;,&quot;Espresso&quot;,&quot;Blush Pink&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;portraitStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;full-bleed&quot;,&quot;framed&quot;],&quot;default&quot;:&quot;full-bleed&quot;,&quot;tsType&quot;:&quot;'full-bleed'|'framed'&quot;},&quot;showShareRow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showPlans&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;season&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Auto (by date)&quot;,&quot;Off&quot;,&quot;Holidays&quot;,&quot;New Year&quot;,&quot;Thanksgiving&quot;],&quot;default&quot;:&quot;Auto (by date)&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Seasonal&quot;},&quot;seasonFx&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Seasonal&quot;},&quot;iosGuide&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;iPhone only&quot;,&quot;Always&quot;],&quot;default&quot;:&quot;Always&quot;,&quot;tsType&quot;:&quot;'iPhone only'|'Always'&quot;}}">
+/* ================================================================
+   EDIT THIS BLOCK FOR EACH CUSTOMER
+   preset: 'entrepreneur' | 'realEstate' | 'services' | 'healthcare'
+   Any field left out falls back to the preset (tagline, colours, quote…).
+   ================================================================ */
+const CARD = {
+  preset: 'entrepreneur',
+  layout: 'original',                         // original | luxuryEstate | listingShowcase
+  colour: '',                                // optional: forest | burgundy | teal | plum | espresso | blush
+  url: 'https://card.nexbizrise.com/',   // live address (QR + Share)
+  prefix: '', firstName: 'Sandeep', lastName: 'Koppisetty',
+  title: 'Founder',
+  company: 'NexBizRise',
+  category: "Let's connect",                 // small line above the name
+  tagline: 'Digital · Automate · Grow',
+  photo: './portrait.gif', photoAlt: 'Animated portrait of Sandeep Koppisetty seated on a chair, surrounded by floating data and web icons',
+  contactPhoto: './portrait.jpg',            // still photo saved into the phone contact ('' = none)
+  quote: '“Creating is a form of connecting.”',
+  bio: 'I build digital experiences and intelligent automation that connect businesses with the people they serve.',
+  signature: 'Sandeep K',
+  titles: 'Founder · Digital Strategist · Automation',
+  phone: '+18167723649', phoneDisplay: '+1 (816) 772-3649',
+  whatsapp: '',                              // digits only, e.g. '919876543210' — replaces Text with WhatsApp
+  email: 'sandeepkoppisetty@gmail.com',
+  cta: null,                                 // e.g. { label: 'Book appointment', url: 'https://…' }
+  socials: [
+    { type: 'linkedin', handle: 'sandeep-koppi', url: 'https://www.linkedin.com/in/sandeep-koppi' },
+    { type: 'instagram', handle: '@sandykoppi', url: 'https://www.instagram.com/sandykoppi/' },
+  ],
+  details: [],                               // e.g. { label: 'Clinic', value: 'Address…', maps: true }
+  footerLine: 'Great to meet you — let’s stay in touch.',
+  poweredBy: false,                          // show "Digital card by NexBizRise"
+  plan: 'motion',
+};
+
+/* Client cards are loaded from Supabase by link: /rahul-sharma or /?c=rahul-sharma
+   The home page (no link) loads DEFAULT_SLUG from Supabase; the CARD block above is the offline fallback. */
+const DEFAULT_SLUG = 'sandeep3649';
+const SUPABASE_URL = 'https://hyaqvmrtqafqhbhcdecd.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bqmJ-YGyd6h1UEnpM3RryA_eTWdpNbV';
+const POWERED_URL = 'https://nexbizrise.com/#/services/tap-card';
+/* Order form submissions go to this WhatsApp number (digits only, with country code) */
+const SALES_WHATSAPP = '18167723649';
+const SALES_SMS = '+18167723649';
+const SALES_EMAIL = 'sandeepkoppisetty@gmail.com';
+/* Prices per region — edit here only */
+const PRICING = {
+  IN: { label: '🇮🇳 India', cur: '₹', locale: 'en-IN', basic: { now: 799, was: 999 }, motion: { now: 3999, was: 4999 }, phone: '+91 98765 43210' },
+  US: { label: '🇺🇸 USA', cur: '$', locale: 'en-US', basic: { now: 49, was: 69 }, motion: { now: 129, was: 169 }, phone: '(816) 555-0123' },
+};
+const money = (r, n) => r.cur + Number(n).toLocaleString(r.locale);
+const planText = (reg, plan) => { const r = PRICING[reg] || PRICING.IN, p = r[plan]; return (plan === 'motion' ? 'Motion Card' : 'Digital Card') + ' — ' + money(r, p.now) + ' / year (launch offer, was ' + money(r, p.was) + ')'; };
+/* Card colour palettes — used by the order form and by CARD.colour */
+const COLOURS = [
+  { id: 'forest',   name: 'Forest Green',        bg: '#06120d', accent: '#f2c98a', bgTop: '#0b2a1d', bgBack: '#134a33' },
+  { id: 'burgundy', name: 'Burgundy Rose',       bg: '#1a0a0e', accent: '#f2a3a8' },
+  { id: 'teal',     name: 'Deep Teal',           bg: '#061618', accent: '#74d3c6' },
+  { id: 'plum',     name: 'Royal Plum',          bg: '#140a1c', accent: '#d6b4ee' },
+  { id: 'espresso', name: 'Espresso',           bg: '#160d09', accent: '#e8a57f' },
+  { id: 'blush',    name: 'Blush Pink',          bg: '#1c0a14', accent: '#ff9ecb' },
+];
+const PROFESSIONS = ['Entrepreneur / Business owner', 'Real Estate', 'Healthcare', 'Interior / Design services', 'Consultant / Coach', 'Legal / Finance', 'Retail / Shop', 'Other'];
+const FORM_FIELDS = [
+  { id: 'name', label: 'Full name *', autocomplete: 'name', placeholder: 'e.g. Rahul Sharma', required: 'Please enter your name' },
+  { id: 'profession', label: 'Profession *', select: true, required: 'Please choose your profession' },
+  { id: 'professionOther', label: 'Your profession *', onlyIfOther: true, required: 'Please enter your profession' },
+  { id: 'title', label: 'Job title', autocomplete: 'organization-title', placeholder: 'e.g. Senior Property Consultant' },
+  { id: 'company', label: 'Business name', autocomplete: 'organization', placeholder: 'e.g. Skyline Realty' },
+  { id: 'phone', label: 'Mobile number *', type: 'tel', inputMode: 'tel', autocomplete: 'tel', placeholder: '+91 98765 43210', required: 'Please enter your mobile number', pattern: /^[+\d][\d\s\-()]{7,}$/, patternMsg: 'Please enter a valid mobile number' },
+  { id: 'whatsapp', label: 'WhatsApp number', type: 'tel', inputMode: 'tel', autocomplete: 'tel', placeholder: 'Leave blank if same as mobile' },
+  { id: 'email', label: 'Email', type: 'email', inputMode: 'email', autocomplete: 'email', placeholder: 'you@business.com', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, patternMsg: 'Please enter a valid email' },
+  { id: 'city', label: 'City', autocomplete: 'address-level2', placeholder: 'e.g. Hyderabad' },
+  { id: 'links', label: 'Website / social links', type: 'url', inputMode: 'url', placeholder: 'Instagram, LinkedIn, website…', help: 'Separate several links with commas' },
+  { id: 'notes', label: 'Anything else?', area: true, placeholder: 'Tagline, services, colours you like…' },
+];
+
+const PRESETS = {
+  entrepreneur: { category: "Let's connect", tagline: 'Digital · Automate · Grow', theme: { accent: '#f2c98a', bg: '#06120d', bgTop: '#0b2a1d', bgBack: '#134a33' } },
+  realEstate:   { category: 'Real Estate', tagline: 'Buy · Sell · Rent', footerLine: 'Looking to buy, sell or rent? Let’s talk.', theme: { accent: '#e2bd72', bg: '#0a0e18', bgTop: '#152038', bgBack: '#1f2f54' } },
+  services:     { category: 'Services', tagline: 'Design · Style · Transform', footerLine: 'Have a space in mind? Let’s create it together.', theme: { accent: '#e8a57f', bg: '#130c0a', bgTop: '#2a1812', bgBack: '#40241a' } },
+  healthcare:   { category: 'Healthcare', tagline: 'Care · Treat · Smile', footerLine: 'Your health is in caring hands.', theme: { accent: '#74d3c6', bg: '#061318', bgTop: '#0b2a33', bgBack: '#0f3d48' } },
+};
+
+/* Sample customers — preview with the "demo" tweak, or on the live site with ?demo=realestate | services | healthcare */
+const DEMOS = {
+  services_us: {
+    preset: 'services', region: 'US', firstName: 'Emily', lastName: 'Carter', title: 'Interior Designer', company: 'Carter & Co. Interiors',
+    photo: '', contactPhoto: '',
+    quote: '“Good design feels like home.”',
+    bio: 'I design calm, livable homes and offices across Kansas City, from first sketch to final styling.',
+    signature: 'Emily Carter', titles: 'Residential · Offices · Styling',
+    phone: '+18165550187', whatsapp: '', email: 'emily@carterinteriors.com',
+    cta: { label: 'Book a consultation', url: 'https://calendly.com/' },
+    socials: [
+      { type: 'instagram', handle: '@carterinteriors', url: 'https://www.instagram.com/' },
+      { type: 'linkedin', handle: 'emily-carter', url: 'https://www.linkedin.com/' },
+      { type: 'website', handle: 'carterinteriors.com', url: 'https://example.com' },
+    ],
+    details: [{ label: 'Studio', value: '1800 Baltimore Ave, Kansas City, MO', maps: true }],
+    poweredBy: true,
+  },
+  healthcare_us: {
+    preset: 'healthcare', region: 'US', prefix: 'Dr.', firstName: 'Michael', lastName: 'Bennett', title: 'Family Dentist', company: 'Bright Smile Dental',
+    photo: '', contactPhoto: '',
+    quote: '“Healthy smiles, gentle care.”',
+    bio: 'Preventive, restorative and cosmetic dentistry for the whole family, with clear plans and no surprises.',
+    signature: 'Dr. Michael Bennett', titles: 'DDS · Implants · Invisalign',
+    phone: '+19135550164', whatsapp: '', email: 'care@brightsmiledental.com',
+    cta: { label: 'Book appointment', url: 'https://calendly.com/' },
+    socials: [
+      { type: 'instagram', handle: '@brightsmiledental', url: 'https://www.instagram.com/' },
+      { type: 'website', handle: 'brightsmiledental.com', url: 'https://example.com' },
+    ],
+    details: [
+      { label: 'Clinic', value: '4800 W 119th St, Overland Park, KS', maps: true },
+      { label: 'Hours', value: 'Mon–Fri · 8 am – 5 pm' },
+    ],
+    poweredBy: true,
+  },
+  realtor: {
+    preset: 'realEstate', region: 'US', firstName: 'Jessica', lastName: 'Moreno', title: 'REALTOR®', company: 'Lone Star Realty Group',
+    photo: '', contactPhoto: '',
+    quote: '“Finding the right home should feel exciting, not stressful.”',
+    bio: 'I help Austin buyers and sellers price right, move fast and close with confidence.',
+    signature: 'Jessica Moreno', titles: 'Buyers · Sellers · Relocation',
+    phone: '+15125550142', phoneDisplay: '(512) 555-0142', whatsapp: '', email: 'jessica@lonestarrealty.com',
+    cta: { label: 'Schedule a showing', url: 'https://calendly.com/' },
+    socials: [
+      { type: 'instagram', handle: '@jessicasellsaustin', url: 'https://www.instagram.com/' },
+      { type: 'facebook', handle: 'Jessica Moreno Realtor', url: 'https://www.facebook.com/' },
+      { type: 'website', handle: 'lonestarrealty.com', url: 'https://example.com' },
+    ],
+    listingsUrl: 'https://www.zillow.com/', officeAddress: '401 Congress Ave, Austin, TX 78701',
+    details: [{ label: 'Office', value: '401 Congress Ave, Austin, TX 78701', maps: true }],
+    brokerage: 'Lone Star Realty Group', licenseNo: '0712345', licenseState: 'TX', iabsUrl: 'https://example.com/iabs.pdf',
+    poweredBy: true,
+  },
+  realestate: {
+    preset: 'realEstate', firstName: 'Arjun', lastName: 'Mehta', title: 'Senior Property Consultant', company: 'Skyline Realty',
+    photo: '', contactPhoto: '',
+    quote: '“The right home changes everything.”',
+    bio: 'I help families and investors find, value and close on property with clear advice and no pressure.',
+    signature: 'Arjun Mehta', titles: 'Residential · Commercial · Investment',
+    phone: '+919876543210', phoneDisplay: '+91 98765 43210', whatsapp: '919876543210', email: 'rahul@skylinerealty.in',
+    cta: { label: 'View listings', url: 'https://example.com' },
+    socials: [
+      { type: 'instagram', handle: '@skylinerealty', url: 'https://www.instagram.com/' },
+      { type: 'facebook', handle: 'Skyline Realty', url: 'https://www.facebook.com/' },
+      { type: 'website', handle: 'skylinerealty.in', url: 'https://example.com' },
+    ],
+    details: [{ label: 'Office', value: 'Road No. 36, Jubilee Hills, Hyderabad', maps: true }],
+    poweredBy: true,
+  },
+  services: {
+    preset: 'services', firstName: 'Ananya', lastName: 'Iyer', title: 'Interior Designer', company: 'Studio Aangan',
+    photo: '', contactPhoto: '',
+    quote: '“Good design feels like home.”',
+    bio: 'I design homes and workspaces that are calm, practical and personal, from the first sketch to the final styling.',
+    signature: 'Ananya Iyer', titles: 'Residential · Workspaces · Styling',
+    phone: '+919123456780', phoneDisplay: '+91 91234 56780', whatsapp: '919123456780', email: 'priya@studioaangan.in',
+    cta: { label: 'View portfolio', url: 'https://example.com' },
+    socials: [
+      { type: 'instagram', handle: '@studioaangan', url: 'https://www.instagram.com/' },
+      { type: 'linkedin', handle: 'ananya-iyer', url: 'https://www.linkedin.com/' },
+      { type: 'website', handle: 'studioaangan.in', url: 'https://example.com' },
+    ],
+    details: [{ label: 'Studio', value: 'Banjara Hills, Hyderabad', maps: true }],
+    poweredBy: true,
+  },
+  healthcare: {
+    preset: 'healthcare', prefix: 'Dr.', firstName: 'Kavya', lastName: 'Menon', title: 'Dental Surgeon', company: 'SmileCare Dental Clinic',
+    photo: '', contactPhoto: '',
+    quote: '“Healthy smiles, gentle care.”',
+    bio: 'I provide preventive, restorative and cosmetic dental care, with clear treatment plans and no surprises.',
+    signature: 'Dr. Kavya Menon', titles: 'BDS, MDS · Implants · Aligners',
+    phone: '+919988776655', phoneDisplay: '+91 99887 76655', whatsapp: '919988776655', email: 'care@smilecaredental.in',
+    cta: { label: 'Book appointment', url: 'https://wa.me/919988776655?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment.' },
+    socials: [
+      { type: 'instagram', handle: '@smilecaredental', url: 'https://www.instagram.com/' },
+      { type: 'website', handle: 'smilecaredental.in', url: 'https://example.com' },
+    ],
+    details: [
+      { label: 'Clinic', value: '2nd Floor, Madhapur Main Road, Hyderabad', maps: true },
+      { label: 'Hours', value: 'Mon–Sat · 10 am – 8 pm' },
+    ],
+    poweredBy: true,
+  },
+};
+
+const LAYOUT_TWEAK = { 'Original': 'original', 'Luxury Estate': 'luxuryEstate', 'Listing Showcase': 'listingShowcase', 'Professional': 'professional' };
+const PRO_STYLES = [
+  { id: 'pro-executive', name: 'Executive', layout: 'professional', mode: 'banner', bg: '#0f1a2e', ink: '#f1ece2', card: '#17243d', accent: '#d8b36a', on: '#15120a', font: "'Cormorant Garamond',Georgia,serif", rad: '12px', align: 'left', boxed: true },
+  { id: 'pro-minimal', name: 'Minimal', layout: 'professional', mode: 'side', bg: '#ffffff', ink: '#111418', card: '#f3f4f6', accent: '#111418', on: '#ffffff', font: "Figtree,system-ui,sans-serif", rad: '10px', align: 'left', boxed: false },
+  { id: 'pro-classic', name: 'Classic', layout: 'professional', mode: 'ring', bg: '#f4efe6', ink: '#1c1a17', card: '#fbf8f2', accent: '#b08a45', on: '#ffffff', font: "'Cormorant Garamond',Georgia,serif", rad: '2px', align: 'center', boxed: false },
+  { id: 'pro-modern', name: 'Modern', layout: 'professional', mode: 'tile', bg: '#1f2124', ink: '#f2f0ec', card: '#2a2d31', accent: '#c7ccd4', on: '#15171a', font: "'Bricolage Grotesque',system-ui,sans-serif", rad: '999px', align: 'left', boxed: true },
+  { id: 'pro-corporate', name: 'Corporate', layout: 'professional', mode: 'band', bg: '#eef2f7', ink: '#14243b', card: '#ffffff', accent: '#2f5d9a', on: '#ffffff', font: "Figtree,system-ui,sans-serif", rad: '12px', align: 'center', boxed: true },
+  { id: 'pro-studio', name: 'Studio', layout: 'professional', mode: 'hero', bg: '#0b0b0c', ink: '#f5f3ee', card: '#161618', accent: '#e6d3a3', on: '#15120a', font: "'Bricolage Grotesque',system-ui,sans-serif", rad: '14px', align: 'left', boxed: true },
+];
+const LUX_STYLES = [
+  { id: 'lux-champagne', name: 'Champagne', layout: 'luxuryEstate', bg: '#f4efe6', ink: '#1c1a17', accent: '#c9a45c', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
+  { id: 'lux-onyx', name: 'Onyx & Gold', layout: 'luxuryEstate', bg: '#0c0b0a', ink: '#f3ead8', accent: '#d4af37', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
+  { id: 'lux-emerald', name: 'Emerald', layout: 'luxuryEstate', bg: '#0b2a20', ink: '#f1e9d6', accent: '#d9b56a', frame: 'circle', font: "'Cormorant Garamond',Georgia,serif" },
+  { id: 'lux-marble', name: 'Marble', layout: 'luxuryEstate', bg: '#f7f6f3', ink: '#22201d', accent: '#9c8a6e', frame: 'square', font: "Newsreader,Georgia,serif" },
+  { id: 'lux-velvet', name: 'Burgundy Velvet', layout: 'luxuryEstate', bg: '#2a0d14', ink: '#f5e6e0', accent: '#e0b28a', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
+  { id: 'lux-sapphire', name: 'Sapphire', layout: 'luxuryEstate', bg: '#0e1633', ink: '#eef0f7', accent: '#b8c4e6', frame: 'circle', font: "Newsreader,Georgia,serif" },
+];
+const STYLE_BY_ID = Object.fromEntries(PRO_STYLES.concat(LUX_STYLES).map(s => [s.id, s]));
+const LIGHT_LAYOUTS = { luxuryEstate: '#f4efe6', listingShowcase: '#f6f4f0' };
+const DESIGNS = [
+  { id: 'original', name: 'Original', tag: 'Flip card · all professions', demo: '', thumb: 'linear-gradient(180deg, #134a33 0%, #06120d 55%, #06120d 70%, #f2c98a 70% 78%, #06120d 78%)' },
+  { id: 'luxuryEstate', name: 'Luxury Estate', tag: 'Real estate · premium', demo: 'realestate', thumb: 'radial-gradient(28% 22% at 50% 30%, #cfc3ad 98%, transparent 100%), linear-gradient(180deg, #f4efe6 0 64%, #1c1a17 64% 72%, #f4efe6 72%)' },
+  { id: 'listingShowcase', name: 'Listing Showcase', tag: 'Real estate · big photo', demo: 'realestate', thumb: 'linear-gradient(180deg, #b9bdc7 0 42%, #f6f4f0 42% 56%, #f2c98a 56% 66%, #f6f4f0 66% 72%, #13233f 72% 82%, #f6f4f0 82%)' },
+];
+const TREC_CPN = 'https://www.trec.texas.gov/forms/consumer-protection-notice';
+const LEAD_TOPICS = { realEstate: ['Buying', 'Selling', 'Renting', 'Just connecting'] };
+const CTA_BY_PRESET = { realEstate: 'Book a site visit', healthcare: 'Book appointment', services: 'Book a consultation', entrepreneur: 'Book a call' };
+const DEMO_TWEAK = { 'US Realtor demo': 'realtor', 'Real Estate demo': 'realestate', 'Services demo': 'services', 'Healthcare demo': 'healthcare' };
+const SOCIAL_LABEL = { linkedin: 'LinkedIn', instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', website: 'Website' };
+const toE164 = (raw, region) => { let s = String(raw || '').trim(); const plus = s.startsWith('+'); let n = s.replace(/\D/g, ''); if (!n) return ''; if (plus) return '+' + n; if (region === 'IN') { if (n.length === 11 && n[0] === '0') n = n.slice(1); if (n.length === 10) return '+91' + n; if (n.length === 12 && n.startsWith('91')) return '+' + n; } else { if (n.length === 10) return '+1' + n; if (n.length === 11 && n[0] === '1') return '+' + n; } return '+' + n; };
+const fmtPhone = (raw, region) => { const e = toE164(raw, region), n = e.replace(/\D/g, ''); if (n.length === 11 && n[0] === '1') return '+1 (' + n.slice(1, 4) + ') ' + n.slice(4, 7) + '-' + n.slice(7); if (n.length === 12 && n.startsWith('91')) return '+91 ' + n.slice(2, 7) + ' ' + n.slice(7); return String(raw || '').trim() || e; };
+const safeUrl = u => { const s = String(u || '').trim(); return /^(https?:\/\/|tel:|sms:|mailto:)/i.test(s) ? s : ''; };
+const SEASONS = {
+  holidays: { label: 'Happy Holidays', bg: '#a3162a', ink: '#ffffff', accent: '#ffffff', fx: 'snow', stripe: 'repeating-linear-gradient(135deg, #ffffff 0 6px, #c8102e 6px 12px)' },
+  newyear: { label: 'Happy New Year', bg: '#0d0d12', ink: '#f7efdc', accent: '#e6c36a', fx: 'sparkle' },
+  thanksgiving: { label: 'Happy Thanksgiving', bg: '#6b3410', ink: '#fff1e2', accent: '#f4a259', fx: '', premium: true },
+};
+const SEASON_TWEAK = { 'Off': 'off', 'Holidays': 'holidays', 'New Year': 'newyear', 'Thanksgiving': 'thanksgiving' };
+const seasonFor = dt => {
+  const m = dt.getMonth(), d = dt.getDate();
+  if (m === 11 && d <= 26) return 'holidays';
+  if ((m === 11 && d >= 27) || (m === 0 && d <= 3)) return 'newyear';
+  if (m === 10) { const first = new Date(dt.getFullYear(), 10, 1).getDay(), thu4 = 1 + ((4 - first + 7) % 7) + 21; if (d >= thu4 - 6 && d <= thu4 + 1) return 'thanksgiving'; }
+  return '';
+};
+const vesc = s => String(s || '').replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;');
+
+class Component extends DCLogic {
+  state = { qrOpen: false, toast: '', saved: false, leadOpen: false, leadDone: false, leadBusy: false, leadErr: '', lead: { name: '', phone: '', email: '', topic: '', message: '' } };
+  closeRef = React.createRef();
+  guideRef = React.createRef();
+  plansRef = React.createRef();
+  plansSheetRef = React.createRef();
+  openPlans = e => { this.plansOpener = e && e.currentTarget; this.setState({ plansOpen: true, planStep: 'plans' }, () => this.plansRef.current && this.plansRef.current.focus()); };
+  pickPlan = plan => {
+    /* Opens the card builder (same database). On the live site: card.nexbizrise.com/order */
+    const from = (this.state.remote && this.state.remote.url ? String(this.state.remote.url).split('/').pop() : '') || '';
+    const local = /\.dc\.html$/.test(location.pathname) || /\.dc\.html$/.test(decodeURIComponent(location.pathname));
+    const url = (local ? './Order%20Card.dc.html' : '/order') + '?plan=' + plan + '&region=' + (this.state.region || 'IN') + (() => { try { const el = document.querySelector('[style*="--accent"]') || document.documentElement; const v = (getComputedStyle(el).getPropertyValue('--accent') || getComputedStyle(document.documentElement).getPropertyValue('--accent') || '').trim(); return /^#[0-9a-f]{6}$/i.test(v) ? '&accent=' + v.slice(1) : ''; } catch (e) { return ''; } })() + (from ? '&from=' + encodeURIComponent(from) : '');
+    try { if (window.top !== window && !/Mobile Preview/.test(decodeURIComponent(window.top.location.pathname))) { window.top.location.href = local ? url : 'https://card.nexbizrise.com' + url; return; } } catch (e) {}
+    location.href = url;
+  };
+  setField = (id, v) => this.setState(s => ({ form: { ...(s.form || {}), [id]: v }, errors: { ...(s.errors || {}), [id]: '' } }));
+  submitForm = (e, channel) => {
+    e && e.preventDefault && e.preventDefault();
+    const f = {};
+    FORM_FIELDS.forEach(d => { const el = document.getElementById(d.id); f[d.id] = el ? el.value : ((this.state.form || {})[d.id] || ''); });
+    const errors = {};
+    FORM_FIELDS.forEach(d => {
+      if (d.onlyIfOther && f.profession !== 'Other') return;
+      const v = (f[d.id] || '').trim();
+      if (d.required && !v) errors[d.id] = d.required;
+      else if (v && d.pattern && !d.pattern.test(v)) errors[d.id] = d.patternMsg;
+    });
+    if (Object.keys(errors).length) {
+      this.setState({ errors, form: f });
+      const first = FORM_FIELDS.find(d => errors[d.id]); const el = first && document.getElementById(first.id); el && el.focus();
+      return;
+    }
+    const col = COLOURS.find(c => c.id === (this.state.colour || 'forest')) || COLOURS[0];
+    const L = [ 'Hi NexBizRise, I’d like a digital card.', '', '*Region:* ' + (this.state.region === 'US' ? 'USA' : 'India'), '*Plan:* ' + planText(this.state.region || 'IN', this.state.plan || 'basic'), '*Card colour:* ' + col.name, '*Card design:* ' + (DESIGNS.find(x => x.id === (this.state.design || 'original')) || DESIGNS[0]).name ];
+    FORM_FIELDS.forEach(d => {
+      if (d.onlyIfOther) return;
+      let v = (f[d.id] || '').trim();
+      if (d.id === 'profession' && v === 'Other' && (f.professionOther || '').trim()) v = 'Other — ' + f.professionOther.trim();
+      if (v) L.push('*' + d.label.replace(' *', '') + ':* ' + v);
+    });
+    const ch = channel || 'wa';
+    L.push('', ch === 'email' ? 'I’ll reply with 2 face photos and my logo.' : 'I’ll send 2 face photos and my logo in this chat.');
+    const plain = L.join('\n').replace(/\*/g, '');
+    if (ch === 'sms') { location.href = 'sms:' + SALES_SMS + '?&body=' + encodeURIComponent(plain); this.showToast('Opening Messages…'); }
+    else if (ch === 'email') { location.href = 'mailto:' + SALES_EMAIL + '?subject=' + encodeURIComponent('New digital card order') + '&body=' + encodeURIComponent(plain); this.showToast('Opening email…'); }
+    else { window.open('https://wa.me/' + SALES_WHATSAPP + '?text=' + encodeURIComponent(L.join('\n')), '_blank'); this.showToast('Opening WhatsApp…'); }
+  };
+  closePlans = () => { this.setState({ plansOpen: false }); this.plansOpener && this.plansOpener.focus && this.plansOpener.focus(); };
+
+  demoKey() {
+    const t = DEMO_TWEAK[this.props.demo];
+    if (t) return t;
+    try { const q = (new URLSearchParams(location.search).get('demo') || '').toLowerCase().replace(/[^a-z]/g, ''); if (DEMOS[q]) return q; } catch (e) {}
+    return null;
+  }
+  data() {
+    const k = this.demoKey();
+    const kr = k && this.state.region !== 'IN' ? ({ realestate: 'realtor', services: 'services_us', healthcare: 'healthcare_us' })[k] || k : k;
+    const src = this.state.remote ? this.state.remote : (kr ? { ...CARD, ...DEMOS[kr] } : CARD);
+    const pre = PRESETS[src.preset] || PRESETS.entrepreneur;
+    const d = { ...pre, ...src, theme: { ...pre.theme, ...(src.theme || {}) } };
+    d.socials = (d.socials || []).map(s => ({ ...s, url: safeUrl(s.url) })).filter(s => s.url);
+    if (d.cta) d.cta = safeUrl(d.cta.url) ? { ...d.cta, url: safeUrl(d.cta.url) } : null;
+    d.listingsUrl = safeUrl(d.listingsUrl); d.iabsUrl = safeUrl(d.iabsUrl);
+    if (d.phone) d.phoneDisplay = fmtPhone(d.phone, d.region || (String(d.phone).startsWith('+91') ? 'IN' : 'US'));
+    const cc = COLOURS.find(c => c.id === (this.props.colour ? (COLOURS.find(x => x.name === this.props.colour) || {}).id : src.colour));
+    if (cc) d.theme = { accent: cc.accent, bg: cc.bg, bgTop: cc.bgTop || ('color-mix(in srgb, ' + cc.bg + ' 82%, ' + cc.accent + ')'), bgBack: cc.bgBack || ('color-mix(in srgb, ' + cc.bg + ' 70%, ' + cc.accent + ')') };
+    const st = STYLE_BY_ID[src.colour];
+    if (st) { d.st = st; d.layout = st.layout; d.theme = { ...d.theme, accent: st.accent }; }
+    if (kr) { d.category = DEMOS[kr].category || pre.category; d.tagline = DEMOS[kr].tagline || pre.tagline; d.footerLine = DEMOS[kr].footerLine || pre.footerLine; }
+    d.displayName = [d.prefix, d.firstName, d.lastName].filter(Boolean).join(' ');
+    d.initials = ((d.firstName || '')[0] || '') + ((d.lastName || '')[0] || '');
+    d.shareUrl = (d.url || (location.origin + location.pathname.replace(/index\.html$/, ''))) + (k ? '?demo=' + k : '');
+    return d;
+  }
+  layoutOf(d) {
+    if (LAYOUT_TWEAK[this.props.layout]) return LAYOUT_TWEAK[this.props.layout];
+    try { const q = new URLSearchParams(location.search).get('layout'); if (q && Object.values(LAYOUT_TWEAK).includes(q)) return q; } catch (e) {}
+    return d.layout || 'original';
+  }
+  applyTheme() {
+    const d = this.data(), r = document.documentElement.style, t = d.theme;
+    const light = LIGHT_LAYOUTS[this.layoutOf(d)];
+    if (light) { r.setProperty('--pageBg', light); r.setProperty('--mainBg', light); document.body.style.background = light; }
+    else { r.removeProperty('--pageBg'); r.removeProperty('--mainBg'); document.body.style.background = ''; }
+    const st = d.st;
+    ['--lxBg', '--lxInk', '--lxFont', '--lxW', '--lxH', '--lxR1', '--lxR2', '--lsBg', '--lsInk', '--lsCard'].forEach(v => r.removeProperty(v));
+    if (st && this.layoutOf(d) === st.layout) {
+      if (st.layout === 'professional') {
+        const P = { '--pBg': st.bg, '--pInk': st.ink, '--pCard': st.card, '--pAcc': st.accent, '--pOn': st.on, '--pFont': st.font, '--pRad': st.rad, '--pTA': st.align, '--pAI': st.align === 'center' ? 'center' : 'flex-start', '--pBoxBg': st.boxed ? st.card : 'transparent', '--pBoxPad': st.boxed ? '16px 18px' : '4px 0' };
+        Object.entries(P).forEach(([k, v]) => r.setProperty(k, v));
+      }
+      else if (st.layout === 'luxuryEstate') {
+        const F = { arch: ['150px', '190px', '75px 75px 6px 6px', '70px 70px 3px 3px'], circle: ['170px', '170px', '50%', '50%'], square: ['160px', '190px', '4px', '2px'] }[st.frame || 'arch'];
+        r.setProperty('--lxBg', st.bg); r.setProperty('--lxInk', st.ink); r.setProperty('--lxFont', st.font || "'Cormorant Garamond',serif");
+        r.setProperty('--lxW', F[0]); r.setProperty('--lxH', F[1]); r.setProperty('--lxR1', F[2]); r.setProperty('--lxR2', F[3]);
+      }
+      else { r.setProperty('--lsBg', st.bg); r.setProperty('--lsInk', st.ink); r.setProperty('--lsCard', st.card); }
+      r.setProperty('--pageBg', st.bg); r.setProperty('--mainBg', st.bg); document.body.style.background = st.bg;
+    }
+    r.setProperty('--accent', t.accent); r.setProperty('--bg', t.bg); r.setProperty('--bgTop', t.bgTop); r.setProperty('--bgBack', t.bgBack);
+    document.title = d.displayName + (d.company ? ' · ' + d.company : '');
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', t.bg);
+  }
+
+  mapRow(row, slug, viaQuery) {
+    const name = [row.prefix, row.first_name, row.last_name].filter(Boolean).join(' ');
+    const h = u => { try { const x = new URL(u); const s = x.pathname.replace(/\/+$/, '').split('/').pop(); return s ? (x.hostname.includes('instagram') ? '@' + s : s) : x.hostname.replace(/^www\./, ''); } catch (e) { return u; } };
+    const socials = [];
+    if (row.linkedin) socials.push({ type: 'linkedin', handle: h(row.linkedin), url: row.linkedin });
+    if (row.instagram) socials.push({ type: 'instagram', handle: h(row.instagram), url: row.instagram });
+    const x = row.extras || {};
+    if (row.website) socials.push({ type: 'website', handle: h(row.website), url: row.website });
+    if (x.facebook) socials.push({ type: 'facebook', handle: h(x.facebook), url: x.facebook });
+    if (String(row.photo_url || '').startsWith('data:')) { try { const [mm, b64] = row.photo_url.split(','); const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); row = { ...row, photo_url: URL.createObjectURL(new Blob([u], { type: mm.slice(5).split(';')[0] })) }; } catch (e) {} }
+    const m = { layout: row.layout || 'original', preset: row.preset, colour: row.colour, prefix: row.prefix, firstName: row.first_name, lastName: row.last_name,
+      title: row.title, company: row.company, photoX: row.photo_x ?? 50, photoY: row.photo_y ?? 50, photoZoom: row.photo_zoom || 1, photo: row.photo_url, photoAlt: 'Portrait of ' + name, contactPhoto: row.contact_photo_url || row.photo_url,
+      quote: row.quote, bio: row.bio, signature: row.signature || name, titles: row.titles || [row.title, row.company].filter(Boolean).join(' · '),
+      phone: toE164(row.phone, row.region), phoneDisplay: fmtPhone(row.phone || row.phone_display, row.region), whatsapp: row.whatsapp ? toE164(row.whatsapp, row.region).replace(/\D/g, '') : '', email: row.email, socials, details: x.office_address ? [{ label: 'Office', value: x.office_address, maps: true }] : (row.city ? [{ label: 'City', value: row.city, maps: true }] : []), cta: x.booking_url ? { label: row.region === 'IN' ? 'Book a site visit' : 'Schedule a showing', url: x.booking_url } : null,
+      previewSeason: row.preview_season || '', namePlaceholder: !!row.name_placeholder, seasonal: x.seasonal !== false, greeting: String(x.greeting || '').slice(0, 60), premium: x.motion === true || row.plan === 'motion' || x.seasonal_addon === true,
+      slug, region: row.region, listingsUrl: x.listings_url || '', officeAddress: x.office_address || '', brokerage: x.brokerage || '', licenseNo: x.license_no || '', licenseState: String(x.license_state || '').toUpperCase(), iabsUrl: x.iabs_url || '', leadCapture: x.lead_capture !== false, poweredBy: row.show_powered_by !== false, showPlans: row.show_powered_by !== false,
+      url: location.origin + (viaQuery ? '/?c=' : '/') + slug };
+    if (row.category) m.category = row.category;
+    if (row.tagline) m.tagline = row.tagline;
+    if (row.preset === 'entrepreneur') m.footerLine = 'Great to meet you — let’s stay in touch.';
+    return m;
+  }
+
+  async loadRemote() {
+    try {
+      if (new URLSearchParams(location.search).get('preview')) {
+        try { document.documentElement.style.overscrollBehaviorY = 'auto'; document.body.style.overscrollBehaviorY = 'auto'; } catch (e) {}
+        this.onPreviewMsg = ev => {
+          const d = ev.data;
+          if (!d || d.type !== 'nbr-preview' || !d.row) return;
+          const row = d.row, slug = row.slug || 'preview'; this.isPreview = true;
+          this.setState({ remote: this.mapRow(row, slug, false), remoteStatus: 'ok' });
+        };
+        window.addEventListener('message', this.onPreviewMsg);
+        try { window.parent.postMessage({ type: 'nbr-preview-ready' }, '*'); } catch (e) {}
+        return;
+      }
+    } catch (e) {}
+    let slug = '', viaQuery = false;
+    try {
+      const q = new URLSearchParams(location.search).get('c');
+      const p = location.pathname.replace(/^\/+|\/+$/g, '').replace(/\/index\.html$/, '');
+      if (q) { slug = q.toLowerCase(); viaQuery = true; }
+      else if (/^[a-z0-9]+(-[a-z0-9]+)*$/.test(p)) slug = p;
+    } catch (e) {}
+    const isDefault = !slug;
+    if (isDefault && this.demoKey()) return;
+    if (isDefault) slug = DEFAULT_SLUG;
+    if (!slug) return;
+    if (!isDefault) this.setState({ remoteStatus: 'loading' });
+    try {
+      const r = await fetch(SUPABASE_URL + '/rest/v1/public_cards?select=*&slug=eq.' + encodeURIComponent(slug), { headers: { apikey: SUPABASE_KEY } });
+      const rows = await r.json();
+      const row = Array.isArray(rows) ? rows[0] : null;
+      if (!row) { const lo = this.localCard(slug); if (lo) { this.setState({ remote: this.mapRow(lo, slug, viaQuery), remoteStatus: 'ok' }); return; } if (!isDefault) this.setState({ remoteStatus: 'notfound' }); return; }
+      try { const xr = await fetch(SUPABASE_URL + '/rest/v1/public_card_extras?select=extras&slug=eq.' + encodeURIComponent(slug), { headers: { apikey: SUPABASE_KEY } }); const xj = await xr.json(); if (Array.isArray(xj) && xj[0] && xj[0].extras) row.extras = xj[0].extras; } catch (e) {}
+      const m = this.mapRow(row, slug, viaQuery);
+      if (isDefault) m.url = CARD.url;
+      this.setState({ remote: m, remoteStatus: 'ok' });
+    } catch (e) { const lo = this.localCard(slug); if (lo) { this.setState({ remote: this.mapRow(lo, slug, viaQuery), remoteStatus: 'ok' }); return; } if (!isDefault) this.setState({ remoteStatus: 'error' }); }
+  }
+  /* Prototype fallback: orders placed on the website before the Supabase place_order function is set up */
+  localCard(slug) { try { const o = JSON.parse(localStorage.getItem('nbr-orders') || '[]').find(x => x.card && x.card.slug === slug); if (!o) return null; const c = { ...o.card }; const p = c.photo_url || ''; if (p.startsWith('data:')) { const [m, b64] = p.split(','); const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); c.photo_url = URL.createObjectURL(new Blob([u], { type: m.slice(5).split(';')[0] })); } return c; } catch (e) { return null; } }
+
+  async detectRegion() {
+    let reg = '';
+    try { const q = (new URLSearchParams(location.search).get('region') || '').toUpperCase(); if (q === 'IN' || q === 'US') { this.setState({ region: q }); return; } } catch (e) {}
+    try { const r = await fetch('/cdn-cgi/trace', { cache: 'no-store' }); if (r.ok) { const m = (await r.text()).match(/loc=([A-Z]{2})/); if (m) reg = m[1] === 'IN' ? 'IN' : (m[1] === 'US' ? 'US' : ''); } } catch (e) {}
+    if (!reg) { try { const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; const lang = navigator.language || ''; reg = /Kolkata|Calcutta/.test(tz) || /-IN$/i.test(lang) ? 'IN' : (/^America\//.test(tz) || /-US$/i.test(lang) ? 'US' : 'IN'); } catch (e) { reg = 'IN'; } }
+    this.setState({ region: reg });
+  }
+  setRegion = reg => { this.setState({ region: reg }); try { localStorage.setItem('nbr-region', reg); } catch (e) {} };
+
+  componentDidMount() {
+    try { if (new URLSearchParams(location.search).get('plans') === '1') setTimeout(() => this.setState({ plansOpen: true, planStep: 'plans' }), 300); } catch (e) {}
+    this.detectRegion();
+    this.loadRemote();
+    this.applyTheme();
+    this.onVV = () => {
+      const v = window.visualViewport; if (!v) return;
+      const kb = window.innerHeight - v.height > 120;
+      this.setState({ vvTop: Math.round(v.offsetTop), vvH: Math.round(v.height), kb });
+    };
+    if (window.visualViewport) { window.visualViewport.addEventListener('resize', this.onVV); window.visualViewport.addEventListener('scroll', this.onVV); }
+    this.onFocusIn = e => {
+      const s = this.plansSheetRef.current;
+      if (!s || !s.contains(e.target) || !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+      setTimeout(() => {
+        const r = e.target.getBoundingClientRect(), sr = s.getBoundingClientRect();
+        s.scrollTo({ top: Math.max(0, s.scrollTop + (r.top - sr.top) - 96), behavior: 'smooth' });
+      }, 320);
+    };
+    document.addEventListener('focusin', this.onFocusIn);
+    this.onKey = e => { if (e.key === 'Escape' && this.state.qrOpen) this.closeQR(); if (e.key === 'Escape' && this.state.guideOpen) this.closeGuide(); if (e.key === 'Escape' && this.state.plansOpen) this.closePlans(); };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentDidUpdate() {
+    this.applyTheme();
+    const lock = !!(this.state.plansOpen || this.state.guideOpen || this.state.qrOpen);
+    if (this.locked !== lock) { this.locked = lock; document.documentElement.style.overflow = lock ? 'hidden' : ''; document.body.style.overflow = lock ? 'hidden' : ''; }
+  }
+  componentWillUnmount() { document.removeEventListener('focusin', this.onFocusIn); if (window.visualViewport) { window.visualViewport.removeEventListener('resize', this.onVV); window.visualViewport.removeEventListener('scroll', this.onVV); } document.documentElement.style.overflow = ''; document.body.style.overflow = ''; window.removeEventListener('keydown', this.onKey); clearTimeout(this.tt); }
+
+  showToast(msg, ms) {
+    clearTimeout(this.tt);
+    this.setState({ toast: msg });
+    this.tt = setTimeout(() => this.setState({ toast: '' }), ms || 2600);
+  }
+
+  async photoB64(src) {
+    if (!src) return '';
+    try {
+      const img = new Image(); img.crossOrigin = 'anonymous'; img.src = src;
+      await img.decode();
+      const s = 320, c = document.createElement('canvas'); c.width = c.height = s;
+      const sw = Math.min(img.naturalWidth, img.naturalHeight);
+      c.getContext('2d').drawImage(img, (img.naturalWidth - sw) / 2, Math.min(img.naturalHeight * 0.08, img.naturalHeight - sw), sw, sw, 0, 0, s, s);
+      return c.toDataURL('image/jpeg', 0.8).split(',')[1];
+    } catch (e) { return ''; }
+  }
+
+  isIOS() { return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+  saveContact = (e) => {
+    const force = (this.props.iosGuide ?? 'iPhone only') === 'Always';
+    if (this.isIOS() || force) {
+      this.guideOpener = e && e.currentTarget;
+      this.setState({ guideOpen: true }, () => this.guideRef.current && this.guideRef.current.focus());
+    } else this.doSave();
+  };
+  closeGuide = () => { this.setState({ guideOpen: false }); this.guideOpener && this.guideOpener.focus && this.guideOpener.focus(); };
+  confirmSave = () => { this.setState({ guideOpen: false }); this.doSave(); };
+  doSave = async () => {
+    const d = this.data();
+    const photo = await this.photoB64(d.contactPhoto);
+    const lines = [
+      'BEGIN:VCARD', 'VERSION:3.0',
+      `N:${vesc(d.lastName)};${vesc(d.firstName)};;${vesc(d.prefix)};`, `FN:${vesc(d.displayName)}`,
+      d.company ? `ORG:${vesc(d.company)}` : '', d.title ? `TITLE:${vesc(d.title)}` : '',
+      d.phone ? `TEL;TYPE=CELL,VOICE:${d.phone}` : '',
+      d.email ? `EMAIL;TYPE=INTERNET:${d.email}` : '',
+      ...(d.details || []).filter(r => r.maps).map(r => `ADR;TYPE=WORK:;;${vesc(r.value)};;;;`),
+      d.cta ? `URL:${d.cta.url}` : '',
+      ...(d.socials || []).map(s => `URL:${s.url}`),
+      photo ? ('PHOTO;ENCODING=b;TYPE=JPEG:' + photo).match(/.{1,74}/g).join('\r\n ') : '',
+      'END:VCARD'
+    ].filter(Boolean);
+    const blob = new Blob([lines.join('\r\n')], { type: 'text/vcard' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = d.displayName + '.vcf';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+    this.setState({ saved: true });
+    if (!this.isIOS()) this.showToast('Contact card downloaded');
+  };
+
+  share = async () => {
+    const d = this.data();
+    const data = { title: d.displayName, text: [d.title, d.company].filter(Boolean).join(', '), url: d.shareUrl };
+    if (navigator.share) { try { await navigator.share(data); } catch (e) {} return; }
+    this.copy(d.shareUrl, 'Link copied');
+  };
+
+  copy = async (text, msg) => {
+    try { await navigator.clipboard.writeText(text); this.showToast(msg); }
+    catch (e) { this.showToast('Copy not available'); }
+  };
+
+  openQR = e => {
+    this.opener = e && e.currentTarget;
+    this.setState({ qrOpen: true }, () => this.closeRef.current && this.closeRef.current.focus());
+  };
+  openLead = e => { this.leadOpener = e && e.currentTarget; this.setState({ leadOpen: true, leadDone: false, leadErr: '' }, () => { const el = document.getElementById('lead-name'); el && el.focus(); }); };
+  closeLead = () => { this.setState({ leadOpen: false }); this.leadOpener && this.leadOpener.focus && this.leadOpener.focus(); };
+  setLead = (k, v) => this.setState(s => ({ lead: { ...s.lead, [k]: v }, leadErr: '' }));
+  submitLead = async e => {
+    e && e.preventDefault();
+    const L = this.state.lead, d = this.cardData || {};
+    if (!L.name.trim()) return this.setState({ leadErr: 'Please enter your name.' });
+    if (L.phone.replace(/\D/g, '').length < 7) return this.setState({ leadErr: 'Please enter a valid mobile number.' });
+    if (L.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(L.email.trim())) return this.setState({ leadErr: 'Please enter a valid email.' });
+    if (this.isPreview || !d.slug) return this.setState({ leadErr: 'This form works on the live card.' });
+    this.setState({ leadBusy: true, leadErr: '' });
+    try {
+      const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/submit_lead', { method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_slug: d.slug, p_name: L.name.trim(), p_phone: L.phone.trim(), p_email: L.email.trim(), p_topic: L.topic, p_message: L.message.trim(), p_source: new URLSearchParams(location.search).get('src') || 'card' }) });
+      if (!r.ok) throw new Error('lead');
+      this.setState({ leadBusy: false, leadDone: true, lead: { name: L.name, phone: '', email: '', topic: '', message: '' } });
+    } catch (err) { this.setState({ leadBusy: false, leadErr: 'Could not send. Please call or text instead.' }); }
+  };
+  closeQR = () => { this.setState({ qrOpen: false }); this.opener && this.opener.focus && this.opener.focus(); };
+
+  qrSvg(url) {
+    if (!window.qrcode) return '';
+    const q = window.qrcode(0, 'M'); q.addData(url); q.make();
+    return q.createSvgTag({ cellSize: 4, margin: 8, scalable: true, title: 'QR code linking to this card' })
+      .replace('fill="white"', 'fill="#f3efe6"').replace('fill="black"', 'fill="#10231a"');
+  }
+
+  renderVals() {
+    const d = this.data();
+    const style = this.props.portraitStyle ?? 'full-bleed';
+    const flipped = !!this.state.flipped;
+    const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const toggleFlip = () => this.setState(s => ({ flipped: !s.flipped }));
+    const maps = v => 'https://maps.google.com/?q=' + encodeURIComponent(v);
+    const rows = [];
+    if (d.phone) rows.push({ label: 'Mobile', value: d.phoneDisplay || d.phone, copy: d.phone, msg: 'Phone number copied' });
+    if (d.email) rows.push({ label: 'Email', value: d.email, copy: d.email, msg: 'Email copied' });
+    (d.details || []).forEach(r => rows.push({ label: r.label, value: r.value, href: r.maps ? maps(r.value) : r.url }));
+    const wa = d.whatsapp ? String(d.whatsapp).replace(/\D/g, '') : '';
+    return {
+      category: d.category, displayName: d.displayName, initials: d.initials, title: d.title,
+      companyPart: d.company ? ' · ' + d.company : '',
+      tagline: d.tagline, hasTagline: !!d.tagline,
+      photoPos: (d.photoX ?? 50) + '% ' + (d.photoY ?? 50) + '%', photoZoom: String(d.photoZoom || 1), photoSizeFramed: d.photoZoom && d.photoZoom > 1 ? (d.photoZoom * 100) + '%' : 'cover',
+      photo: d.photo, photoBg: d.photo ? 'url("' + d.photo + '")' : 'none', photoAlt: d.photoAlt || ('Portrait of ' + d.displayName), hasPhoto: !!d.photo, noPhoto: !d.photo,
+      contactPhoto: d.contactPhoto, contactPhotoBg: d.contactPhoto ? 'url("' + d.contactPhoto + '")' : 'none', hasContactPhoto: !!d.contactPhoto, noContactPhoto: !d.contactPhoto,
+      quote: d.quote, bio: d.bio, signature: d.signature || d.displayName, titles: d.titles,
+      hasCta: !!(d.cta && d.cta.url), ctaLabel: d.cta ? d.cta.label : '', ctaUrl: d.cta ? d.cta.url : '',
+      telHref: 'tel:' + d.phone, callAria: 'Call ' + d.firstName,
+      msgHref: wa ? 'https://wa.me/' + wa : 'sms:' + d.phone, msgTarget: wa ? '_blank' : '_self',
+      msgLabel: wa ? 'WhatsApp' : 'Text', msgAria: (wa ? 'WhatsApp ' : 'Text ') + d.firstName,
+      mailHref: 'mailto:' + d.email, mailAria: 'Email ' + d.firstName,
+      socials: (d.socials || []).map(s => ({ ...s, label: s.label || SOCIAL_LABEL[s.type] || s.type,
+        isLinkedin: s.type === 'linkedin', isInstagram: s.type === 'instagram', isFacebook: s.type === 'facebook', isYoutube: s.type === 'youtube', isWebsite: !SOCIAL_LABEL[s.type] || s.type === 'website' })),
+      hasSocials: !!(d.socials && d.socials.length),
+      rows: rows.map(r => ({ ...r, hasCopy: !!r.copy, onCopy: () => this.copy(r.copy, r.msg), copyAria: 'Copy ' + r.label.toLowerCase(),
+        hasLink: !!r.href, linkAria: 'Open ' + r.label.toLowerCase() + ' in Maps' })),
+      footerLine: d.footerLine,
+      ...(() => {
+        const lay = this.layoutOf(d);
+        const web = (d.socials || []).find(s => s.type === 'website');
+        const ctaText = d.cta && d.cta.label ? d.cta.label : (CTA_BY_PRESET[d.preset] || 'Book a call');
+        const msg = encodeURIComponent('Hi ' + (d.firstName || '') + ', I found your digital card and would like to ' + ctaText.toLowerCase() + '.');
+        const ctaHref = d.cta && d.cta.url ? d.cta.url : (wa ? 'https://wa.me/' + wa + '?text=' + msg : 'sms:' + d.phone + '?&body=' + msg);
+        const city = ((d.details || []).find(r => r.maps) || {}).value || '';
+        return {
+          isOriginal: lay === 'original', isLuxury: lay === 'luxuryEstate', isListing: lay === 'listingShowcase', isPro: lay === 'professional',
+          ...(() => { const m = (d.st && d.st.mode) || ''; return { proBanner: m === 'banner', proHero: m === 'hero', proBand: m === 'band', proRing: m === 'ring', proTile: m === 'tile', proSide: m === 'side', proHeadDir: m === 'side' ? 'row' : 'column', proHeadPad: m === 'side' ? '26px' : (m === 'banner' || m === 'hero' || m === 'band' ? '0' : '6px') }; })(),
+          hasBio: !!d.bio, hasLinks: (d.socials || []).length > 0 || !!d.listingsUrl,
+          hasListingsUrl: !!d.listingsUrl, hasDirections: !!d.officeAddress, directionsHref: d.officeAddress ? maps(d.officeAddress) : '', hasReLinks: !!(d.listingsUrl || d.officeAddress), listingsSpan: d.officeAddress ? 'span 1' : '1 / -1', dirSpan: d.listingsUrl ? 'span 1' : '1 / -1',
+          hasCompliance: !!(d.brokerage || d.licenseNo), complianceLine: [d.brokerage, d.licenseNo ? 'License #' + d.licenseNo + (d.licenseState ? ' (' + d.licenseState + ')' : '') : ''].filter(Boolean).join(' · '), isTX: d.licenseState === 'TX', hasIabs: !!d.iabsUrl, iabsUrl: d.iabsUrl || '', cpnUrl: TREC_CPN,
+          luxTop: d.company || d.category || '', ctaText, ctaHref,
+          hasListings: !!(d.listingsUrl || web), listingsHref: d.listingsUrl || (web ? web.url : ''), listingsLabel: d.listingsUrl || d.preset === 'realEstate' ? 'View my listings' : 'Visit website',
+          socialsNoWeb: (d.socials || []).filter(s => s.type !== 'website' || !!d.listingsUrl).map(s => ({ ...s, label: s.label || SOCIAL_LABEL[s.type] || s.type })),
+          hasCity: !!city, cityLine: city,
+        };
+      })(),
+      showPlans: (this.props.showPlans ?? true) && d.showPlans !== false,
+      vvTop: (this.state.vvTop || 0) + 'px', vvH: this.state.vvH ? this.state.vvH + 'px' : '100%',
+      sheetMax: this.state.kb ? '100%' : 'calc(100% - 5svh)', plansSheetRef: this.plansSheetRef,
+      perYear: (this.state.region || 'IN') === 'IN' ? '/ year + GST' : '/ year',
+      plansOpen: !!this.state.plansOpen, openPlans: this.openPlans, closePlans: this.closePlans, plansRef: this.plansRef,
+      onPlans: (this.state.planStep || 'plans') === 'plans', onForm: this.state.planStep === 'form',
+      pickBasic: () => this.pickPlan('basic'), pickMotion: () => this.pickPlan('motion'),
+      backToPlans: () => this.setState({ planStep: 'plans' }),
+      ...(() => {
+        const reg = this.state.region === 'US' ? 'US' : 'IN', r = PRICING[reg];
+        return {
+          isIN: reg === 'IN', isUS: reg === 'US',
+          fromPrice: money(r, r.basic.now),
+          basicNow: money(r, r.basic.now), basicWas: money(r, r.basic.was), basicSave: money(r, r.basic.was - r.basic.now),
+          motionNow: money(r, r.motion.now), motionWas: money(r, r.motion.was), motionSave: money(r, r.motion.was - r.motion.now),
+          phonePlaceholder: r.phone,
+          sendNote: reg === 'US' ? 'Send these to NexBizRise by text, WhatsApp or email.' : 'We’ll send these to NexBizRise on WhatsApp.',
+          regionOptions: ['IN', 'US'].map(k => { const on = k === reg; return { label: PRICING[k].label, selected: on ? 'true' : 'false', bg: on ? '#ffffff' : 'transparent', weight: on ? '700' : '500', shadow: on ? '0 1px 3px rgba(0,0,0,0.12)' : 'none', pick: () => this.setRegion(k) }; }),
+          submitWA: () => this.submitForm(null, 'wa'), submitSMS: () => this.submitForm(null, 'sms'), submitEmail: () => this.submitForm(null, 'email'),
+        };
+      })(),
+      designName: (DESIGNS.find(x => x.id === (this.state.design || 'original')) || DESIGNS[0]).name,
+      designOptions: (() => {
+        const re = (this.state.form || {}).profession === 'Real Estate';
+        const list = re ? [DESIGNS[1], DESIGNS[2], DESIGNS[0]] : DESIGNS;
+        const base = location.origin + location.pathname.replace(/index\.html$/, '');
+        return list.map(x => { const on = (this.state.design || 'original') === x.id; return { ...x,
+          tag: re && x.demo === 'realestate' ? x.tag + ' · recommended' : x.tag,
+          selected: on ? 'true' : 'false', border: on ? '2px solid #10231a' : '1px solid rgba(16,35,26,0.15)', bg: on ? '#ffffff' : 'transparent',
+          pick: () => this.setState({ design: x.id }),
+          previewHref: base + '?' + (x.demo ? 'demo=' + x.demo + '&' : '') + 'layout=' + x.id, previewAria: 'Preview ' + x.name + ' in a new tab' }; });
+      })(),
+      colourName: (COLOURS.find(c => c.id === (this.state.colour || 'forest')) || COLOURS[0]).name,
+      colourOptions: COLOURS.map(c => { const sel = (this.state.colour || 'forest') === c.id; return { ...c, selected: sel ? 'true' : 'false', ring: sel ? '0 0 0 2px #f3efe6, 0 0 0 4px #10231a' : '0 1px 2px rgba(0,0,0,0.15)', lift: sel ? 'translateY(-2px)' : 'none', isSel: sel, weight: sel ? '700' : '500', pick: () => this.setState({ colour: c.id }) }; }),
+      isBasic: (this.state.plan || 'basic') === 'basic', isMotion: this.state.plan === 'motion',
+      setBasic: () => this.setState({ plan: 'basic' }), setMotion: () => this.setState({ plan: 'motion' }),
+      basicBorder: (this.state.plan || 'basic') === 'basic' ? '2px solid #101820' : '1px solid rgba(16,24,32,0.2)',
+      basicBg: (this.state.plan || 'basic') === 'basic' ? '#ffffff' : 'transparent',
+      motionBorder: this.state.plan === 'motion' ? '2px solid #101820' : '1px solid rgba(16,24,32,0.2)',
+      motionBg: this.state.plan === 'motion' ? '#ffffff' : 'transparent',
+      submitForm: this.submitForm,
+      showOtherProf: (this.state.form || {}).profession === 'Other',
+      professionOptions: [{ value: '', label: 'Select…' }].concat(PROFESSIONS.map(p => ({ value: p, label: p }))),
+      ...Object.fromEntries(FORM_FIELDS.flatMap(d => {
+        const err = (this.state.errors || {})[d.id] || '';
+        const p = 'ff_' + d.id + '_';
+        return [[p + 'value', (this.state.form || {})[d.id] || ''], [p + 'onChange', ev => this.setField(d.id, ev.target.value)],
+          [p + 'invalid', err ? 'true' : 'false'], [p + 'error', err], [p + 'border', err ? '#b3261e' : 'rgba(16,35,26,0.22)']];
+      })),
+      flipped, notFlipped: !flipped,
+      flipLabel: flipped ? 'Flip card to front' : 'Flip card to read more about ' + d.firstName,
+      flipTransform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+      flipTransition: reduce ? 'none' : 'transform .7s cubic-bezier(.3,.7,.2,1)',
+      frontVis: flipped ? 'hidden' : 'visible',
+      frontVisT: reduce ? 'none' : (flipped ? 'visibility 0s linear .35s' : 'visibility 0s linear .3s'),
+      backVis: flipped ? 'visible' : 'hidden',
+      backVisT: reduce ? 'none' : (flipped ? 'visibility 0s linear .3s' : 'visibility 0s linear .35s'),
+      toggleFlip,
+      flipKey: e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFlip(); } },
+      fullBleed: style === 'full-bleed', framed: style === 'framed',
+      showShareRow: this.props.showShareRow ?? true,
+      guideOpen: !!this.state.guideOpen, closeGuide: this.closeGuide, confirmSave: this.confirmSave, guideRef: this.guideRef,
+      saveLabel: this.state.saved ? 'Saved — tap to save again' : 'Save contact',
+      saveContact: this.saveContact, share: this.share,
+      openQR: this.openQR, closeQR: this.closeQR, closeRef: this.closeRef,
+      ...(() => {
+        let q = ''; try { q = (new URLSearchParams(location.search).get('season') || '').toLowerCase(); } catch (e) {}
+        const tw = SEASON_TWEAK[this.props.season];
+        const premium = d.premium === true || d.plan === 'motion' || this.props.seasonFx === true;
+        let key = tw || d.previewSeason || ((SEASONS[q] || q === 'off') ? q : '') || (d.seasonal === false ? '' : seasonFor(new Date()));
+        if (!SEASONS[key]) key = '';
+        if (key && !premium && !tw && !q && !d.previewSeason) key = '';
+        const S1 = key ? SEASONS[key] : null;
+        const now = new Date(), yr = key === 'newyear' ? (now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear()) : '';
+        const text = !S1 ? '' : (premium && d.greeting ? d.greeting : S1.label + (yr ? ' ' + yr : '') + (d.firstName && !d.namePlaceholder ? ' from ' + d.firstName : ''));
+        const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let fx = null;
+        if (S1 && premium && S1.fx && !reduce) {
+          const n = S1.fx === 'snow' ? 44 : 16, kids = [];
+          for (let i = 0; i < n; i++) {
+            const r = ((i * 37 + (i > 21 ? 13 : 0)) % 100) / 100, r2 = ((i * 53 + (i > 21 ? 29 : 0)) % 100) / 100, size = S1.fx === 'snow' ? 4 + Math.round(r2 * 5) : 2 + Math.round(r2 * 3);
+            kids.push(React.createElement('span', { key: i, style: S1.fx === 'snow'
+              ? { position: 'absolute', top: 0, left: (r * 100) + '%', width: size, height: size, borderRadius: '50%', background: i % 4 === 0 ? '#e0283c' : '#ffffff', opacity: i % 4 === 0 ? 0.9 : 0.6 + r2 * 0.4, boxShadow: i % 4 === 0 ? '0 0 4px rgba(224,40,60,0.55)' : '0 0 3px rgba(120,20,30,0.35)', willChange: 'transform', '--dx': ((r2 - 0.5) * 70) + 'px', animation: 'nbrFall ' + (8 + r2 * 8) + 's linear ' + (-r * 16) + 's infinite' }
+              : { position: 'absolute', top: (r2 * 100) + '%', left: (r * 100) + '%', width: size, height: size, borderRadius: '50%', background: S1.accent, boxShadow: '0 0 6px ' + S1.accent, animation: 'nbrTwinkle ' + (2.4 + r * 2.6) + 's ease-in-out ' + (-r2 * 4) + 's infinite' } }));
+          }
+          fx = React.createElement('div', { 'aria-hidden': 'true', style: { position: 'fixed', inset: 0, zIndex: 40, pointerEvents: 'none', overflow: 'hidden', maxWidth: 440, margin: '0 auto' } }, kids);
+        }
+        const lay = this.layoutOf(d), cBg = lay === 'professional' ? 'var(--pBg)' : lay === 'luxuryEstate' ? 'var(--lxBg,#f4efe6)' : lay === 'listingShowcase' ? 'var(--lsBg,#f6f4f0)' : 'var(--bg,#06120d)', cAcc = lay === 'professional' ? 'var(--pAcc)' : 'var(--accent,#f2c98a)';
+        const light = !!LIGHT_LAYOUTS[lay] || (lay === 'professional' && d.st && /^#(f|e)/i.test(d.st.bg || ''));
+        const sBg = S1 && S1.solid ? S1.bg : S1 ? (light ? 'color-mix(in srgb, ' + S1.bg + ' 88%, black)' : 'color-mix(in srgb, ' + S1.bg + ' 62%, ' + cBg + ')') : 'transparent', sAcc = S1 && S1.solid ? S1.accent : S1 ? 'color-mix(in srgb, ' + cAcc + ' 60%, ' + S1.accent + ')' : 'transparent';
+        return { hasSeason: !!S1, seasonText: text, seasonBg: sBg, seasonInk: S1 ? S1.ink : 'inherit', seasonAccent: sAcc, seasonLine: S1 && !S1.solid ? 'color-mix(in srgb, ' + cAcc + ' 45%, transparent)' : 'transparent', seasonStripe: S1 && S1.stripe ? S1.stripe : 'transparent', seasonFx: fx };
+      })(),
+      ...(() => { this.cardData = d; const L = this.state.lead, S = this.state, topics = LEAD_TOPICS[d.preset] || [], fn = d.firstName || 'me'; return {
+        leadOn: d.leadCapture !== false && this.layoutOf(d) !== 'original', leadBtn: 'Share your contact with ' + (d.firstName || 'me'), openLead: this.openLead, closeLead: this.closeLead, submitLead: this.submitLead,
+        leadOpen: S.leadOpen, leadDone: S.leadDone, leadForm: !S.leadDone, leadBusy: S.leadBusy, leadErr: S.leadErr, leadSubmitLabel: S.leadBusy ? 'Sending…' : 'Send my details',
+        leadTitle: 'Share your details with ' + fn, leadSub: fn + ' will get your details and reach out to you.', leadFirst: (L.name || '').trim().split(' ')[0] || 'you',
+        leadDoneMsg: fn + ' has your details and will be in touch soon.', leadConsent: 'By sending, you agree that ' + (d.displayName || fn) + ' may contact you by call, text or email. Message and data rates may apply.',
+        leadName: L.name, leadPhone: L.phone, leadEmail: L.email, leadMsg: L.message, leadMsgPh: d.preset === 'realEstate' ? 'Area, budget or the property you saw' : 'How can I help?',
+        onLeadName: e => this.setLead('name', e.target.value), onLeadPhone: e => this.setLead('phone', e.target.value), onLeadEmail: e => this.setLead('email', e.target.value), onLeadMsg: e => this.setLead('message', e.target.value),
+        hasLeadTopics: topics.length > 0, leadTopics: topics.map(tp => { const on = L.topic === tp; return { label: tp, checked: on ? 'true' : 'false', pick: () => this.setLead('topic', on ? '' : tp), border: on ? '1.5px solid #10231a' : '1px solid rgba(16,35,26,0.22)', bg: on ? '#10231a' : '#fff', fg: on ? '#f3efe6' : '#10231a' }; }) }; })(),
+      stop: e => e.stopPropagation(),
+      qrOpen: this.state.qrOpen,
+      qrNode: this.state.qrOpen ? React.createElement('div', { style: { width: '100%', height: '100%' }, dangerouslySetInnerHTML: { __html: this.qrSvg(d.shareUrl).replace('<svg', '<svg style="width:100%;height:100%;display:block;border-radius:8px"') } }) : null,
+      toast: this.state.toast,
+      remoteLoading: this.state.remoteStatus === 'loading',
+      remoteMissing: this.state.remoteStatus === 'notfound' || this.state.remoteStatus === 'error',
+      missingTitle: this.state.remoteStatus === 'error' ? 'Can’t load this card' : 'Card not found',
+      missingText: this.state.remoteStatus === 'error' ? 'Check your connection and try again.' : 'This card link isn’t active. Check the link or ask the person who shared it.',
+    };
+  }
+}
+</script>
+</body>
+</html>
