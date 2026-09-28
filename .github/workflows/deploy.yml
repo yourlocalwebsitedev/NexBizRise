@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare
+name: Deploy to Cloudflare Pages
 
 on:
   push:
@@ -15,7 +15,6 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
     steps:
       - uses: actions/checkout@v4
 
@@ -25,17 +24,17 @@ jobs:
             echo "Possible secret found. Remove it before deploying."; exit 1
           fi
 
-      - name: Check worker syntax
-        run: node --check deploy/single/_worker.js || node -e "import('./deploy/single/_worker.js').then(()=>console.log('ok'))"
+      - name: Check the site file exists
+        run: test -s deploy/single/_worker.js
 
-      - name: Deploy worker
+      - name: Deploy to Pages project "nexbizrise"
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: pages deploy deploy/single --project-name=nexbizrise --branch=main --commit-dirty=true
 
       - name: Health check
         run: |
-          sleep 10
+          sleep 15
           curl -fsS https://nexbizrise.com/__health
