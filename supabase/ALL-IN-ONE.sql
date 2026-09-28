@@ -44,6 +44,24 @@ begin new.public_id := old.public_id; return new; end $$;
 drop trigger if exists cards_keep_public_id on public.cards;
 create trigger cards_keep_public_id before update on public.cards for each row when (old.public_id is not null) execute function public.keep_public_id();
 
+-- Private edit links (/e/<token>): clients update their own card without logging in.
+-- Only a SHA-256 hash of the link is stored, so a database leak can't be used to edit cards.
+-- The link is shown once (order screen, or when an admin creates a new one) and stops working 15 days after expiry.
+create or replace function public.edit_hash_of(t text) returns text language sql immutable as $$
+  select encode(sha256(convert_to(coalesce(t, ''), 'UTF8')), 'hex') $$;
+create or replace function public.new_edit_token() returns text language sql volatile as $$
+  select replace(gen_random_uuid()::text, '-', '') || left(replace(gen_random_uuid()::text, '-', ''), 8) $$;
+alter table public.cards add column if not exists edit_hash text;
+alter table public.cards add column if not exists edited_at timestamptz;
+alter table public.cards add column if not exists edit_seen boolean not null default true;
+create unique index if not exists cards_edit_hash_key on public.cards (edit_hash);
+do $$ begin  -- upgrade from plain edit_token (v60) if it exists
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'cards' and column_name = 'edit_token') then
+    execute 'update public.cards set edit_hash = public.edit_hash_of(edit_token) where edit_token is not null and edit_hash is null';
+    execute 'alter table public.cards drop column edit_token';
+  end if;
+end $$;
+
 -- Colour holds Personal colours and Professional/Luxury style ids (pro-*, lux-*)
 alter table public.cards drop constraint if exists cards_colour_check;
 
@@ -84,7 +102,7 @@ alter table public.rate_hits enable row level security;  -- no policies: nobody 
 create or replace function public.rate_check(p_bucket text, p_max int, p_window interval)
 returns void language plpgsql security definer set search_path = public as $$
 declare h json := coalesce(nullif(current_setting('request.headers', true), ''), '{}')::json;
-        v_ip text := coalesce(h->>'cf-connecting-ip', split_part(h->>'x-forwarded-for', ',', 1), 'unknown');
+        v_ip text := case when coalesce(h->>'x-nbr-ip', '') <> '' and (public.from_worker() or not exists (select 1 from public.app_secrets where key = 'worker')) then h->>'x-nbr-ip' else coalesce(h->>'cf-connecting-ip', split_part(h->>'x-forwarded-for', ',', 1), 'unknown') end;
 begin
   delete from rate_hits where created_at < now() - interval '2 days';
   if (select count(*) from rate_hits where bucket = p_bucket and ip = v_ip and created_at > now() - p_window) >= p_max then
@@ -93,6 +111,33 @@ begin
   insert into rate_hits (bucket, ip) values (p_bucket, v_ip);
 end $$;
 revoke all on function public.rate_check(text, int, interval) from public, anon, authenticated;
+
+-- BOT CHECK (Turnstile). The website sends orders and leads through the site worker, which checks Turnstile
+-- and adds a secret header. Switched OFF until you add the 'worker' row below (see setup notes).
+create table if not exists public.app_secrets (key text primary key, value text not null);
+alter table public.app_secrets enable row level security;  -- no policies: never readable from the site
+revoke all on public.app_secrets from anon, authenticated;
+create or replace function public.from_worker() returns boolean language plpgsql stable security definer set search_path = public as $$
+declare h json := coalesce(nullif(current_setting('request.headers', true), ''), '{}')::json; s text;
+begin
+  select value into s from app_secrets where key = 'worker';
+  return s is not null and length(s) >= 24 and coalesce(h->>'x-nbr-secret', '') = s;
+end $$;
+revoke all on function public.from_worker() from public, anon, authenticated;
+create or replace function public.bot_gate() returns void language plpgsql stable security definer set search_path = public as $$
+begin
+  if exists (select 1 from app_secrets where key = 'worker') and not from_worker() then raise exception 'bot check failed'; end if;
+end $$;
+revoke all on function public.bot_gate() from public, anon, authenticated;
+-- Turn ON (after the worker has NBR_WORKER_SECRET + TURNSTILE_SECRET): run once with the SAME secret:
+--   insert into public.app_secrets values ('worker', 'PASTE-YOUR-NBR_WORKER_SECRET') on conflict (key) do update set value = excluded.value;
+-- Turn OFF:  delete from public.app_secrets where key = 'worker';
+
+-- Admin check used by the site worker for the analytics endpoint
+create or replace function public.is_admin() returns boolean language sql stable security definer set search_path = public as $$
+  select exists (select 1 from public.admins where user_id = auth.uid()) $$;
+revoke all on function public.is_admin() from public, anon;
+grant execute on function public.is_admin() to authenticated;
 
 -- ================================================================
 -- COUPONS (admin-managed). Prices and discounts are only ever computed here, never trusted from the browser.
@@ -195,6 +240,7 @@ declare
   v_coupon text := nullif(upper(trim(coalesce(payload->>'coupon',''))), '');
   v_disc numeric := 0;
   v_pid text;
+  v_tok text;
 begin
   if v_mode not in ('builder','dfm') or v_plan not in ('basic','motion') then raise exception 'invalid order'; end if;
   if coalesce(v_card->>'first_name','') = '' or coalesce(v_card->>'phone','') = '' then raise exception 'missing fields'; end if;
@@ -217,8 +263,7 @@ begin
     'instagram', case when v_card->>'instagram' ~* '^https://[^\s<>"'']+$'  then left(v_card->>'instagram', 500) else '' end,
     'linkedin',  case when v_card->>'linkedin'  ~* '^https://[^\s<>"'']+$'  then left(v_card->>'linkedin', 500)  else '' end,
     'photo_url', case when v_card->>'photo_url' ~ '^https://hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+$'
-                        or v_card->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif)$'
-                        or v_card->>'photo_url' ~ '^data:image/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$' then v_card->>'photo_url' else '' end,
+                        or v_card->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif)$' then v_card->>'photo_url' else '' end,
     'contact_photo_url', '',
     'email',     case when v_card->>'email' ~* '^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$' then left(v_card->>'email', 200) else '' end,
     'phone',     left(regexp_replace(coalesce(v_card->>'phone',''), '[^0-9+ ()-]', '', 'g'), 30),
@@ -238,6 +283,8 @@ begin
     r.phone, r.whatsapp, r.email, r.linkedin, r.instagram, r.website, r.quote, r.bio, r.photo_url, v_plan, r.renewal, r.active
   from jsonb_populate_record(null::cards, v_card) r
   returning id, public_id into v_card_id, v_pid;
+  v_tok := new_edit_token();
+  update cards set edit_hash = edit_hash_of(v_tok) where id = v_card_id;
 
   v_price := case when v_region = 'IN' then (case v_plan when 'motion' then 3999 else 799 end) else (case v_plan when 'motion' then 129 else 49 end) end;
   if v_coupon is not null then
@@ -252,7 +299,7 @@ begin
     left(payload->>'customer_name', 120), left(payload->>'customer_email', 200), left(payload->>'customer_phone', 40), left(payload->>'notes', 4000),
     v_card, v_card_id, v_coupon, v_disc);
 
-  return jsonb_build_object('order_no', v_no, 'slug', v_slug, 'public_id', v_pid, 'discount', v_disc, 'total', v_price - v_disc + v_tax);
+  return jsonb_build_object('order_no', v_no, 'slug', v_slug, 'public_id', v_pid, 'edit_token', v_tok, 'discount', v_disc, 'total', v_price - v_disc + v_tax);
 end $$;
 revoke all on function public.place_order_core(jsonb) from public, anon, authenticated;
 
@@ -260,8 +307,10 @@ revoke all on function public.place_order_core(jsonb) from public, anon, authent
 
 -- Let website orders upload their photo into photos/orders/ (images only; no read/update/delete for the public)
 drop policy if exists "public order photo uploads" on storage.objects;
-create policy "public order photo uploads" on storage.objects for insert to anon, authenticated
-  with check (bucket_id = 'photos' and (storage.foldername(name))[1] = 'orders'
+-- Public uploads to Supabase storage are OFF: website photos go to Cloudflare R2 through the site. Admins can still upload.
+drop policy if exists "admins upload photos" on storage.objects;
+create policy "admins upload photos" on storage.objects for insert to authenticated
+  with check (bucket_id = 'photos' and exists (select 1 from public.admins a where a.user_id = auth.uid())
     and lower(storage.extension(name)) in ('jpg','jpeg','png','webp','gif'));
 
 -- Stop the public from LISTING every uploaded photo (public URLs keep working because the bucket is public).
@@ -304,15 +353,15 @@ create policy "admins manage leads" on public.leads for all
 -- Public entry point for the lead form. Light rate limit: 5 per phone per card per day.
 create or replace function public.submit_lead_core(p_slug text, p_name text, p_phone text, p_email text default '', p_topic text default '', p_message text default '', p_source text default 'card')
 returns jsonb language plpgsql security definer set search_path = public as $$
-declare v_card uuid; v_phone text := left(regexp_replace(coalesce(p_phone,''), '[^0-9+]', '', 'g'), 20);
+declare v_card uuid; v_email text; v_owner text; v_phone text := left(regexp_replace(coalesce(p_phone,''), '[^0-9+]', '', 'g'), 20);
 begin
-  select id into v_card from cards where slug = lower(p_slug) and active is not false and coalesce((extras->>'lead_capture')::boolean, true);
+  select id, email, first_name into v_card, v_email, v_owner from cards where slug = lower(p_slug) and active is not false and coalesce((extras->>'lead_capture')::boolean, true);
   if v_card is null then raise exception 'card not found'; end if;
   if length(coalesce(trim(p_name),'')) = 0 or length(regexp_replace(v_phone, '\D', '', 'g')) < 7 then raise exception 'missing fields'; end if;
   if (select count(*) from leads where card_id = v_card and phone = v_phone and created_at > now() - interval '1 day') >= 5 then raise exception 'too many'; end if;
   insert into leads (card_id, slug, name, phone, email, topic, message, source)
   values (v_card, lower(p_slug), left(trim(p_name), 120), v_phone, left(coalesce(p_email,''), 200), left(coalesce(p_topic,''), 40), left(coalesce(p_message,''), 1000), left(coalesce(p_source,'card'), 40));
-  return jsonb_build_object('ok', true);
+  return jsonb_build_object('ok', true, 'owner_email', coalesce(v_email, ''), 'owner_name', coalesce(v_owner, ''));
 end $$;
 revoke all on function public.submit_lead_core(text, text, text, text, text, text, text) from public, anon, authenticated;
 
@@ -349,13 +398,13 @@ grant select on public.public_card_extras to anon, authenticated;
 drop function if exists public.place_order_limited(jsonb);
 create or replace function public.place_order(payload jsonb) returns jsonb
 language plpgsql security definer set search_path = public as $$
-begin perform rate_check('order', 20, interval '1 hour'); return place_order_core(payload); end $$;
+begin perform bot_gate(); perform rate_check('order', 20, interval '1 hour'); return place_order_core(payload); end $$;
 revoke all on function public.place_order(jsonb) from public;
 grant execute on function public.place_order(jsonb) to anon, authenticated;
 
 create or replace function public.submit_lead(p_slug text, p_name text, p_phone text, p_email text default '', p_topic text default '', p_message text default '', p_source text default 'card')
 returns jsonb language plpgsql security definer set search_path = public as $$
-begin perform rate_check('lead', 10, interval '1 hour'); return submit_lead_core(p_slug, p_name, p_phone, p_email, p_topic, p_message, p_source); end $$;
+begin perform bot_gate(); perform rate_check('lead', 10, interval '1 hour'); return submit_lead_core(p_slug, p_name, p_phone, p_email, p_topic, p_message, p_source); end $$;
 revoke all on function public.submit_lead(text, text, text, text, text, text, text) from public;
 grant execute on function public.submit_lead(text, text, text, text, text, text, text) to anon, authenticated;
 
@@ -370,6 +419,107 @@ update public.cards set
   instagram = case when instagram ~* '^https?://' then instagram else '' end,
   linkedin  = case when linkedin  ~* '^https?://' then linkedin  else '' end
 where coalesce(website,'') <> '' or coalesce(instagram,'') <> '' or coalesce(linkedin,'') <> '';
+
+-- ================================================================
+-- EDIT LINKS: clients update their own card from /e/<token>. Changes go live at once;
+-- the Admin Panel flags the card as "Edited by client" until an admin opens it.
+-- ================================================================
+create or replace function public.safe_https(t text, n int) returns text language sql immutable as $$
+  select case when t ~* '^https://[^\s<>"'']+$' then left(t, n) else '' end $$;
+
+create or replace function public.get_card_for_edit(p_token text) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare r cards;
+begin
+  perform rate_check('edit_get', 60, interval '1 hour');
+  if coalesce(p_token, '') !~ '^[a-f0-9]{40}$' then raise exception 'invalid link'; end if;
+  select * into r from cards where edit_hash = edit_hash_of(p_token);
+  if not found then raise exception 'invalid link'; end if;
+  if r.renewal is not null and r.renewal::date < current_date - 15 then raise exception 'card expired'; end if;
+  return jsonb_build_object('slug', r.slug, 'public_id', r.public_id, 'region', r.region, 'plan', r.plan, 'active', r.active,
+    'profession', r.profession, 'colour', r.colour, 'layout', r.layout, 'category', r.category, 'tagline', r.tagline, 'preset', r.preset, 'first_name', r.first_name, 'last_name', r.last_name,
+    'title', r.title, 'company', r.company, 'phone', r.phone, 'whatsapp', r.whatsapp, 'email', r.email, 'city', r.city,
+    'website', r.website, 'instagram', r.instagram, 'linkedin', r.linkedin, 'bio', r.bio,
+    'photo_url', r.photo_url, 'photo_x', r.photo_x, 'photo_y', r.photo_y, 'photo_zoom', r.photo_zoom, 'extras', coalesce(r.extras, '{}'::jsonb));
+end $$;
+revoke all on function public.get_card_for_edit(text) from public;
+grant execute on function public.get_card_for_edit(text) to anon, authenticated;
+
+create or replace function public.update_card_by_token(p_token text, p_card jsonb) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare r cards; v jsonb := p_card; v_in jsonb; v_ex jsonb; v_photo text;
+begin
+  perform rate_check('edit_save', 30, interval '1 hour');
+  if coalesce(p_token, '') !~ '^[a-f0-9]{40}$' then raise exception 'invalid link'; end if;
+  select * into r from cards where edit_hash = edit_hash_of(p_token);
+  if not found then raise exception 'invalid link'; end if;
+  if r.renewal is not null and r.renewal::date < current_date - 15 then raise exception 'card expired'; end if;
+  if jsonb_typeof(v) <> 'object' or length(v::text) > 3000000 then raise exception 'invalid card'; end if;
+  if coalesce(trim(v->>'first_name'), '') = '' or length(regexp_replace(coalesce(v->>'phone', ''), '\D', '', 'g')) < 7 then raise exception 'missing fields'; end if;
+  v_in := case when jsonb_typeof(v->'extras') = 'object' then v->'extras' else '{}'::jsonb end;
+  v_ex := coalesce(r.extras, '{}'::jsonb) || jsonb_build_object(
+    'brokerage', left(coalesce(v_in->>'brokerage', ''), 120), 'license_no', left(coalesce(v_in->>'license_no', ''), 40),
+    'license_state', upper(left(coalesce(v_in->>'license_state', ''), 2)), 'office_address', left(coalesce(v_in->>'office_address', ''), 200),
+    'facebook', safe_https(v_in->>'facebook', 500), 'listings_url', safe_https(v_in->>'listings_url', 500),
+    'booking_url', safe_https(v_in->>'booking_url', 500), 'iabs_url', safe_https(v_in->>'iabs_url', 500),
+    'greeting', left(coalesce(v_in->>'greeting', ''), 60), 'seasonal', coalesce(v_in->>'seasonal', 'true') <> 'false');
+  v_photo := case when coalesce(v->>'photo_url', '') = '' then ''
+    when v->>'photo_url' = r.photo_url then r.photo_url
+    when v->>'photo_url' ~ '^https://hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+$'
+      or v->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif)$' then v->>'photo_url'
+    else r.photo_url end;
+  update cards set
+    first_name = left(trim(v->>'first_name'), 60), last_name = left(coalesce(v->>'last_name', ''), 60),
+    title = left(coalesce(v->>'title', ''), 120), company = left(coalesce(v->>'company', ''), 120),
+    profession = left(coalesce(v->>'profession', r.profession, ''), 60), city = left(coalesce(v->>'city', ''), 80),
+    bio = left(coalesce(v->>'bio', ''), 1200),
+    phone = left(regexp_replace(coalesce(v->>'phone', ''), '[^0-9+ ()-]', '', 'g'), 30),
+    phone_display = left(regexp_replace(coalesce(v->>'phone_display', ''), '[^0-9+ ()-]', '', 'g'), 40),
+    whatsapp = left(regexp_replace(coalesce(v->>'whatsapp', ''), '[^0-9+ ()-]', '', 'g'), 30),
+    email = case when v->>'email' ~* '^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$' then left(v->>'email', 200) else '' end,
+    website = case when v->>'website' ~* '^https?://[^\s<>"'']+$' then left(v->>'website', 500) else '' end,
+    instagram = safe_https(v->>'instagram', 500), linkedin = safe_https(v->>'linkedin', 500),
+    colour = case when v->>'colour' ~ '^[a-z-]{2,30}$' then v->>'colour' else r.colour end,
+    layout = case when v->>'layout' in ('original', 'professional', 'luxuryEstate') then v->>'layout' else r.layout end,
+    preset = case when v->>'preset' ~ '^[A-Za-z]{2,30}$' then v->>'preset' else r.preset end,
+    category = left(coalesce(v->>'category', r.category, ''), 60), tagline = left(coalesce(v->>'tagline', r.tagline, ''), 120),
+    photo_url = v_photo,
+    photo_x = least(100, greatest(0, coalesce((v->>'photo_x')::numeric, 50))),
+    photo_y = least(100, greatest(0, coalesce((v->>'photo_y')::numeric, 50))),
+    photo_zoom = least(3, greatest(1, coalesce((v->>'photo_zoom')::numeric, 1))),
+    extras = v_ex, edited_at = now(), edit_seen = false
+  where id = r.id;
+  return jsonb_build_object('ok', true, 'slug', r.slug, 'public_id', r.public_id);
+end $$;
+revoke all on function public.update_card_by_token(text, jsonb) from public;
+grant execute on function public.update_card_by_token(text, jsonb) to anon, authenticated;
+
+-- Admin: make a new edit link for a card (old one stops working). Returns the link code once.
+create or replace function public.admin_new_edit_link(p_card uuid) returns text
+language plpgsql security definer set search_path = public as $$
+declare t text := new_edit_token();
+begin
+  if not exists (select 1 from admins where user_id = auth.uid()) then raise exception 'not allowed'; end if;
+  update cards set edit_hash = edit_hash_of(t) where id = p_card;
+  if not found then raise exception 'card not found'; end if;
+  return t;
+end $$;
+revoke all on function public.admin_new_edit_link(uuid) from public, anon;
+grant execute on function public.admin_new_edit_link(uuid) to authenticated;
+
+-- RENEWAL REMINDERS: the nightly GitHub job asks the site for cards renewing in 30 / 7 / 0 days, and the site emails them.
+-- Turn on once:  insert into public.app_secrets values ('cron', 'PASTE-YOUR-CRON_KEY') on conflict (key) do update set value = excluded.value;
+drop function if exists public.renewal_due(text);
+create or replace function public.renewal_due(p_key text)
+returns table (r_first_name text, r_email text, r_slug text, r_public_id text, r_renewal date, r_days int)
+language plpgsql security definer set search_path = public as $$
+begin
+  if not exists (select 1 from app_secrets s where s.key = 'cron' and length(s.value) >= 24 and s.value = coalesce(p_key, '')) then raise exception 'not allowed'; end if;
+  return query select c.first_name, c.email, c.slug, c.public_id, c.renewal, (c.renewal - current_date)::int
+    from cards c where c.renewal is not null and (c.renewal - current_date) in (30, 7, 0) and coalesce(c.email, '') <> '' and c.active is not false;
+end $$;
+revoke all on function public.renewal_due(text) from public;
+grant execute on function public.renewal_due(text) to anon, authenticated;
 
 
 -- ================================================================
@@ -394,3 +544,6 @@ where coalesce(website,'') <> '' or coalesce(instagram,'') <> '' or coalesce(lin
 
 -- 3) Confirm: should list only the three kept cards
 -- select slug, first_name, last_name from public.cards order by slug;
+
+-- Refresh the API so new columns (public_id) show up immediately
+notify pgrst, 'reload schema';
