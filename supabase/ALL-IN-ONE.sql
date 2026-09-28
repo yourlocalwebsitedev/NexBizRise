@@ -25,6 +25,25 @@ alter table public.cards
   add column if not exists photo_zoom numeric default 1,
   add column if not exists extras jsonb not null default '{}'::jsonb;  -- per-profession fields (brokerage, license, listings, booking, office, lead_capture…)
 
+-- Permanent card IDs for QR codes (/c/nbr_xxxxxx). Never change once set, so printed QRs keep working if the name link changes.
+create or replace function public.new_public_id() returns text language plpgsql volatile set search_path = public as $$
+declare v text;
+begin
+  loop
+    v := 'nbr_' || substr(md5(gen_random_uuid()::text), 1, 6);
+    exit when not exists (select 1 from public.cards where public_id = v);
+  end loop;
+  return v;
+end $$;
+alter table public.cards add column if not exists public_id text;
+alter table public.cards alter column public_id set default public.new_public_id();
+update public.cards set public_id = public.new_public_id() where public_id is null;
+create unique index if not exists cards_public_id_key on public.cards (public_id);
+create or replace function public.keep_public_id() returns trigger language plpgsql as $$
+begin new.public_id := old.public_id; return new; end $$;
+drop trigger if exists cards_keep_public_id on public.cards;
+create trigger cards_keep_public_id before update on public.cards for each row when (old.public_id is not null) execute function public.keep_public_id();
+
 -- Colour holds Personal colours and Professional/Luxury style ids (pro-*, lux-*)
 alter table public.cards drop constraint if exists cards_colour_check;
 
@@ -175,6 +194,7 @@ declare
   v_ex jsonb;
   v_coupon text := nullif(upper(trim(coalesce(payload->>'coupon',''))), '');
   v_disc numeric := 0;
+  v_pid text;
 begin
   if v_mode not in ('builder','dfm') or v_plan not in ('basic','motion') then raise exception 'invalid order'; end if;
   if coalesce(v_card->>'first_name','') = '' or coalesce(v_card->>'phone','') = '' then raise exception 'missing fields'; end if;
@@ -197,6 +217,7 @@ begin
     'instagram', case when v_card->>'instagram' ~* '^https://[^\s<>"'']+$'  then left(v_card->>'instagram', 500) else '' end,
     'linkedin',  case when v_card->>'linkedin'  ~* '^https://[^\s<>"'']+$'  then left(v_card->>'linkedin', 500)  else '' end,
     'photo_url', case when v_card->>'photo_url' ~ '^https://hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+$'
+                        or v_card->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif)$'
                         or v_card->>'photo_url' ~ '^data:image/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$' then v_card->>'photo_url' else '' end,
     'contact_photo_url', '',
     'email',     case when v_card->>'email' ~* '^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$' then left(v_card->>'email', 200) else '' end,
@@ -216,7 +237,7 @@ begin
     r.profession, r.profession_other, r.city, r.notes, r.slug, r.prefix, r.first_name, r.last_name, r.title, r.company, r.preset, r.colour, r.category, r.tagline,
     r.phone, r.whatsapp, r.email, r.linkedin, r.instagram, r.website, r.quote, r.bio, r.photo_url, v_plan, r.renewal, r.active
   from jsonb_populate_record(null::cards, v_card) r
-  returning id into v_card_id;
+  returning id, public_id into v_card_id, v_pid;
 
   v_price := case when v_region = 'IN' then (case v_plan when 'motion' then 3999 else 799 end) else (case v_plan when 'motion' then 129 else 49 end) end;
   if v_coupon is not null then
@@ -231,7 +252,7 @@ begin
     left(payload->>'customer_name', 120), left(payload->>'customer_email', 200), left(payload->>'customer_phone', 40), left(payload->>'notes', 4000),
     v_card, v_card_id, v_coupon, v_disc);
 
-  return jsonb_build_object('order_no', v_no, 'slug', v_slug, 'discount', v_disc, 'total', v_price - v_disc + v_tax);
+  return jsonb_build_object('order_no', v_no, 'slug', v_slug, 'public_id', v_pid, 'discount', v_disc, 'total', v_price - v_disc + v_tax);
 end $$;
 revoke all on function public.place_order_core(jsonb) from public, anon, authenticated;
 
@@ -302,7 +323,7 @@ revoke all on function public.submit_lead_core(text, text, text, text, text, tex
 -- A) Public card view: only the fields the card page shows, only live cards
 drop view if exists public.public_cards;
 create view public.public_cards as
-  select slug, region, layout, preset, colour, category, tagline,
+  select public_id, slug, region, layout, preset, colour, category, tagline,
          prefix, first_name, last_name, title, company,
          photo_url, contact_photo_url, photo_x, photo_y, photo_zoom,
          quote, bio, signature, titles,
@@ -314,7 +335,7 @@ grant select on public.public_cards to anon, authenticated;
 
 drop view if exists public.public_card_extras;
 create view public.public_card_extras as
-  select slug, jsonb_strip_nulls(jsonb_build_object(
+  select public_id, slug, jsonb_strip_nulls(jsonb_build_object(
     'brokerage', extras->'brokerage', 'license_no', extras->'license_no', 'license_state', extras->'license_state',
     'facebook', extras->'facebook', 'listings_url', extras->'listings_url', 'booking_url', extras->'booking_url',
     'office_address', extras->'office_address', 'iabs_url', extras->'iabs_url', 'lead_capture', extras->'lead_capture',

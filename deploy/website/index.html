@@ -582,32 +582,6 @@ select option{background:var(--surface);color:var(--ink-2);}
 </section>
 </sc-if>
 
-<sc-if value="{{ show.legal }}" hint-placeholder-val="{{ false }}">
-<section id="legal" data-screen-label="Legal" style="padding:clamp(48px,7vw,88px) 24px clamp(64px,9vw,112px);">
-  <div style="max-width:760px;margin:0 auto;">
-    <div role="tablist" aria-label="Legal documents" style="display:flex;flex-wrap:wrap;gap:8px;">
-      <sc-for list="{{ legalTabs }}" as="t" hint-placeholder-count="4">
-        <a href="{{ t.href }}" style="display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};font-size:14px;font-weight:600;">{{ t.label }}</a>
-      </sc-for>
-    </div>
-    <h1 style="margin:36px 0 0;font-size:clamp(34px,5vw,48px);line-height:1.1;letter-spacing:-0.02em;color:var(--ink);text-wrap:balance;">{{ legal.title }}</h1>
-    <p style="margin:12px 0 0;font-size:13px;color:var(--faint);">Last updated {{ legalUpdated }}</p>
-    <p style="margin:24px 0 0;font-size:17px;line-height:1.7;color:var(--body);text-wrap:pretty;">{{ legal.intro }}</p>
-    <div style="margin-top:40px;display:flex;flex-direction:column;gap:32px;">
-      <sc-for list="{{ legal.sections }}" as="s" hint-placeholder-count="5">
-        <div style="padding-top:28px;border-top:1px solid rgba(var(--fg-rgb),0.08);display:flex;flex-direction:column;gap:12px;">
-          <h2 style="margin:0;font-size:20px;line-height:1.3;color:var(--ink);">{{ s.h }}</h2>
-          <sc-for list="{{ s.p }}" as="para" hint-placeholder-count="1">
-            <p style="margin:0;font-size:16px;line-height:1.7;color:var(--body);text-wrap:pretty;">{{ para }}</p>
-          </sc-for>
-        </div>
-      </sc-for>
-    </div>
-    <p style="margin:48px 0 0;font-size:15px;line-height:1.6;color:var(--muted);">Questions? Email <a href="mailto:hello@nexbizrise.com" style="color:var(--accent);font-weight:600;">hello@nexbizrise.com</a>.</p>
-  </div>
-</section>
-</sc-if>
-
 <sc-if value="{{ show.cta }}" hint-placeholder-val="{{ true }}">
 <!-- FINAL CTA -->
 <section data-screen-label="Final CTA" style="position:relative;padding:clamp(80px,11vw,140px) 24px;overflow:hidden;text-align:center;">
@@ -709,7 +683,7 @@ select option{background:var(--surface);color:var(--ink-2);}
             <p role="alert" style="grid-column:1/-1;margin:0;padding:12px 14px;border-radius:10px;background:rgba(255,90,90,0.08);border:1px solid rgba(255,90,90,0.3);font-size:14px;color:#FFB4B4;">Please fix the highlighted fields and try again.</p>
           </sc-if>
           <button type="submit" disabled="{{ isSubmitting }}" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;background:var(--btn);color:var(--btn-ink);border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:box-shadow .2s, opacity .2s;" style-hover="box-shadow:0 12px 32px rgba(var(--acc-rgb),0.35);">{{ submitLabel }}</button>
-          <p style="grid-column:1/-1;margin:0;font-size:12px;line-height:1.5;color:var(--faint);">By submitting, you agree to be contacted about your request. See our <a href="#/legal/privacy">Privacy Policy</a>.</p>
+          <p style="grid-column:1/-1;margin:0;font-size:12px;line-height:1.5;color:var(--faint);">By submitting, you agree to be contacted about your request. See our <a href="#privacy">Privacy Policy</a>.</p>
         </form>
       </sc-if>
     </div>
@@ -759,10 +733,9 @@ select option{background:var(--surface);color:var(--ink-2);}
     <div style="margin-top:56px;padding-top:24px;border-top:1px solid rgba(var(--fg-rgb),0.06);display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px 24px;">
       <span style="font-size:13px;color:var(--faint);">© 2026 NexBizRise. All rights reserved.</span>
       <div style="display:flex;flex-wrap:wrap;gap:8px 24px;">
-        <a href="#/legal/privacy" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Privacy Policy</a>
-        <a href="#/legal/terms" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Terms of Service</a>
-        <a href="#/legal/refund" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Refund Policy</a>
-        <a href="#/legal/sms" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">SMS Terms</a>
+        <a href="#privacy" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Privacy Policy</a>
+        <a href="#terms" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Terms of Service</a>
+        <a href="#cookies" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Cookie &amp; Tracking Preferences</a>
       </div>
     </div>
   </div>
@@ -835,53 +808,8 @@ const TESTIMONIALS = [
   { slot: "TESTIMONIAL SLOT 03", quote: "Customer quote goes here once a client approves it.", name: "Customer name", business: "Business name" }
 ];
 
-const LEGAL_UPDATED = "28 September 2026";
-const LEGAL_ENTITY = "NexBizRise";
-const LEGAL = {
-  "legal/privacy": { tab: "Privacy", title: "Privacy Policy", intro: `This policy explains what information ${LEGAL_ENTITY} ("we", "us") collects when you use nexbizrise.com, card.nexbizrise.com and our services, and how we use and protect it. It applies to customers in India and the United States.`, sections: [
-    { h: "Information we collect", p: ["Information you give us: your name, business name, phone, WhatsApp number, email, website, social links, address, services, photos and anything else you add to your digital card or send through our forms.", "Payment information: payments are handled by Razorpay (India) and Stripe (United States). We receive the order ID, payment ID, amount, status and date. We never see or store your full card number, UPI PIN or bank login.", "Usage information: basic counts of card views, QR scans and taps on call, WhatsApp, website and Save Contact buttons. We do not build visitor profiles, fingerprint browsers or sell usage data.", "Leads: when a visitor submits the contact form on your card, we store their name, phone, email and message so you can follow up."] },
-    { h: "What is public", p: ["Everything you put on your digital card is published at your card link and can be seen and saved by anyone who opens it or scans your QR code. Only add information you are comfortable sharing publicly."] },
-    { h: "How we use information", p: ["To create, host and update your card; process payments and renewals; send transactional emails such as your card link, management link, receipts and expiry reminders; respond to support requests; prevent fraud and abuse; and meet legal and tax obligations.", "We do not sell personal information and we do not use it for third-party advertising."] },
-    { h: "Service providers", p: ["We use trusted providers to run the service: Cloudflare (hosting, delivery and image storage), Supabase (database), Razorpay and Stripe (payments), an email delivery provider, and, for automation customers, Twilio (calls and SMS). They process data only on our instructions."] },
-    { h: "Cookies", p: ["We use only the storage needed for the site to work, such as remembering your region and order progress. We do not use advertising or cross-site tracking cookies."] },
-    { h: "Retention", p: ["Card data is kept while your card is active. If a card is not renewed, it is disabled after a 15-day grace period and its data and photos are deleted 90 days later, unless you renew. Payment records are kept as long as tax law requires."] },
-    { h: "Security", p: ["Data is encrypted in transit, access to admin tools is restricted, and management links use long random tokens. No system is perfectly secure; if we learn of a breach affecting you, we will notify you and the relevant authorities as the law requires."] },
-    { h: "Your rights", p: ["You can ask to access, correct or delete your information, or withdraw consent, by emailing hello@nexbizrise.com. Customers in India have rights under the Digital Personal Data Protection Act, 2023; customers in the United States may have rights under their state's privacy laws. We respond within 30 days.", "Grievance contact: Grievance Officer, NexBizRise, hello@nexbizrise.com."] },
-    { h: "Children", p: ["Our services are for businesses and professionals. We do not knowingly collect information from anyone under 18."] },
-    { h: "Changes", p: ["If we change this policy we will update the date above and, for significant changes, email active customers."] }
-  ] },
-  "legal/terms": { tab: "Terms", title: "Terms of Service", intro: `These terms are an agreement between you and ${LEGAL_ENTITY}. By ordering a card or using our services you accept them.`, sections: [
-    { h: "The service", p: ["NexBizRise provides digital business cards with a permanent QR code, hosting, a Save Contact button and basic analytics, plus optional websites and AI automation services under separate quotes."] },
-    { h: "Plans and pricing", p: ["India: Personal ₹799 per year and Business ₹3,999 per year. United States: $49 per year and $129 per year. Taxes such as GST are added where applicable and shown at checkout.", "Each plan includes one card and one permanent QR code. Personal cards include 1 photo; business cards include up to 5 photos. Video, documents and unlimited storage are not included."] },
-    { h: "Payment and activation", p: ["Your card goes live after your payment is confirmed by our payment provider. Coupon codes are subject to their stated terms and cannot be exchanged for cash."] },
-    { h: "Renewal and expiry", p: ["Plans run for one year from activation. We email reminders before expiry. If you do not renew, your card keeps working for a 15-day grace period and is then disabled. Renewing reactivates the same card link and QR code."] },
-    { h: "Your content", p: ["You are responsible for the information and photos on your card and confirm you have the right to publish them. You keep ownership of your content and give us permission to host and display it to provide the service.", "You may not use a card for illegal, misleading, hateful or infringing content, impersonation, or spam. We may suspend cards that break these rules."] },
-    { h: "Editing your card", p: ["You can request changes by email or use your private management link. Keep that link secret; anyone with it can edit your card. We can reset it on request."] },
-    { h: "Availability", p: ["We aim for the service to be available at all times but do not guarantee uninterrupted access. Planned maintenance and events outside our control may cause downtime."] },
-    { h: "Liability", p: ["To the extent the law allows, our total liability for any claim is limited to the amount you paid us in the 12 months before the claim. We are not liable for lost business, profits or indirect losses."] },
-    { h: "Cancellation", p: ["You can stop using the service at any time. Refunds follow our Refund Policy. We may end the service with notice and refund the unused portion of your plan."] },
-    { h: "Governing law", p: ["For customers in India these terms are governed by the laws of India. For customers in the United States they are governed by the laws of the State of Missouri. Contact hello@nexbizrise.com first and we will try to resolve any issue informally."] }
-  ] },
-  "legal/refund": { tab: "Refunds", title: "Refund & Cancellation Policy", intro: "We want you to be happy with your card. This policy explains when you can get your money back.", sections: [
-    { h: "7-day refund", p: ["If you are not satisfied, email hello@nexbizrise.com within 7 days of payment for a full refund. Your card will be disabled when the refund is issued."] },
-    { h: "After 7 days", p: ["Annual card plans are non-refundable after 7 days. Your card stays active until the end of the paid year."] },
-    { h: "How refunds are paid", p: ["Approved refunds go back to the original payment method (UPI, card or bank) within 5–7 business days of approval. Your bank may take a few extra days to show it."] },
-    { h: "Renewals", p: ["Renewals are never charged automatically. If you renew by mistake, contact us within 7 days for a full refund."] },
-    { h: "Automation and website services", p: ["Monthly automation plans can be cancelled at any time and stop at the end of the current month; we do not refund partial months. Website projects follow the refund terms in their quote."] },
-    { h: "Duplicate or failed payments", p: ["If you were charged twice or a payment failed but money left your account, contact us with the payment ID and we will refund the extra amount."] }
-  ] },
-  "legal/sms": { tab: "SMS Terms", title: "SMS Terms", intro: "These terms apply to text messages sent by NexBizRise, and by businesses using NexBizRise missed-call and follow-up automation.", sections: [
-    { h: "What you receive", p: ["If you call a business that uses NexBizRise and the call is missed, or you ask to be contacted, you may receive a text message from that business with a reply, booking link or follow-up about your request."] },
-    { h: "Consent", p: ["We send texts only to people who called the business, submitted a form, or otherwise agreed to be contacted. Consent is not a condition of any purchase."] },
-    { h: "Frequency and cost", p: ["Message frequency varies with your conversation, usually 1–4 messages per request. Message and data rates may apply."] },
-    { h: "Stop or get help", p: ["Reply STOP at any time to stop messages; you will get one confirmation and no further texts. Reply HELP for help, or email hello@nexbizrise.com."] },
-    { h: "Your number", p: ["Mobile numbers and consent are never sold or shared with third parties for their marketing. See our Privacy Policy for details."] },
-    { h: "Carriers", p: ["Mobile carriers are not liable for delayed or undelivered messages."] }
-  ] }
-};
-const PAGES = ["home", "services", "how-it-works", "results", "about", "contact", "admin", "services/websites", "services/missed-call-recovery", "services/automations", "services/tap-card", "order", "legal/privacy", "legal/terms", "legal/refund", "legal/sms"];
+const PAGES = ["home", "services", "how-it-works", "results", "about", "contact", "admin", "services/websites", "services/missed-call-recovery", "services/automations", "services/tap-card", "order"];
 const PAGE_SECTIONS = {
-  "legal/privacy": ["legal"], "legal/terms": ["legal"], "legal/refund": ["legal"], "legal/sms": ["legal"],
   home: ["hero", "services", "cta"],
   services: ["services", "industries", "cta"],
   "services/websites": ["svc", "websites", "cta"],
@@ -1096,7 +1024,7 @@ class Component extends DCLogic {
       themeIcon: this.state.theme === "dark" ? "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 1 0 0-10z" : "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
       toggleTheme: () => { const t = this.state.theme === "dark" ? "light" : "dark"; document.documentElement.setAttribute("data-theme", t); try { localStorage.setItem("nbr-theme", t); } catch (e) {} this.setState({ theme: t }); },
       svc: svcData ? { ctaHref: "#/contact", ctaLabel: "Get a Free Demo", ...svcData, d: I[svcData.icon] } : { features: [], steps: [], ctaHref: "#/contact", ctaLabel: "Get a Free Demo" },
-      tapSrc: "Tap%20Card.dc.html?demo=" + tapDemo,
+      tapSrc: "./card.html?demo=" + tapDemo,
       cardOpen: !!this.state.cardOpen,
       openCard: (e) => { e.preventDefault(); this.setState({ cardOpen: true }); },
       closeCard: (e) => { if (e.target === e.currentTarget || e.currentTarget.tagName === "BUTTON") this.setState({ cardOpen: false }); },
@@ -1104,9 +1032,6 @@ class Component extends DCLogic {
         const on = k === tapDemo;
         return { label, checked: on ? "true" : "false", pick: () => this.setState({ tapDemo: k }), bg: on ? "var(--btn)" : "transparent", fg: on ? "#04121A" : "var(--ink-3)", bd: on ? "var(--btn)" : "rgba(var(--fg-rgb),0.16)" };
       }),
-      legal: LEGAL[page] || LEGAL["legal/privacy"],
-      legalUpdated: LEGAL_UPDATED,
-      legalTabs: Object.keys(LEGAL).map((k) => ({ label: LEGAL[k].tab, href: "#/" + k, bg: k === page ? "var(--ink)" : "transparent", fg: k === page ? "var(--bg)" : "var(--body)", bd: k === page ? "var(--ink)" : "rgba(var(--fg-rgb),0.14)" })),
       ord: { services: page === "services" ? -1 : 0, how: page === "how-it-works" ? -1 : 0, about: page === "about" ? -1 : 0 },
       desktop: !mobile,
       mobile,

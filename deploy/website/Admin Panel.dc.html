@@ -970,7 +970,7 @@ class Component extends DCLogic {
       publish: this.publish, publishLabel: S.busy ? 'Saving…' : (editing ? 'Save & publish' : 'Publish card'),
 
       previewRef: this.previewRef, onPreviewLoad: this.onPreviewLoad,
-      previewSrc: './Tap%20Card.dc.html?preview=1',
+      previewSrc: './card.html?preview=1',
       pvBg: col.bg, pvAccent: col.accent, pvBgTop: col.bgTop || 'color-mix(in srgb, ' + col.bg + ' 82%, ' + col.accent + ')', pvBgBack: col.bgBack || 'color-mix(in srgb, ' + col.bg + ' 70%, ' + col.accent + ')',
       pvHeroImg: d.photo ? 'url("' + d.photo + '")' : 'none', pvInitials: this.initialsOf(d),
       pvCategory: d.category || pre.category, pvName: this.nameOf(d), pvTitle: d.title || 'Job title', pvCompany: d.company ? ' · ' + d.company : '',
