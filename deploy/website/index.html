@@ -42,12 +42,12 @@ select option{background:var(--surface);color:var(--ink-2);}
 
 <a href="#main" style="position:absolute;left:-9999px;top:8px;z-index:100;background:var(--btn);color:#070B14;padding:10px 14px;border-radius:8px;font-weight:700;" style-focus="left:8px;">Skip to content</a>
 
-<sc-if value="{{ show.chrome }}" hint-placeholder-val="{{ true }}">
-<header style="position:sticky;top:0;z-index:50;background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(var(--fg-rgb),0.06);">
-  <nav aria-label="Primary" style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
-    <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:10px;color:var(--ink);">
-      <img src="/assets/nexbizrise-mark-t.png" alt="" width="34" height="34" style="width:34px;height:34px;flex:none;">
-      <span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span>
+<sc-if value="{{ showHeader }}" hint-placeholder-val="{{ true }}">
+<header style="position:sticky;top:0;z-index:50;transform:{{ headerY }};transition:transform .25s ease;background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(var(--fg-rgb),0.06);">
+  <nav aria-label="Primary" style="max-width:1200px;margin:0 auto;padding:{{ navPad }};display:flex;align-items:center;justify-content:space-between;gap:24px;">
+    <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:6px;color:var(--ink);">
+      <img src="/assets/nexbizrise-logo.png" alt="" width="58" height="44" style="height:{{ logoSize }};width:auto;flex:none;">
+      <span style="font-size:{{ logoFont }};font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span>
     </a>
     <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;align-items:center;gap:30px;">
@@ -61,7 +61,10 @@ select option{background:var(--surface);color:var(--ink-2);}
       </a>
       </div>
     </sc-if>
-    <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ orderExit }}" hint-placeholder-val="{{ false }}">
+      <a href="{{ orderExitHref }}" aria-label="{{ orderExitLabel }}" style="width:44px;height:44px;margin-right:-10px;display:flex;align-items:center;justify-content:center;border-radius:12px;color:var(--ink-3);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></a>
+    </sc-if>
+    <sc-if value="{{ mobileMenuBtn }}" hint-placeholder-val="{{ false }}">
       <div style="display:flex;align-items:center;gap:10px;">
       <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpenStr }}" aria-controls="mobile-menu" aria-label="Open menu" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-10px;background:transparent;border:0;border-radius:12px;color:var(--ink);cursor:pointer;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="{{ menuIcon }}"></path></svg>
@@ -351,7 +354,7 @@ select option{background:var(--surface);color:var(--ink-2);}
       <div style="--bg:#070B14;--bg-2:#0A0F1A;--surface:#0F1624;--ink:#FFFFFF;--ink-2:#E8EEF5;--ink-3:#C4CEDB;--body:#B4C0CF;--muted:#9FB0C4;--faint:#7D8CA1;--accent:#2DD4BF;--accent-2:#2DD4BF;--btn:#14B8A6;--btn-ink:#04201D;--acc-rgb:45,212,191;--fg-rgb:255,255,255;border-radius:44px;padding:11px;background:linear-gradient(160deg,#2A3446,#0B111C 40%,#1A2232);box-shadow:0 50px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(var(--fg-rgb),0.08);">
         <div style="border-radius:34px;background:#F3EFE7;overflow:hidden;">
           <div style="display:flex;align-items:center;gap:12px;padding:22px 20px 14px;background:#FFFFFF;border-bottom:1px solid #E3E9EF;">
-            <img src="/assets/nexbizrise-mark-t.png" alt="" width="36" height="36" style="width:36px;height:36px;border-radius:50%;">
+            <img src="/assets/nexbizrise-mark-sq.png" alt="" width="36" height="36" style="width:36px;height:36px;border-radius:50%;">
             <span style="display:flex;flex-direction:column;"><span style="font-size:14px;font-weight:700;color:#0A0F1A;">NexBizRise AI</span><span style="font-size:12px;color:#64748B;">Business SMS · on behalf of your business</span></span>
           </div>
           <div aria-live="polite" style="height:430px;padding:16px 14px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;overflow:hidden;">
@@ -535,7 +538,7 @@ select option{background:var(--surface);color:var(--ink-2);}
           <svg aria-hidden="true" width="100%" height="2" style="position:absolute;left:0;top:50%;overflow:visible;"><line x1="0" y1="1" x2="100%" y2="1" stroke="var(--accent)" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="3 4" style="animation:nbrDash 0.9s linear infinite;"></line></svg>
         </sc-if>
         <div style="position:relative;width:120px;height:120px;border-radius:30px;background:var(--bg);border:1px solid rgba(var(--acc-rgb),0.45);box-shadow:0 0 60px rgba(var(--acc-rgb),0.2);display:flex;align-items:center;justify-content:center;">
-          <img src="/assets/nexbizrise-mark-t.png" alt="" width="84" height="84" style="width:84px;height:84px;">
+          <img src="/assets/nexbizrise-mark-sq.png" alt="" width="84" height="84" style="width:84px;height:84px;">
         </div>
         <span style="position:relative;font-size:15px;font-weight:700;color:var(--ink);background:var(--bg-2);padding:0 10px;">NexBizRise Automation</span>
       </div>
@@ -724,8 +727,8 @@ select option{background:var(--surface);color:var(--ink-2);}
   <div style="max-width:1200px;margin:0 auto;">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:40px;">
       <div style="grid-column:span 1;min-width:0;">
-        <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:10px;color:var(--ink);">
-          <img src="/assets/nexbizrise-mark-t.png" alt="" width="40" height="40" style="width:40px;height:40px;">
+        <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:6px;color:var(--ink);">
+          <img src="/assets/nexbizrise-logo.png" alt="" width="66" height="50" style="height:44px;width:auto;flex:none;">
           <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span>
         </a>
         <p style="margin:16px 0 0;font-size:15px;line-height:1.5;color:var(--body);">Helping Businesses <span style="color:var(--accent);">Get More Customers.</span></p>
@@ -852,7 +855,7 @@ const LEGAL = {
   ] },
   "legal/terms": { tab: "Terms", title: "Terms of Service", intro: `These terms are an agreement between you and ${LEGAL_ENTITY}. By ordering a card or using our services you accept them.`, sections: [
     { h: "The service", p: ["NexBizRise provides digital business cards with a permanent QR code, hosting, a Save Contact button and basic analytics, plus optional websites and AI automation services under separate quotes."] },
-    { h: "Plans and pricing", p: ["India: Personal ₹799 per year and Business ₹3,999 per year. United States: $49 per year and $129 per year. Taxes such as GST are added where applicable and shown at checkout.", "Each plan includes one card and one permanent QR code. Personal cards include 1 photo; business cards include up to 5 photos. Video, documents and unlimited storage are not included."] },
+    { h: "Plans and pricing", p: ["India: Personal ₹799 per year and Business ₹1,799 per year. United States: $49 per year and $79 per year. Taxes such as GST are added where applicable and shown at checkout.", "Each plan includes one card and one permanent QR code. Personal cards include 1 photo; business cards include up to 5 photos. Video, documents and unlimited storage are not included.", "Changes to your card are made by our team. Digital plans include 2 changes and Motion plans include 4 changes per plan year; unused changes do not carry over. Extra changes may be charged at a small fee, which we will tell you before making the change."] },
     { h: "Payment and activation", p: ["Your card goes live after your payment is confirmed by our payment provider. Coupon codes are subject to their stated terms and cannot be exchanged for cash."] },
     { h: "Renewal and expiry", p: ["Plans run for one year from activation. We email reminders before expiry. If you do not renew, your card keeps working for a 15-day grace period and is then disabled. Renewing reactivates the same card link and QR code."] },
     { h: "Your content", p: ["You are responsible for the information and photos on your card and confirm you have the right to publish them. You keep ownership of your content and give us permission to host and display it to provide the service.", "You may not use a card for illegal, misleading, hateful or infringing content, impersonation, or spam. We may suspend cards that break these rules."] },
@@ -1004,6 +1007,8 @@ class Component extends DCLogic {
     if (!this.reduceMotion) { this.setState({ wf: 0 }); this.wfT = setInterval(() => this.setState(s => ({ wf: ((s.wf || 0) + 1) % 11 })), 1100); }
     this.onScrollSticky = () => { const s = window.scrollY > 560; if (s !== this.state.scrolled) this.setState({ scrolled: s }); };
     window.addEventListener("scroll", this.onScrollSticky, { passive: true });
+    this.onOrderUi = (e) => { const d = (e && e.detail) || {}; if (!!d.immersive !== !!this.state.orderImm || !!d.hideHeader !== !!this.state.orderHide) this.setState({ orderImm: !!d.immersive, orderHide: !!d.hideHeader }); };
+    window.addEventListener("nbr-order-ui", this.onOrderUi);
     window.addEventListener("keydown", (e) => { if (e.key === "Escape" && this.state.cardOpen) this.setState({ cardOpen: false }); });
     this.onResize = () => this.setState({ w: window.innerWidth });
     this.onResize();
@@ -1015,6 +1020,8 @@ class Component extends DCLogic {
       const two = parts.slice(0, 2).join("/");
       const page = PAGES.includes(two) ? two : PAGES.includes(parts[0]) ? parts[0] : "home";
       const anchor = PAGES.includes(two) ? parts[2] : parts[1];
+      if (page === "order" && this.state.page && this.state.page !== "order") this.orderFrom = hs.startsWith("#/order") ? (this.lastHash || "#/") : this.orderFrom;
+      if (page !== "order") this.lastHash = hs || "#/";
       this.setState({ page, menu: false }, () => {
         const el = anchor && document.getElementById(anchor);
         window.scrollTo({ top: el ? el.getBoundingClientRect().top + window.scrollY - 72 : 0, behavior: "instant" });
@@ -1077,6 +1084,7 @@ class Component extends DCLogic {
     const show = {};
     (PAGE_SECTIONS[page] || PAGE_SECTIONS.home).forEach((k) => (show[k] = true));
     show.chrome = page !== "admin";
+    const onOrder = !!show.order, mobOrder = onOrder && w < 900;
     const svcData = SERVICE_PAGES[page] || null;
     const tapDemo = this.state.tapDemo || "services";
     const isOn = (p) => p === page || page.indexOf(p + "/") === 0;
@@ -1096,7 +1104,7 @@ class Component extends DCLogic {
       themeIcon: this.state.theme === "dark" ? "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 1 0 0-10z" : "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
       toggleTheme: () => { const t = this.state.theme === "dark" ? "light" : "dark"; document.documentElement.setAttribute("data-theme", t); try { localStorage.setItem("nbr-theme", t); } catch (e) {} this.setState({ theme: t }); },
       svc: svcData ? { ctaHref: "#/contact", ctaLabel: "Get a Free Demo", ...svcData, d: I[svcData.icon] } : { features: [], steps: [], ctaHref: "#/contact", ctaLabel: "Get a Free Demo" },
-      tapSrc: "./card.html?demo=" + tapDemo,
+      tapSrc: "/card.html?demo=" + tapDemo,
       cardOpen: !!this.state.cardOpen,
       openCard: (e) => { e.preventDefault(); this.setState({ cardOpen: true }); },
       closeCard: (e) => { if (e.target === e.currentTarget || e.currentTarget.tagName === "BUTTON") this.setState({ cardOpen: false }); },
@@ -1110,7 +1118,11 @@ class Component extends DCLogic {
       ord: { services: page === "services" ? -1 : 0, how: page === "how-it-works" ? -1 : 0, about: page === "about" ? -1 : 0 },
       desktop: !mobile,
       mobile,
-      showMenu: mobile && menu,
+      showHeader: show.chrome && !(mobOrder && this.state.orderImm),
+      headerY: mobOrder && this.state.orderHide ? "translateY(-100%)" : "none",
+      navPad: mobOrder ? "8px 16px" : "14px 24px", logoSize: mobOrder ? "32px" : "38px", logoFont: mobOrder ? "18px" : "20px",
+      orderExit: mobOrder, orderExitHref: this.orderFrom || "#/services/tap-card", orderExitLabel: this.orderFrom && this.orderFrom !== "#/" && this.orderFrom !== "#" ? "Close and go back" : "Leave and go to the home page", mobileMenuBtn: mobile && !mobOrder,
+      showMenu: mobile && menu && !mobOrder,
       menuOpenStr: menu ? "true" : "false",
       menuIcon: menu ? "M18 6L6 18M6 6l12 12" : "M3 6h18M3 12h18M3 18h18",
       toggleMenu: () => this.setState({ menu: !menu }),

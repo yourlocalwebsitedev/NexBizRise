@@ -33,7 +33,7 @@ input,textarea,select{font:inherit;}
 <div style="min-height:100vh;display:flex;flex-direction:column;">
   <header style="position:sticky;top:0;z-index:20;background:var(--header-bg);backdrop-filter:blur(12px);border-bottom:1px solid rgba(var(--fg-rgb),0.07);color:var(--ink-2);padding:0 24px;min-height:64px;display:flex;align-items:center;gap:16px;">
     <div style="display:flex;align-items:baseline;gap:10px;flex:1;min-width:0;">
-      <a href="#/" style="display:flex;align-items:center;gap:8px;color:var(--ink);"><img src="/assets/nexbizrise-mark-t.png" alt="" width="28" height="28" style="width:28px;height:28px;"></img><span style="font-size:19px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span></a>
+      <a href="#/" style="display:flex;align-items:center;gap:6px;color:var(--ink);"><img src="/assets/nexbizrise-logo.png" alt="" width="48" height="36" style="height:32px;width:auto;flex:none;"></img><span style="font-size:19px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span></a>
       <span style="font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);padding:3px 8px;border:1px solid rgba(var(--brand-rgb),0.35);border-radius:6px;">Tap Card Admin</span>
     </div>
     <button type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid rgba(var(--fg-rgb),0.16);border-radius:10px;color:var(--ink-2);cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ themeIcon }}"></path></svg></button>
@@ -484,6 +484,13 @@ input,textarea,select{font:inherit;}
           <sc-if value="{{ hasEditToken }}"><a href="{{ sendHref }}" target="_blank" rel="noopener" style="height:46px;border-radius:12px;background:var(--brand);color:#04121A;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;text-decoration:none;">Send on WhatsApp</a></sc-if>
           <sc-if value="{{ noEditToken }}"><button type="button" onClick="{{ resetEditLink }}" style="height:46px;border-radius:12px;background:var(--brand);color:#04121A;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;text-decoration:none;border:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;">Send to client</button></sc-if>
         </div>
+        <div style="flex:none;width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);">
+          <span style="font-size:13.5px;font-weight:600;color:var(--ink-2);">{{ changesLabel }}</span>
+          <div style="display:flex;gap:6px;">
+            <button type="button" onClick="{{ undoChange }}" aria-label="Remove one change" style="width:36px;height:36px;border-radius:10px;border:1px solid rgba(var(--fg-rgb),0.14);background:transparent;color:var(--ink-2);font-size:18px;font-weight:700;cursor:pointer;">−</button>
+            <button type="button" onClick="{{ addChange }}" aria-label="Add one change" style="width:36px;height:36px;border-radius:10px;border:0;background:var(--brand);color:#04121A;font-size:18px;font-weight:700;cursor:pointer;">+</button>
+          </div>
+        </div>
         <button type="button" onClick="{{ downloadQR }}" style="flex:none;height:44px;width:100%;border:0;border-radius:12px;background:transparent;color:var(--ink-2);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;">Download QR (SVG)</button>
         <sc-if value="{{ hasEditLink }}">
           <div style="flex:none;width:100%;display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid rgba(var(--fg-rgb),0.08);">
@@ -512,10 +519,11 @@ const SUPABASE_KEY = 'sb_publishable_bqmJ-YGyd6h1UEnpM3RryA_eTWdpNbV';   // publ
 const CARD_BASE = 'https://card.nexbizrise.com';  // where the card site is deployed
 const LINK_STYLE = 'path';   // 'path' → /rahul-sharma · 'query' → /?c=rahul-sharma
 const BASE_HOST = CARD_BASE.replace(/^https?:\/\//, '');
+const CHANGES_INCLUDED = { basic: 2, motion: 4 };
 const TODAY = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00');
 const toRow = c => ({ region: c.region || 'IN', layout: c.layout || 'original', photo_x: Math.round(c.photoX ?? 50), photo_y: Math.round(c.photoY ?? 50), photo_zoom: Number(c.photoZoom || 1), phone_display: c.phoneDisplay || '', signature: c.signature || '', titles: c.titles || '', contact_photo_url: c.contactPhoto || '', show_powered_by: c.showPoweredBy !== false, profession: c.profession || '', profession_other: c.professionOther || '', city: c.city || '', notes: c.notes || '', slug: c.slug, prefix: c.prefix || '', first_name: c.firstName, last_name: c.lastName || '', title: c.title, company: c.company || '', preset: c.preset, colour: c.colour, category: c.category || '', tagline: c.tagline || '', phone: c.phone, whatsapp: c.whatsapp || '', email: c.email || '', linkedin: c.linkedin || '', instagram: c.instagram || '', website: c.website || '', quote: c.quote || '', bio: c.bio || '', photo_url: c.photo || '', plan: c.plan, renewal: c.renewal, active: !!c.active, extras: { ...(c.extras || {}), seasonal: c.seasonal !== false, seasonal_addon: c.plan !== 'motion' && !!c.seasonAddon, greeting: String(c.greeting || '').trim().slice(0, 60) } });
 const dataToBlobUrl = p => { if (!String(p || '').startsWith('data:')) return p || ''; try { const [m, b64] = p.split(','); const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return URL.createObjectURL(new Blob([u], { type: m.slice(5).split(';')[0] })); } catch (e) { return ''; } };
-const fromRow = r => ({ publicId: r.public_id || '', editUnseen: r.edit_seen === false, region: r.region || (/^\+1/.test(String(r.phone || '').replace(/[^\d+]/g, '')) ? 'US' : 'IN'), layout: r.layout || 'original', photoX: r.photo_x ?? 50, photoY: r.photo_y ?? 50, photoZoom: Number(r.photo_zoom || 1), phoneDisplay: r.phone_display || '', signature: r.signature || '', titles: r.titles || '', contactPhoto: r.contact_photo_url || '', showPoweredBy: r.show_powered_by !== false, profession: r.profession || 'Entrepreneur / Business owner', professionOther: r.profession_other || '', city: r.city || '', notes: r.notes || '', id: r.id, slug: r.slug, prefix: r.prefix || '', firstName: r.first_name || '', lastName: r.last_name || '', title: r.title || '', company: r.company || '', preset: r.preset, colour: r.colour, category: r.category || '', tagline: r.tagline || '', phone: r.phone || '', whatsapp: r.whatsapp || '', email: r.email || '', linkedin: r.linkedin || '', instagram: r.instagram || '', website: r.website || '', quote: r.quote || '', bio: r.bio || '', photo: dataToBlobUrl(r.photo_url), plan: r.plan, renewal: r.renewal, active: r.active, extras: r.extras || {}, seasonal: (r.extras || {}).seasonal !== false, seasonAddon: (r.extras || {}).seasonal_addon === true, greeting: (r.extras || {}).greeting || '' });
+const fromRow = r => ({ changesUsed: Number(r.changes_used) || 0, publicId: r.public_id || '', editUnseen: r.edit_seen === false, region: r.region || (/^\+1/.test(String(r.phone || '').replace(/[^\d+]/g, '')) ? 'US' : 'IN'), layout: r.layout || 'original', photoX: r.photo_x ?? 50, photoY: r.photo_y ?? 50, photoZoom: Number(r.photo_zoom || 1), phoneDisplay: r.phone_display || '', signature: r.signature || '', titles: r.titles || '', contactPhoto: r.contact_photo_url || '', showPoweredBy: r.show_powered_by !== false, profession: r.profession || 'Entrepreneur / Business owner', professionOther: r.profession_other || '', city: r.city || '', notes: r.notes || '', id: r.id, slug: r.slug, prefix: r.prefix || '', firstName: r.first_name || '', lastName: r.last_name || '', title: r.title || '', company: r.company || '', preset: r.preset, colour: r.colour, category: r.category || '', tagline: r.tagline || '', phone: r.phone || '', whatsapp: r.whatsapp || '', email: r.email || '', linkedin: r.linkedin || '', instagram: r.instagram || '', website: r.website || '', quote: r.quote || '', bio: r.bio || '', photo: dataToBlobUrl(r.photo_url), plan: r.plan, renewal: r.renewal, active: r.active, extras: r.extras || {}, seasonal: (r.extras || {}).seasonal !== false, seasonAddon: (r.extras || {}).seasonal_addon === true, greeting: (r.extras || {}).greeting || '' });
 
 const COLOURS = [
   { id: 'forest',   name: 'Forest Green',  bg: '#06120d', accent: '#f2c98a', bgTop: '#0b2a1d', bgBack: '#134a33' },
@@ -625,7 +633,7 @@ const nbrCompress = file => new Promise((res, rej) => {
 });
 /* Upload to Cloudflare R2 via the site's /api/upload. Returns '' when R2 isn't available (caller falls back to Supabase storage). */
 const nbrUpload = async blob => {
-  if (!/(^|\.)nexbizrise\.com$|\.pages\.dev$/.test(location.hostname)) return '';
+  if (!/(^|\.)nexbizrise\.com$|\.pages\.dev$|\.workers\.dev$/.test(location.hostname)) return '';
   try { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': blob.type }, body: blob }); if (!r.ok) return ''; const j = await r.json(); return j.url || ''; } catch (e) { return ''; }
 };
 
@@ -693,7 +701,7 @@ class Component extends DCLogic {
 
   async initSb() {
     try {
-      const m = await import('https://esm.sh/@supabase/supabase-js@2');
+      const m = await import('https://esm.sh/@supabase/supabase-js@2.45.4');
       this.sb = m.createClient(SUPABASE_URL, SUPABASE_KEY);
       const { data } = await this.sb.auth.getSession();
       this.sb.auth.onAuthStateChange((_e, session) => { if (!session) this.setState({ auth: 'out', clients: [] }); });
@@ -772,7 +780,7 @@ class Component extends DCLogic {
   };
   async purgeCard(c) {
     try {
-      if (!c || !/(^|\.)nexbizrise\.com$|\.pages\.dev$/.test(location.hostname)) return;
+      if (!c || !/(^|\.)nexbizrise\.com$|\.pages\.dev$|\.workers\.dev$/.test(location.hostname)) return;
       const { data } = await this.sb.auth.getSession(); const t = data && data.session && data.session.access_token; if (!t) return;
       await fetch('/api/purge', { method: 'POST', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify({ keys: [c.slug, c.publicId].filter(Boolean) }) });
     } catch (e) {}
@@ -922,7 +930,7 @@ class Component extends DCLogic {
   closeModal = () => this.setState({ modal: null });
   async loadStats() {
     try {
-      if (!/(^|\.)nexbizrise\.com$|\.pages\.dev$/.test(location.hostname)) return;
+      if (!/(^|\.)nexbizrise\.com$|\.pages\.dev$|\.workers\.dev$/.test(location.hostname)) return;
       const { data } = await this.sb.auth.getSession(); const t = data && data.session && data.session.access_token; if (!t) return;
       const r = await fetch('/api/stats', { headers: { Authorization: 'Bearer ' + t } }); if (!r.ok) return;
       const j = await r.json(); if (j.error) return;
@@ -942,6 +950,13 @@ class Component extends DCLogic {
     if (error || !data) { this.toastMsg('Could not create link: ' + ((error && error.message) || 'no link')); return; }
     this.setState(s => ({ clients: s.clients.map(x => x.id === c.id ? { ...x, editToken: data } : x), editCopied: false }));
     this.toastMsg('New edit link ready. Tap Send on WhatsApp or Copy edit link. It is only shown once.');
+  };
+  bumpChanges = async n => {
+    const c = this.state.clients.find(x => x.id === (this.state.modal || {}).id); if (!c) return;
+    const v = Math.max(0, (c.changesUsed || 0) + n);
+    this.setState(s => ({ clients: s.clients.map(x => x.id === c.id ? { ...x, changesUsed: v } : x) }));
+    const { error } = await this.sb.from('cards').update({ changes_used: v }).eq('id', c.id);
+    if (error) this.toastMsg('Could not save change count: ' + error.message);
   };
   editBtn = () => { const c = this.state.clients.find(x => x.id === (this.state.modal || {}).id); if (c && c.editToken) this.copyEditLink(); else this.resetEditLink(); };
   copyLink = async () => {
@@ -1075,9 +1090,10 @@ class Component extends DCLogic {
       modalSub: S.modal && S.modal.type === 'publish' ? 'Share the link or print the QR for their NFC tag.' : 'Scan to open the card',
       modalUrl: mUrl, closeModal: this.closeModal, doneRef: this.doneRef, stop: e => e.stopPropagation(),
       copyLink: this.copyLink, copyLabel: S.copied ? 'Copied ✓' : 'Copy link', downloadQR: this.downloadQR,
-      copyEditLink: this.copyEditLink, resetEditLink: this.resetEditLink, copyEditLabel: modalClient && modalClient.editToken ? (S.editCopied ? 'Copied ✓' : 'Copy edit link') : 'Create new edit link', hasEditLink: !!modalClient, editBtn: this.editBtn, editNote: modalClient && modalClient.editToken ? 'Copy it now and send it to the client. For security it is only shown once.' : 'Lets the client change their card without logging in. Links are only shown once, so creating a new one stops the old one working.',
-      sendHref: modalClient ? 'https://wa.me/' + String(modalClient.whatsapp || modalClient.phone || '').replace(/\D/g, '') + '?text=' + encodeURIComponent('Hi ' + modalClient.firstName + ', your NexBizRise digital card is live: ' + mUrl + (modalClient.editToken ? '\n\nTo update your card any time, use your private edit link (please keep it to yourself): ' + this.editUrlOf(modalClient) : '')) : '#',
-      hasEditToken: !!(modalClient && modalClient.editToken), noEditToken: !(modalClient && modalClient.editToken),
+      copyEditLink: this.copyEditLink, resetEditLink: this.resetEditLink, copyEditLabel: modalClient && modalClient.editToken ? (S.editCopied ? 'Copied ✓' : 'Copy edit link') : 'Create new edit link', hasEditLink: !!modalClient, editBtn: this.editBtn, editNote: modalClient && modalClient.editToken ? 'Copy it now and send it to the client. For security it is only shown once.' : 'For special cases only. Changes are normally made by you. An edit link lets the client change their card themselves; it is shown once, and a new one stops the old one working.',
+      sendHref: modalClient ? 'https://wa.me/' + String(modalClient.whatsapp || modalClient.phone || '').replace(/\D/g, '') + '?text=' + encodeURIComponent('Hi ' + modalClient.firstName + ', your NexBizRise digital card is live: ' + mUrl + '\n\nYour plan includes ' + (CHANGES_INCLUDED[modalClient.plan] || 2) + ' changes a year. Just message us here with what you want changed.') : '#',
+      hasEditToken: true, noEditToken: false,
+      changesLabel: modalClient ? 'Changes this year: ' + (modalClient.changesUsed || 0) + ' of ' + (CHANGES_INCLUDED[modalClient.plan] || 2) + ((modalClient.changesUsed || 0) > (CHANGES_INCLUDED[modalClient.plan] || 2) ? ' · extra changes are chargeable' : '') : '', addChange: () => this.bumpChanges(1), undoChange: () => this.bumpChanges(-1),
       qrNode: modalClient ? React.createElement('div', { style: { width: '100%', height: '100%' }, dangerouslySetInnerHTML: { __html: this.qrSvg(mUrl).replace('<svg', '<svg style="width:100%;height:100%;display:block"') } }) : null,
       toast: S.toast,
       themeLabel: S.theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode',

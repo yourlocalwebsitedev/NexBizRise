@@ -52,6 +52,8 @@ create or replace function public.edit_hash_of(t text) returns text language sql
 create or replace function public.new_edit_token() returns text language sql volatile as $$
   select replace(gen_random_uuid()::text, '-', '') || left(replace(gen_random_uuid()::text, '-', ''), 8) $$;
 alter table public.cards add column if not exists edit_hash text;
+-- Changes made by our team this plan year (2 included on Digital, 4 on Motion). Reset it at renewal.
+alter table public.cards add column if not exists changes_used int not null default 0;
 alter table public.cards add column if not exists edited_at timestamptz;
 alter table public.cards add column if not exists edit_seen boolean not null default true;
 create unique index if not exists cards_edit_hash_key on public.cards (edit_hash);
@@ -84,6 +86,8 @@ alter table public.orders add column if not exists tax numeric not null default 
 alter table public.orders add column if not exists total numeric;
 alter table public.orders add column if not exists coupon text;
 alter table public.orders add column if not exists discount numeric not null default 0;
+alter table public.orders add column if not exists idem text;
+create unique index if not exists orders_idem_key on public.orders (idem) where idem is not null;
 alter table public.orders enable row level security;
 create index if not exists orders_created_idx on public.orders (created_at desc);
 drop policy if exists "admins manage orders" on public.orders;
@@ -186,7 +190,7 @@ create or replace function public.coupon_discount(p_code text, p_plan text, p_re
 returns numeric language plpgsql security definer set search_path = public as $$
 declare c coupons; v_base numeric;
 begin
-  v_base := case when p_region = 'IN' then (case p_plan when 'motion' then 3999 else 799 end) else (case p_plan when 'motion' then 129 else 49 end) end;
+  v_base := case when p_region = 'IN' then (case p_plan when 'motion' then 1799 else 799 end) else (case p_plan when 'motion' then 79 else 49 end) end;
   if p_lock then select * into c from coupons where code = upper(trim(p_code)) for update;
   else select * into c from coupons where code = upper(trim(p_code)); end if;
   if c.code is null or not c.active
@@ -212,7 +216,7 @@ begin
   if coalesce(p_code,'') !~* '^[A-Z0-9_-]{4,32}$' then return jsonb_build_object('ok', false); end if;
   begin v_disc := coupon_discount(p_code, v_plan, v_region, left(coalesce(p_email,''), 200));
   exception when others then return jsonb_build_object('ok', false); end;
-  v_base := case when v_region = 'IN' then (case v_plan when 'motion' then 3999 else 799 end) else (case v_plan when 'motion' then 129 else 49 end) end;
+  v_base := case when v_region = 'IN' then (case v_plan when 'motion' then 1799 else 799 end) else (case v_plan when 'motion' then 79 else 49 end) end;
   v_tax := case when v_region = 'IN' then round((v_base - v_disc) * 0.18) else 0 end;
   return jsonb_build_object('ok', true, 'code', upper(trim(p_code)), 'base', v_base, 'discount', v_disc, 'tax', v_tax, 'total', v_base - v_disc + v_tax);
 end $$;
@@ -242,6 +246,13 @@ declare
   v_pid text;
   v_tok text;
 begin
+  -- Same order sent twice (double tap, or retry after a dropped connection): return the first one instead of making a duplicate.
+  if coalesce(payload->>'idem', '') ~ '^[a-f0-9-]{36}$' then
+    declare p_prev record; begin
+      select o.order_no, o.discount, o.total, c.slug, c.public_id into p_prev from orders o left join cards c on c.id = o.card_id where o.idem = payload->>'idem';
+      if found then return jsonb_build_object('order_no', p_prev.order_no, 'slug', p_prev.slug, 'public_id', p_prev.public_id, 'discount', p_prev.discount, 'total', p_prev.total, 'repeat', true); end if;
+    end;
+  end if;
   if v_mode not in ('builder','dfm') or v_plan not in ('basic','motion') then raise exception 'invalid order'; end if;
   if coalesce(v_card->>'first_name','') = '' or coalesce(v_card->>'phone','') = '' then raise exception 'missing fields'; end if;
   if length(payload::text) > 3000000 then raise exception 'payload too large'; end if;
@@ -257,13 +268,15 @@ begin
     'listings_url', case when v_ex->>'listings_url' ~* '^https://[^\s<>"'']+$' then left(v_ex->>'listings_url', 500) else '' end,
     'booking_url',  case when v_ex->>'booking_url'  ~* '^https://[^\s<>"'']+$' then left(v_ex->>'booking_url', 500)  else '' end,
     'iabs_url',     case when v_ex->>'iabs_url'     ~* '^https://[^\s<>"'']+$' then left(v_ex->>'iabs_url', 500)     else '' end);
+  -- Business-specific fields (health, beauty, legal, trades, corporate)
+  v_ex := v_ex || jsonb_build_object('meeting_url', case when v_ex->>'meeting_url' ~* '^https://[^\s<>"'']+$' then left(v_ex->>'meeting_url', 500) else '' end, 'reg_no', left(coalesce(v_ex->>'reg_no', ''), 60), 'quals', left(coalesce(v_ex->>'quals', ''), 120), 'hours', left(coalesce(v_ex->>'hours', ''), 80), 'services', left(coalesce(v_ex->>'services', ''), 300), 'practice', left(coalesce(v_ex->>'practice', ''), 200), 'service_area', left(coalesce(v_ex->>'service_area', ''), 120), 'insured', left(coalesce(v_ex->>'insured', ''), 20), 'emergency', left(coalesce(v_ex->>'emergency', ''), 20));
   v_card := v_card || jsonb_build_object(
     'extras', v_ex,
     'website',   case when v_card->>'website'   ~* '^https?://[^\s<>"'']+$' then left(v_card->>'website', 500)   else '' end,
     'instagram', case when v_card->>'instagram' ~* '^https://[^\s<>"'']+$'  then left(v_card->>'instagram', 500) else '' end,
     'linkedin',  case when v_card->>'linkedin'  ~* '^https://[^\s<>"'']+$'  then left(v_card->>'linkedin', 500)  else '' end,
     'photo_url', case when v_card->>'photo_url' ~ '^https://hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+$'
-                        or v_card->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif)$' then v_card->>'photo_url' else '' end,
+                        or v_card->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif|mp4|webm)$' then v_card->>'photo_url' else '' end,
     'contact_photo_url', '',
     'email',     case when v_card->>'email' ~* '^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$' then left(v_card->>'email', 200) else '' end,
     'phone',     left(regexp_replace(coalesce(v_card->>'phone',''), '[^0-9+ ()-]', '', 'g'), 30),
@@ -286,15 +299,15 @@ begin
   v_tok := new_edit_token();
   update cards set edit_hash = edit_hash_of(v_tok) where id = v_card_id;
 
-  v_price := case when v_region = 'IN' then (case v_plan when 'motion' then 3999 else 799 end) else (case v_plan when 'motion' then 129 else 49 end) end;
+  v_price := case when v_region = 'IN' then (case v_plan when 'motion' then 1799 else 799 end) else (case v_plan when 'motion' then 79 else 49 end) end;
   if v_coupon is not null then
     v_disc := coupon_discount(v_coupon, v_plan, v_region, left(coalesce(payload->>'customer_email',''), 200), true);  -- row lock: no double-spend under concurrency
     update coupons set uses = uses + 1 where code = v_coupon;
     insert into coupon_redemptions (code, order_no, email, discount) values (v_coupon, v_no, left(coalesce(payload->>'customer_email',''), 200), v_disc);
   end if;
   v_tax := case when v_region = 'IN' then round((v_price - v_disc) * 0.18) else 0 end;
-  insert into orders (order_no, mode, plan, region, price, tax, total, currency, customer_name, customer_email, customer_phone, notes, card, card_id, coupon, discount)
-  values (v_no, v_mode, v_plan, v_region, v_price, v_tax, v_price - v_disc + v_tax,
+  insert into orders (idem, order_no, mode, plan, region, price, tax, total, currency, customer_name, customer_email, customer_phone, notes, card, card_id, coupon, discount)
+  values (case when coalesce(payload->>'idem', '') ~ '^[a-f0-9-]{36}$' then payload->>'idem' end, v_no, v_mode, v_plan, v_region, v_price, v_tax, v_price - v_disc + v_tax,
     case when v_region = 'IN' then 'INR' else 'USD' end,
     left(payload->>'customer_name', 120), left(payload->>'customer_email', 200), left(payload->>'customer_phone', 40), left(payload->>'notes', 4000),
     v_card, v_card_id, v_coupon, v_disc);
@@ -388,7 +401,8 @@ create view public.public_card_extras as
     'brokerage', extras->'brokerage', 'license_no', extras->'license_no', 'license_state', extras->'license_state',
     'facebook', extras->'facebook', 'listings_url', extras->'listings_url', 'booking_url', extras->'booking_url',
     'office_address', extras->'office_address', 'iabs_url', extras->'iabs_url', 'lead_capture', extras->'lead_capture',
-    'seasonal', extras->'seasonal', 'seasonal_addon', extras->'seasonal_addon', 'greeting', extras->'greeting', 'motion', to_jsonb(plan = 'motion'))) as extras
+    'seasonal', extras->'seasonal', 'seasonal_addon', extras->'seasonal_addon', 'greeting', extras->'greeting', 'motion', to_jsonb(plan = 'motion'),
+    'meeting_url', extras->'meeting_url', 'reg_no', extras->'reg_no', 'quals', extras->'quals', 'hours', extras->'hours', 'services', extras->'services', 'practice', extras->'practice', 'service_area', extras->'service_area', 'insured', extras->'insured', 'emergency', extras->'emergency')) as extras
   from public.cards where active is not false;
 grant select on public.public_card_extras to anon, authenticated;
 
@@ -462,11 +476,12 @@ begin
     'license_state', upper(left(coalesce(v_in->>'license_state', ''), 2)), 'office_address', left(coalesce(v_in->>'office_address', ''), 200),
     'facebook', safe_https(v_in->>'facebook', 500), 'listings_url', safe_https(v_in->>'listings_url', 500),
     'booking_url', safe_https(v_in->>'booking_url', 500), 'iabs_url', safe_https(v_in->>'iabs_url', 500),
-    'greeting', left(coalesce(v_in->>'greeting', ''), 60), 'seasonal', coalesce(v_in->>'seasonal', 'true') <> 'false');
+    'greeting', left(coalesce(v_in->>'greeting', ''), 60), 'seasonal', coalesce(v_in->>'seasonal', 'true') <> 'false',
+    'meeting_url', safe_https(v_in->>'meeting_url', 500), 'reg_no', left(coalesce(v_in->>'reg_no', ''), 60), 'quals', left(coalesce(v_in->>'quals', ''), 120), 'hours', left(coalesce(v_in->>'hours', ''), 80), 'services', left(coalesce(v_in->>'services', ''), 300), 'practice', left(coalesce(v_in->>'practice', ''), 200), 'service_area', left(coalesce(v_in->>'service_area', ''), 120), 'insured', left(coalesce(v_in->>'insured', ''), 20), 'emergency', left(coalesce(v_in->>'emergency', ''), 20));
   v_photo := case when coalesce(v->>'photo_url', '') = '' then ''
     when v->>'photo_url' = r.photo_url then r.photo_url
     when v->>'photo_url' ~ '^https://hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+$'
-      or v->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif)$' then v->>'photo_url'
+      or v->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif|mp4|webm)$' then v->>'photo_url'
     else r.photo_url end;
   update cards set
     first_name = left(trim(v->>'first_name'), 60), last_name = left(coalesce(v->>'last_name', ''), 60),
@@ -547,3 +562,29 @@ grant execute on function public.renewal_due(text) to anon, authenticated;
 
 -- Refresh the API so new columns (public_id) show up immediately
 notify pgrst, 'reload schema';
+
+
+-- ADMIN LOG: who changed what (cards, coupons, orders, leads). Written automatically by the database; admins can read it.
+create table if not exists public.admin_log (
+  id bigserial primary key, at timestamptz not null default now(), user_id uuid, tbl text not null, action text not null, row_id text, before jsonb, after jsonb);
+create index if not exists admin_log_at_idx on public.admin_log (at desc);
+alter table public.admin_log enable row level security;
+drop policy if exists "admins read log" on public.admin_log;
+create policy "admins read log" on public.admin_log for select using (exists (select 1 from public.admins a where a.user_id = auth.uid()));
+revoke insert, update, delete on public.admin_log from anon, authenticated;
+create or replace function public.log_admin_change() returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is not null and exists (select 1 from admins where user_id = auth.uid()) then
+    insert into admin_log (user_id, tbl, action, row_id, before, after)
+    values (auth.uid(), tg_table_name, tg_op, coalesce((case when tg_op = 'DELETE' then to_jsonb(old) else to_jsonb(new) end)->>'id', ''),
+      case when tg_op = 'INSERT' then null else to_jsonb(old) - 'photo_url' - 'edit_hash' end,
+      case when tg_op = 'DELETE' then null else to_jsonb(new) - 'photo_url' - 'edit_hash' end);
+  end if;
+  return coalesce(new, old);
+end $$;
+do $$ declare t text; begin
+  foreach t in array array['cards', 'coupons', 'orders', 'leads'] loop
+    execute format('drop trigger if exists %I on public.%I', t || '_admin_log', t);
+    execute format('create trigger %I after insert or update or delete on public.%I for each row execute function public.log_admin_change()', t || '_admin_log', t);
+  end loop;
+end $$;

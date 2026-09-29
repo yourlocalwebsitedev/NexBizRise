@@ -29,10 +29,15 @@ select option{background:var(--surface);color:var(--ink-2);}
 </style>
 </helmet>
 
-<sc-if value="{{ standalone }}" hint-placeholder-val="{{ false }}">
-  <header style="position:sticky;top:0;z-index:20;height:62px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg);border-bottom:1px solid rgba(var(--fg-rgb),0.07);font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
-    <a href="{{ homeHref }}" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:10px;color:var(--ink);"><img src="/assets/nexbizrise-mark-t.png" alt="" width="34" height="34" style="width:34px;height:34px;flex:none;"><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span></a>
+<sc-if value="{{ showSaHeader }}" hint-placeholder-val="{{ false }}">
+  <header style="position:sticky;top:0;z-index:20;height:{{ hdrH }};transform:{{ hdrY }};transition:transform .25s ease;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg);border-bottom:1px solid rgba(var(--fg-rgb),0.07);font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
+    <a href="{{ homeHref }}" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:6px;color:var(--ink);"><img src="/assets/nexbizrise-logo.png" alt="" width="58" height="44" style="height:{{ hdrLogoH }};width:auto;flex:none;"><span style="font-size:{{ hdrFont }};font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span></a>
+    <sc-if value="{{ hdrWide }}" hint-placeholder-val="{{ true }}">
     <span style="display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;border-radius:999px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.06);font-size:12.5px;font-weight:600;color:var(--ink-3);white-space:nowrap;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><circle cx="9" cy="11" r="2"></circle><path d="M6.5 16c.6-1.3 1.5-2 2.5-2s1.9.7 2.5 2M14 10h4M14 13.5h3"></path></svg>{{ headerChip }}</span>
+    </sc-if>
+    <sc-if value="{{ hdrNarrow }}" hint-placeholder-val="{{ false }}">
+      <a href="{{ closeHref }}" aria-label="{{ closeLabel }}" style="width:44px;height:44px;margin-right:-8px;display:flex;align-items:center;justify-content:center;border-radius:12px;color:var(--ink-3);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></a>
+    </sc-if>
   </header>
 </sc-if>
 <div data-screen-label="Order Card" style="max-width:1200px;margin:0 auto;padding:{{ rootPad }};font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink-2);">
@@ -80,62 +85,112 @@ select option{background:var(--surface);color:var(--ink-2);}
         <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
           <div style="display:flex;flex-direction:column;gap:6px;">
             <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">Choose a plan</h2>
-            <p style="margin:0;font-size:15px;color:var(--muted);">Both plans include your personal link, QR code and free updates for the year.</p>
+            <p style="margin:0;font-size:15px;color:var(--muted);">Both plans include your personal link, QR code, social links and changes made by our team.</p>
           </div>
-                    <div role="radiogroup" aria-label="Plan" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;">
+                    <div role="radiogroup" aria-label="Plan" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));grid-auto-rows:1fr;gap:12px;">
             <sc-for list="{{ plans }}" as="p" hint-placeholder-count="2">
-              <button type="button" role="radio" aria-checked="{{ p.checked }}" onClick="{{ p.pick }}" style="text-align:left;display:flex;flex-direction:column;gap:14px;padding:22px;border-radius:16px;border:{{ p.border }};background:{{ p.bg }};color:var(--ink-2);font:inherit;cursor:pointer;">
-                <span style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+              <button type="button" role="radio" aria-checked="{{ p.checked }}" onClick="{{ p.pick }}" style="text-align:left;display:flex;flex-direction:column;gap:12px;padding:{{ p.pad }};border-radius:16px;border:{{ p.border }};background:{{ p.bg }};color:var(--ink-2);font:inherit;cursor:pointer;">
+                <span style="display:flex;align-items:center;gap:10px;">
                   <span style="font-size:18px;font-weight:700;color:var(--ink);">{{ p.name }}</span>
+                  <span style="flex:1;"></span>
                   <sc-if value="{{ p.popular }}"><span style="padding:3px 9px;border-radius:999px;background:rgba(var(--acc-rgb),0.14);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:0.08em;">POPULAR</span></sc-if>
+                  <span aria-hidden="true" style="width:22px;height:22px;flex:none;box-sizing:border-box;border-radius:50%;border:2px solid {{ p.radioRing }};display:grid;place-items:center;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent);opacity:{{ p.radioDot }};"></span></span>
                 </span>
-                <span style="display:flex;align-items:baseline;flex-wrap:wrap;gap:6px;"><sc-if value="{{ p.hasWas }}"><s style="font-size:18px;color:var(--faint);">{{ p.was }}</s></sc-if><span style="font-size:36px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);">{{ p.price }}</span><span style="font-size:14px;color:var(--muted);">{{ perYear }}</span></span>
-                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">
-                  <sc-for list="{{ p.features }}" as="f">
-                    <li style="display:flex;gap:10px;font-size:14px;line-height:1.45;color:var(--ink-3);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"></path></svg>{{ f }}</li>
-                  </sc-for>
-                </ul>
+                <span style="display:flex;gap:12px;align-items:flex-start;">
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;">
+                    <span style="display:flex;align-items:baseline;flex-wrap:wrap;gap:6px;"><sc-if value="{{ p.hasWas }}"><s style="font-size:18px;color:var(--faint);">{{ p.was }}</s></sc-if><span style="font-size:{{ p.priceFs }};font-weight:800;letter-spacing:-0.03em;color:var(--ink);">{{ p.price }}</span><span style="font-size:14px;color:var(--muted);">{{ perYear }}</span></span>
+                    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">
+                      <sc-for list="{{ p.features }}" as="f">
+                        <li style="display:flex;gap:8px;font-size:{{ p.featFs }};line-height:1.4;color:var(--ink-3);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"></path></svg>{{ f }}</li>
+                      </sc-for>
+                    </ul>
+                  </span>
+                  <sc-if value="{{ p.thumb }}" hint-placeholder-val="{{ false }}">
+                    <span aria-hidden="true" style="position:relative;width:92px;height:152px;flex:none;border-radius:12px;overflow:hidden;background:#101820;box-shadow:0 8px 18px -8px rgba(16,24,32,0.45);display:flex;flex-direction:column;">
+                      <span style="position:relative;height:84px;flex:none;background-image:url('{{ p.img }}');background-size:cover;background-position:center 25%;">
+                        <span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,24,32,0) 40%,#101820 100%);"></span>
+                        
+                      </span>
+                      <span style="padding:0 8px;display:flex;flex-direction:column;gap:1px;margin-top:-10px;position:relative;">
+                        <span style="font-size:9.5px;font-weight:700;color:#fff;line-height:1.2;">{{ thumbName }}</span>
+                        <span style="font-size:7px;color:rgba(255,255,255,0.7);">{{ thumbTitle }}</span>
+                      </span>
+                      <span style="padding:7px 8px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;">
+                        <span style="height:16px;border-radius:4px;background:rgba(255,255,255,0.12);"></span><span style="height:16px;border-radius:4px;background:rgba(255,255,255,0.12);"></span><span style="height:16px;border-radius:4px;background:rgba(255,255,255,0.12);"></span>
+                      </span>
+                      <span style="padding:5px 8px 0;display:flex;flex-direction:column;gap:3px;">
+                        <span style="height:9px;border-radius:3px;background:rgba(255,255,255,0.08);"></span><span style="height:9px;border-radius:3px;background:rgba(255,255,255,0.08);"></span>
+                      </span>
+                    </span>
+                  </sc-if>
+                </span>
               </button>
             </sc-for>
+            <a href="{{ teamHref }}" style="display:flex;flex-direction:column;gap:12px;padding:{{ teamPad }};border-radius:16px;border:1px dashed rgba(var(--fg-rgb),0.22);background:var(--bg-2);color:var(--ink-2);text-decoration:none;" style-hover="border-color:var(--accent);">
+              <span style="display:flex;align-items:center;gap:10px;"><span style="font-size:18px;font-weight:700;color:var(--ink);">Custom order</span><span style="flex:1;"></span><span style="padding:3px 9px;border-radius:999px;background:rgba(var(--fg-rgb),0.08);color:var(--ink-3);font-size:11px;font-weight:700;letter-spacing:0.08em;">TEAMS 20+</span></span>
+              <span style="font-size:24px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">Team pricing</span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-3);text-wrap:pretty;">For teams of 20 or more. Matching cards for everyone, volume pricing and one invoice.</span>
+              <span style="flex:1;"></span>
+              <span style="align-self:flex-start;min-height:44px;padding:0 18px;border-radius:12px;background:var(--btn);color:var(--btn-ink);font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:8px;">Contact us<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+            </a>
           </div>
         </sc-if>
 
         
         <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex;flex-direction:column;gap:6px;">
+          <sc-if value="{{ hasDetailsSub }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:6px;">
             <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">{{ detailsTitle }}</h2>
             <p style="margin:0;font-size:15px;color:var(--muted);">{{ detailsSub }}</p>
-          </div>
-          <div onDragOver="{{ onDragOver }}" onDrop="{{ onDrop }}" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:16px;border-radius:14px;border:1px dashed rgba(var(--fg-rgb),0.18);">
-            
-            <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:8px;">
-              <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                <button type="button" onClick="{{ pickPhoto }}" style="min-height:44px;padding:0 16px;border:0;border-radius:10px;background:var(--btn);color:var(--btn-ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer;" style-hover="background:var(--btn-hover);">{{ photoLabel }}</button>
-                <sc-if value="{{ hasPhoto }}"><button type="button" onClick="{{ removePhoto }}" style="min-height:44px;padding:0 14px;border-radius:10px;border:1px solid rgba(var(--fg-rgb),0.15);background:transparent;color:var(--ink-2);font:inherit;font-size:14px;font-weight:600;cursor:pointer;">Remove</button></sc-if>
-              </div>
-              <input ref="{{ fileRef }}" type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange="{{ onPhoto }}" tabindex="-1" aria-hidden="true" style="display:none;">
-              <span style="font-size:13px;line-height:1.45;color:var(--muted);">{{ photoNote }}</span>
+          </div></sc-if>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <span id="o-business-label" style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">Your Digital Card</span>
+            <div style="position:relative;">
+              <button type="button" onClick="{{ toggleBiz }}" aria-haspopup="listbox" aria-expanded="{{ bizOpenStr }}" aria-labelledby="o-business-label" style="width:100%;height:52px;padding:0 14px;border-radius:12px;border:{{ bizBorder }};background:var(--surface);display:flex;align-items:center;gap:12px;font:inherit;text-align:left;cursor:pointer;">
+                <sc-if value="{{ bizPicked }}" hint-placeholder-val="{{ false }}"><span style="width:32px;height:32px;flex:none;border-radius:9px;background:var(--btn);color:var(--btn-ink);display:grid;place-items:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ bizIcon }}"></path></svg></span></sc-if>
+                <span style="flex:1;min-width:0;font-size:{{ bizFs }};font-weight:{{ bizFw }};color:{{ bizInk }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ bizLabel }}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;color:var(--ink);transform:{{ bizChevron }};transition:transform .2s ease;"><path d="m6 9 6 6 6-6"></path></svg>
+              </button>
+              <sc-if value="{{ bizOpen }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ closeBiz }}" aria-hidden="true" style="position:fixed;inset:0;z-index:29;"></div>
+                <div role="listbox" aria-labelledby="o-business-label" style="position:absolute;top:58px;left:0;right:0;z-index:30;padding:6px;border-radius:14px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.10);box-shadow:0 14px 30px -14px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:2px;">
+                  <sc-for list="{{ bizItems }}" as="bi" hint-placeholder-count="5"><button type="button" role="option" aria-selected="{{ bi.selected }}" onClick="{{ bi.pick }}" style="min-height:52px;padding:0 10px;border:0;border-radius:10px;background:{{ bi.rowBg }};display:flex;align-items:center;gap:12px;font:inherit;text-align:left;cursor:pointer;" style-hover="background:var(--bg-2);"><span style="width:32px;height:32px;flex:none;border-radius:9px;background:{{ bi.tileBg }};color:{{ bi.tileInk }};display:grid;place-items:center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ bi.icon }}"></path></svg></span><span style="flex:1;min-width:0;display:flex;flex-direction:column;"><span style="font-size:15px;font-weight:700;color:var(--ink);">{{ bi.short }}</span><span style="font-size:12.5px;color:var(--muted);">{{ bi.sub }}</span></span><span style="opacity:{{ bi.checkOp }};color:var(--accent);display:flex;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span></button></sc-for>
+                </div>
+              </sc-if>
             </div>
-            <sc-if value="{{ hasPhoto }}">
-              <div style="flex:1 1 100%;display:flex;flex-wrap:wrap;justify-content:center;gap:18px;align-items:center;padding-top:14px;border-top:1px solid rgba(var(--fg-rgb),0.08);">
-                <div onPointerDown="{{ adjDown }}" aria-label="Drag to position the photo" style="position:relative;width:200px;height:200px;border-radius:16px;overflow:hidden;background:{{ adjBgColor }};cursor:grab;touch-action:none;user-select:none;flex:none;">
-                  <div style="position:absolute;inset:0;background-image:{{ adjBg }};background-size:cover;background-position:{{ adjPos }};transform:scale({{ adjZoom }});transform-origin:{{ adjPos }};pointer-events:none;"></div>
-                  <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg, transparent 50%, rgba(6,18,13,0.55) 100%);pointer-events:none;"></div>
-                  <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.25) 1px, transparent 1px);background-size:33.33% 33.33%;pointer-events:none;"></div>
-                  <span style="position:absolute;left:10px;bottom:10px;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,0.55);color:#fff;font-size:11px;font-weight:700;letter-spacing:0.08em;pointer-events:none;">Drag to move</span>
-                </div>
-                <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:12px;">
-                  <div style="display:flex;flex-direction:column;gap:6px;">
-                    <label for="o-zoom" style="font-size:14px;font-weight:600;display:flex;justify-content:space-between;"><span>Zoom</span><span style="font-weight:500;color:var(--muted);">{{ zoomLabel }}</span></label>
-                    <input id="o-zoom" type="range" min="1" max="2.5" step="0.05" value="{{ adjZoom }}" onChange="{{ onZoom }}" style="width:100%;accent-color:var(--accent);">
-                  </div>
-                  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;">
-                    <sc-for list="{{ focusPresets }}" as="fp" hint-placeholder-count="4">
-                      <button type="button" onClick="{{ fp.pick }}" style="height:38px;border-radius:9px;border:1px solid rgba(var(--fg-rgb),0.13);background:var(--surface);color:var(--ink-2);font:inherit;font-size:13px;font-weight:600;cursor:pointer;">{{ fp.label }}</button>
-                    </sc-for>
-                  </div>
-                  <p style="margin:0;font-size:13px;line-height:1.4;color:var(--muted);">The square is the top of your card. Drag and zoom until your face sits well above your name.</p>
-                </div>
+            <sc-if value="{{ hasBizErr }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font-size:13px;font-weight:600;color:var(--danger);">{{ bizErr }}</span></sc-if>
+          </div>
+          <div onDragOver="{{ onDragOver }}" onDrop="{{ onDrop }}" style="display:flex;flex-direction:column;gap:14px;padding:{{ phPad }};border-radius:16px;border:{{ phBorder }};background:var(--surface);">
+            <input ref="{{ fileRef }}" type="file" accept="{{ photoAccept }}" onChange="{{ onPhoto }}" tabindex="-1" aria-hidden="true" style="display:none;">
+            <sc-if value="{{ noPhotoAdj }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;">
+                <button type="button" onClick="{{ pickPhoto }}" aria-label="{{ uploadLabel }}" style="position:relative;width:104px;height:104px;margin-bottom:8px;padding:0;border:0;border-radius:50%;background:var(--bg-2);cursor:pointer;display:grid;place-items:center;overflow:visible;">
+                  <svg width="104" height="104" viewBox="0 0 104 104" aria-hidden="true" style="border-radius:50%;"><circle cx="52" cy="42" r="18" fill="rgba(16,24,32,0.14)"></circle><path d="M18 96c4-20 18-30 34-30s30 10 34 30z" fill="rgba(16,24,32,0.14)"></path></svg>
+                  <span aria-hidden="true" style="position:absolute;right:-2px;bottom:4px;width:34px;height:34px;border-radius:50%;background:var(--surface);box-shadow:0 2px 8px -2px rgba(0,0,0,0.25);color:var(--ink);display:grid;place-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></span>
+                </button>
+                <span style="font-size:16px;font-weight:700;color:var(--ink);">{{ addPhotoTitle }}</span>
+                <sc-if value="{{ noPhotoMsg }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;line-height:1.45;color:var(--muted);text-wrap:pretty;">{{ addPhotoHint }}</span></sc-if>
+                <sc-if value="{{ hasPhotoMsg }}"><span role="alert" style="font-size:13px;line-height:1.45;color:var(--danger);">{{ photoNote }}</span></sc-if>
+                <button type="button" onClick="{{ pickPhoto }}" style="margin-top:10px;min-height:48px;padding:0 22px;border-radius:12px;border:1px solid rgba(var(--fg-rgb),0.18);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;cursor:pointer;" style-hover="background:var(--bg-2);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5M4 15v5h16v-5"></path></svg>{{ uploadLabel }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:8px;">
+                <button type="button" onClick="{{ pickPhoto }}" style="min-height:48px;min-width:0;padding:0 8px;border-radius:12px;border:1px solid rgba(var(--fg-rgb),0.18);background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;font-weight:700;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;" style-hover="background:var(--bg-2);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="m21 16-5-5-9 9"></path></svg>Change photo</button>
+                <button type="button" onClick="{{ removePhoto }}" style="min-height:48px;min-width:0;padding:0 8px;border-radius:12px;border:1px solid rgba(220,38,38,0.35);background:rgba(220,38,38,0.06);color:var(--danger);font:inherit;font-size:14.5px;font-weight:700;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>Remove</button>
+              </div>
+              <sc-if value="{{ noPhotoMsg }}" hint-placeholder-val="{{ true }}"><span style="margin-top:-4px;font-size:13px;line-height:1.45;color:var(--muted);text-wrap:pretty;">{{ addPhotoHint }}</span></sc-if>
+              <sc-if value="{{ hasPhotoMsg }}"><span role="alert" style="margin-top:-4px;font-size:13px;line-height:1.45;color:var(--danger);">{{ photoNote }}</span></sc-if>
+              <div onPointerDown="{{ adjDown }}" aria-label="Drag to position the photo" style="position:relative;width:100%;aspect-ratio:1 / 1;max-width:420px;align-self:center;border-radius:16px;overflow:hidden;background:{{ adjBgColor }};cursor:grab;touch-action:none;user-select:none;">
+                <div data-ph="1" style="position:absolute;inset:0;background-image:{{ adjBg }};background-size:cover;background-position:{{ adjPos }};transform:scale({{ adjZoom }});transform-origin:{{ adjPos }};pointer-events:none;"></div>
+                <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);background-size:33.33% 33.33%;pointer-events:none;"></div>
+                <span style="position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(0,0,0,0.55);color:#fff;font-size:12.5px;font-weight:700;pointer-events:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M2 12h20M9 5l3-3 3 3M9 19l3 3 3-3M5 9l-3 3 3 3M19 9l3 3-3 3"></path></svg>Drag to move</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <label for="o-zoom" style="font-size:15px;font-weight:700;color:var(--ink);display:flex;justify-content:space-between;"><span>Zoom</span><span style="font-weight:600;color:var(--muted);">{{ zoomLabel }}</span></label>
+                <input id="o-zoom" type="range" min="1" max="2.5" step="0.05" value="{{ adjZoom }}" onChange="{{ onZoom }}" style="width:100%;accent-color:var(--accent);">
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;">
+                <sc-for list="{{ focusPresets }}" as="fp" hint-placeholder-count="4"><button type="button" onClick="{{ fp.pick }}" style="min-height:64px;padding:8px 4px;border-radius:12px;border:1px solid {{ fp.bd }};background:{{ fp.bg }};color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ fp.icon }}"></path></svg>{{ fp.label }}</button></sc-for>
               </div>
             </sc-if>
           </div>
@@ -173,7 +228,7 @@ select option{background:var(--surface);color:var(--ink-2);}
         <sc-if value="{{ isStep5 }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex;flex-direction:column;gap:6px;">
             <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">Payment</h2>
-            <p style="margin:0;font-size:15px;color:var(--muted);">One payment for the year. Updates to your card are free.</p>
+            <p style="margin:0;font-size:15px;color:var(--muted);">One payment for the year. Includes {{ changesIncl }} changes to your card, made by our team.</p>
           </div>
                     <div style="display:flex;flex-direction:column;border-radius:16px;border:1px solid rgba(var(--fg-rgb),0.08);overflow:hidden;">
             <div style="display:flex;justify-content:space-between;gap:12px;padding:16px 18px;"><span style="font-size:15px;color:var(--ink-2);">{{ planLine }}</span><span style="font-size:15px;font-weight:700;color:var(--ink);">{{ subtotal }}</span></div>
@@ -199,10 +254,10 @@ select option{background:var(--surface);color:var(--ink-2);}
 
         <sc-if value="{{ hasSubmitError }}"><p role="alert" style="margin:0;font-size:14px;font-weight:600;color:var(--danger);">{{ submitError }}</p></sc-if>
 
-        <div style="position:sticky;bottom:0;z-index:4;margin:0 -4px -4px;padding:12px 4px 4px;background:var(--surface);display:flex;justify-content:space-between;align-items:center;gap:12px;">
-          <sc-if value="{{ hasBack }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ back }}" style="min-height:50px;padding:0 20px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.18);background:transparent;color:var(--ink);font:inherit;font-size:15px;font-weight:600;cursor:pointer;">{{ backLabel }}</button></sc-if>
-          <sc-if value="{{ noBack }}" hint-placeholder-val="{{ true }}"><span></span></sc-if>
-          <button type="button" onClick="{{ next }}" disabled="{{ busy }}" style="min-height:50px;padding:0 26px;border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);font:inherit;font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px;cursor:pointer;" style-hover="background:var(--btn-hover);">{{ nextLabel }}
+        <div style="position:sticky;bottom:0;z-index:4;margin:0 -4px -4px;padding:12px 4px 4px;background:var(--surface);display:flex;align-items:center;gap:12px;">
+          <sc-if value="{{ hasBack }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ back }}" style="flex:1 1 0;min-width:0;min-height:54px;padding:0 18px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.18);background:var(--surface);color:var(--ink);font:inherit;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;" style-hover="background:var(--bg-2);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>{{ backLabel }}</button></sc-if>
+          <sc-if value="{{ noBack }}" hint-placeholder-val="{{ true }}"><span style="flex:1 1 0;"></span></sc-if>
+          <button type="button" onClick="{{ next }}" disabled="{{ busy }}" style="flex:1.35 1 0;min-width:0;min-height:54px;padding:0 22px;border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);font:inherit;font-size:16px;font-weight:700;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;box-shadow:0 6px 16px -8px rgba(16,24,32,0.5);" style-hover="background:var(--btn-hover);">{{ nextLabel }}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
           </button>
         </div>
@@ -210,12 +265,9 @@ select option{background:var(--surface);color:var(--ink-2);}
     </div>
 
     <aside aria-label="Live preview" style="display:{{ pv.display }};flex:{{ pv.flex }};order:{{ pv.order }};margin:0 auto;position:sticky;top:{{ pv.top }};z-index:5;flex-direction:column;align-items:center;gap:10px;padding:{{ pv.pad }};background:{{ pv.bg }};">
-      <sc-if value="{{ pv.showBack }}" hint-placeholder-val="{{ false }}">
-        <div style="width:{{ pv.w }};display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <button type="button" onClick="{{ back }}" style="min-height:44px;padding:0 16px 0 10px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.16);background:var(--surface);color:var(--ink);font:inherit;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>Make changes</button>
-        </div>
-      </sc-if>
+      
       <div style="position:relative;width:{{ pv.w }};height:{{ pv.h }};border-radius:20px;overflow:hidden;background:#06120d;transition:height .3s ease;box-shadow:0 18px 40px -18px rgba(0,0,0,0.6);">
+        <sc-if value="{{ pv.showBack }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ back }}" aria-label="Back to your details" style="position:absolute;top:16px;left:16px;z-index:8;width:46px;height:46px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,0.32);background:rgba(16,24,32,0.28);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,0.25),0 6px 16px -8px rgba(0,0,0,0.5);color:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button></sc-if>
         <iframe ref="{{ previewRef }}" onLoad="{{ onPreviewLoad }}" src="/card.html?preview=1" title="Live preview of your card" scrolling="{{ pv.scrolling }}" style="position:absolute;top:0;left:0;width:390px;height:{{ pv.ih }};border:0;transform:scale({{ pv.scale }});transform-origin:0 0;"></iframe>
         <sc-if value="{{ showSeaPv }}" hint-placeholder-val="{{ false }}">
           <div role="radiogroup" aria-label="Preview seasonal theme" style="position:absolute;top:52px;right:8px;z-index:3;display:flex;flex-direction:column;gap:6px;padding:5px;border-radius:999px;background:rgba(10,12,18,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);">
@@ -223,27 +275,32 @@ select option{background:var(--surface);color:var(--ink-2);}
           </div>
         </sc-if>
       </div>
-      <div style="position:sticky;bottom:0;z-index:6;width:{{ pv.w }};display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 0 12px;background:var(--bg);border-radius:16px 16px 0 0;">
-        <div style="display:flex;align-items:center;gap:4px;padding:4px;border-radius:999px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.10);box-shadow:0 1px 2px rgba(10,15,26,0.06);">
+      <div style="position:sticky;bottom:0;z-index:6;width:{{ pv.w }};box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;background:var(--bg);border-radius:16px 16px 0 0;">
+        <sc-if value="{{ swShow }}" hint-placeholder-val="{{ true }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;"><sc-if value="{{ showCollSw }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:4px;padding:4px;border-radius:999px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.10);box-shadow:0 1px 2px rgba(10,15,26,0.06);">
           <button type="button" onClick="{{ collPrev }}" aria-label="Previous collection" style="width:40px;height:40px;flex:none;border:0;border-radius:50%;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer;" style-hover="background:var(--bg-2);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
           <div aria-live="polite" aria-label="{{ collPos }}" style="min-width:150px;display:flex;flex-direction:column;align-items:center;gap:5px;">
             <span style="font-size:15px;font-weight:800;color:var(--ink);line-height:1;">{{ collName }}</span>
             <span aria-hidden="true" style="display:flex;gap:4px;"><sc-for list="{{ collDots }}" as="cd" hint-placeholder-count="3"><span style="height:4px;width:{{ cd.w }};border-radius:2px;background:{{ cd.bg }};transition:all .25s;"></span></sc-for></span>
           </div>
           <button type="button" onClick="{{ collNext }}" aria-label="Next collection" style="width:40px;height:40px;flex:none;border:0;border-radius:50%;background:var(--btn);color:var(--btn-ink);display:grid;place-items:center;cursor:pointer;" style-hover="background:var(--btn-hover);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></button>
-        </div>
-        <div role="radiogroup" aria-label="Card style" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+        </div></sc-if>
+        <div style="position:relative;width:100%;"><div role="radiogroup" aria-label="Colour palette" onScroll="{{ onSwScroll }}" style="display:flex;justify-content:{{ swJustify }};gap:{{ swGap }};overflow-x:auto;scrollbar-width:none;padding:6px 0;"><span aria-hidden="true" style="width:0;flex:none;"></span>
           <sc-for list="{{ colours }}" as="c" hint-placeholder-count="6">
-            <button type="button" role="radio" aria-checked="{{ c.checked }}" aria-label="{{ c.name }}" title="{{ c.name }}" onClick="{{ c.pick }}" style="width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;background:{{ c.bg }};box-shadow:{{ c.ring }};display:grid;place-items:center;">
+            <sc-if value="{{ c.isDot }}" hint-placeholder-val="{{ true }}"><button type="button" role="radio" aria-checked="{{ c.checked }}" aria-label="{{ c.name }}" title="{{ c.name }}" onClick="{{ c.pick }}" style="width:44px;height:44px;flex:none;border-radius:50%;border:0;cursor:pointer;background:{{ c.bg }};box-shadow:{{ c.ring }};display:grid;place-items:center;">
               <span aria-hidden="true" style="width:16px;height:16px;border-radius:50%;background:{{ c.accent }};"></span>
-            </button>
-          </sc-for>
-        </div>
-        <span style="font-size:13px;font-weight:600;color:var(--muted);">{{ colourName }}</span>
+            </button></sc-if>
+            <sc-if value="{{ c.isThumb }}" hint-placeholder-val="{{ false }}"><button type="button" role="radio" aria-checked="{{ c.checked }}" aria-label="{{ c.name }}" onClick="{{ c.pick }}" style="flex:none;padding:0;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:6px;font:inherit;font-size:11.5px;font-weight:700;color:{{ c.labelInk }};cursor:pointer;">
+              <span aria-hidden="true" style="position:relative;display:block;width:58px;height:80px;border-radius:10px;overflow:hidden;background:{{ c.bg }};box-shadow:{{ c.ring2 }};"><sc-for list="{{ c.blocks }}" as="b"><span style="position:absolute;left:{{ b.l }};top:{{ b.t }};width:{{ b.w }};height:{{ b.h }};border-radius:{{ b.r }};background:{{ b.bg }};box-shadow:{{ b.sh }};"></span></sc-for></span>{{ c.name }}
+            </button></sc-if>
+          </sc-for><span aria-hidden="true" style="width:0;flex:none;"></span></div><sc-if value="{{ swFade }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="position:absolute;top:0;right:0;bottom:0;width:24px;background:linear-gradient(90deg, rgba(var(--bg-rgb,245,242,236),0) 0%, var(--bg) 100%);pointer-events:none;"></div></sc-if></div>
+        <sc-if value="{{ pillDot }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;font-weight:600;color:var(--muted);">{{ colourName }}</span></sc-if></div></sc-if>
         <sc-if value="{{ pv.showNext }}" hint-placeholder-val="{{ false }}">
-          <button type="button" onClick="{{ next }}" style="margin-top:4px;width:100%;min-height:50px;border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);font:inherit;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;">{{ pv.nextText }}
+          <div style="width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;">
+            <button type="button" onClick="{{ swToggle }}" aria-expanded="{{ swOpenStr }}" style="min-width:0;min-height:54px;padding:0 14px;justify-content:center;border-radius:999px;border:{{ swPillBd }};background:var(--surface);color:var(--ink);font:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:pointer;"><sc-if value="{{ pillDot }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 0 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16.6A4.4 4.4 0 0 0 21 10.8C21 6.5 17 3 12 3zM6.8 12.2a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8zm2.9-3.8a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8zm4.6 0a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8zm2.9 3.8a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8z"></path></svg></sc-if><sc-if value="{{ pillThumb }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position:relative;display:block;width:26px;height:36px;border-radius:6px;overflow:hidden;background:{{ pillBg }};box-shadow:0 0 0 1px rgba(var(--fg-rgb),0.14);"><sc-for list="{{ pillBlocks }}" as="b"><span style="position:absolute;left:{{ b.l }};top:{{ b.t }};width:{{ b.w }};height:{{ b.h }};border-radius:{{ b.r }};background:{{ b.bg }};box-shadow:{{ b.sh }};"></span></sc-for></span></sc-if>{{ pillName }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:{{ swChevron }};transition:transform .2s ease;"><path d="m18 15-6-6-6 6"></path></svg></button>
+            <button type="button" onClick="{{ next }}" style="min-width:0;min-height:54px;white-space:nowrap;border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);font:inherit;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;">{{ pv.nextText }}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
           </button>
+          </div>
         </sc-if>
       </div>
       <sc-if value="{{ pv.mobile }}" hint-placeholder-val="{{ false }}">
@@ -281,14 +338,13 @@ select option{background:var(--surface);color:var(--ink-2);}
       </div>
     </div>
 
-    <sc-if value="{{ hasEditLink }}" hint-placeholder-val="{{ false }}">
-      <div style="width:100%;box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding:18px 20px;border-radius:16px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);text-align:left;">
+    <sc-if value="{{ notEditDone }}" hint-placeholder-val="{{ false }}">
+      <div style="width:100%;box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding:18px 20px;border-radius:16px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);">
         <div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:4px;">
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.16em;color:var(--muted);">YOUR PRIVATE EDIT LINK</span>
-          <span style="font-size:14px;font-weight:600;color:var(--ink);overflow-wrap:anywhere;">{{ editLinkLabel }}</span>
-          <span style="font-size:13px;line-height:1.45;color:var(--muted);">Use it any time to update your card. Anyone with this link can change your card, so keep it to yourself.</span>
+          <span style="font-size:12px;font-weight:700;letter-spacing:0.16em;color:var(--muted);">NEED A CHANGE?</span>
+          <span style="font-size:14px;line-height:1.5;color:var(--ink);">{{ changesNote }}</span>
         </div>
-        <button type="button" onClick="{{ copyEditLink }}" style="min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer;">{{ copyEditLabel }}</button>
+        <a href="{{ changeHref }}" target="_blank" rel="noopener" style="min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--ink);background:transparent;color:var(--ink);font-size:15px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;">Request a change</a>
       </div>
     </sc-if>
     <sc-if value="{{ notEditDone }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-size:14px;color:var(--muted);">Order number <span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700;color:var(--ink-2);letter-spacing:0.03em;">{{ orderNo }}</span> · keep it for support or changes</p></sc-if>
@@ -310,19 +366,19 @@ const CARD_BASE = 'https://card.nexbizrise.com';
 const BASE_HOST = CARD_BASE.replace(/^https?:\/\//, '');
 const LOCAL_KEY = 'nbr-orders';
 /* Cloudflare Turnstile site key (public). Leave '' to switch the bot check off. */
-const TURNSTILE_SITE_KEY = '';
-const VIA_WORKER = () => /(^|\.)nexbizrise\.com$|\.pages\.dev$/.test(location.hostname);
+const TURNSTILE_SITE_KEY = '0x4AAAAAAFIAJl64rp47Hazn';
+const VIA_WORKER = () => /(^|\.)nexbizrise\.com$|\.pages\.dev$|\.workers\.dev$/.test(location.hostname);
 
 const PRICING = {
-  IN: { label: 'India · ₹', cur: '₹', code: 'INR', locale: 'en-IN', basic: 799, motion: 3999, motionWas: 4999, phone: '+91 98765 43210', city: 'Hyderabad' },
-  US: { label: 'USA · $', cur: '$', code: 'USD', locale: 'en-US', basic: 49, motion: 129, motionWas: 169, phone: '+1 (816) 555-0123', city: 'Kansas City' },
+  IN: { label: 'India · ₹', cur: '₹', code: 'INR', locale: 'en-IN', basic: 799, basicWas: 999, motion: 1799, motionWas: 2499, phone: '+91 98765 43210', city: 'Hyderabad' },
+  US: { label: 'USA · $', cur: '$', code: 'USD', locale: 'en-US', basic: 49, basicWas: 69, motion: 79, motionWas: 99, phone: '+1 (816) 555-0123', city: 'Kansas City' },
 };
 const GST = 0.18;
 const priceOf = (reg, plan) => { const base = (PRICING[reg] || PRICING.US)[plan]; const tax = reg === 'IN' ? Math.round(base * GST) : 0; return { base, tax, total: base + tax }; };
 const money = (reg, n) => { const r = PRICING[reg] || PRICING.US; return r.cur + Number(n).toLocaleString(r.locale); };
 const PLANS = [
-  { id: 'basic', name: 'Digital Card', price: 49, popular: true, features: ['Your photo, name and title', 'One-tap save contact', 'Call, text, WhatsApp and email buttons', 'Social and website links', 'Personal link and QR code'] },
-  { id: 'motion', name: 'Motion Card', price: 129, features: ['Everything in Digital Card', 'Moving portrait at the top of your card', 'We turn your photo into the motion clip'] },
+  { id: 'basic', name: 'Digital Card', price: 49, popular: true, features: ['Your photo, name and title', 'One-tap save contact', 'Call, text, WhatsApp and email buttons'] },
+  { id: 'motion', name: 'Motion Card', price: 79, features: ['Everything in Digital Card', 'Moving portrait at the top of your card', 'Upload a short selfie video or GIF (up to 10 seconds)'] },
 ];
 const PRO_STYLES = [
   { id: 'pro-executive', name: 'Executive', layout: 'professional', mode: 'banner', bg: '#0f1a2e', ink: '#f1ece2', card: '#17243d', accent: '#d8b36a', on: '#15120a', font: "'Cormorant Garamond',Georgia,serif", rad: '12px', align: 'left', boxed: true },
@@ -340,13 +396,34 @@ const LUX_STYLES = [
   { id: 'lux-velvet', name: 'Burgundy Velvet', layout: 'luxuryEstate', bg: '#2a0d14', ink: '#f5e6e0', accent: '#e0b28a', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
   { id: 'lux-sapphire', name: 'Sapphire', layout: 'luxuryEstate', bg: '#0e1633', ink: '#eef0f7', accent: '#b8c4e6', frame: 'circle', font: "Newsreader,Georgia,serif" },
 ];
-const STYLE_BY_ID = Object.fromEntries(PRO_STYLES.concat(LUX_STYLES).map(s => [s.id, s]));
+const RE_STYLES = [
+  { id: 're-poster', name: 'Poster', layout: 'estate', mode: 'poster', bg: '#14213D', ink: '#FFFFFF', accent: '#F2E8D5' },
+  { id: 're-list', name: 'List', layout: 'estate', mode: 'list', bg: '#FFFFFF', ink: '#14213D', accent: '#14213D' },
+  { id: 're-blueprint', name: 'Blueprint', layout: 'estate', mode: 'blueprint', bg: '#F3F1EC', ink: '#1F3A5F', accent: '#1F3A5F' },
+  { id: 're-home', name: 'Home Photo', layout: 'estate', mode: 'home', bg: '#EFE9E1', ink: '#3A3A3A', accent: '#E9A866' },
+];
+/* Same four layouts for every business, each with its own colours: [prefix, poster, list, blueprint, home] as [bg, ink, accent] */
+const BIZ_PAL = {
+  hc: [['#0B3B37', '#FFFFFF', '#D8F3EE'], ['#FFFFFF', '#0B2B28', '#0F766E'], ['#F1F6F5', '#0B2B28', '#0F766E'], ['#EAF4F2', '#0B2B28', '#0F766E']],
+  bw: [['#3E2A22', '#FFFFFF', '#F3D9C9'], ['#FBF7F2', '#5B3A2E', '#C98E74'], ['#F6EFE8', '#5B3A2E', '#7A4A3A'], ['#F6EFE8', '#5B3A2E', '#C98E74']],
+  lf: [['#0B1733', '#FFFFFF', '#E9C46A'], ['#FFFFFF', '#0B1733', '#0B1733'], ['#F2F2F0', '#0B1733', '#0B1733'], ['#ECEBE6', '#0B1733', '#E9C46A']],
+  hs: [['#1C1C1C', '#FFFFFF', '#FFC400'], ['#FFFFFF', '#1C1C1C', '#FFC400'], ['#F5F3EE', '#1C1C1C', '#1C1C1C'], ['#F5F3EE', '#1C1C1C', '#FFC400']],
+  cc: [['#0E1620', '#FFFFFF', '#DCE6F5'], ['#FFFFFF', '#0E1620', '#2563EB'], ['#EEF2F7', '#0E1620', '#1E3A8A'], ['#EEF2F7', '#0E1620', '#2563EB']],
+};
+const BIZ_STYLES = Object.entries(BIZ_PAL).flatMap(([p, v]) => ['poster', 'list', 'blueprint', 'home'].map((mode, i) => ({ id: p + '-' + mode, name: ['Poster', 'List', 'Blueprint', 'Home'][i], layout: 'estate', mode, bg: v[i][0], ink: v[i][1], accent: v[i][2], biz: p })));
+const STYLE_BY_ID = Object.fromEntries(PRO_STYLES.concat(LUX_STYLES, RE_STYLES, BIZ_STYLES).map(s => [s.id, s]));
 const COLLECTIONS = [
   { id: 'personal', name: 'Personal', preset: null },
   { id: 'professional', name: 'Professional', preset: 'entrepreneur', category: "Let's connect", tagline: 'Trusted · Professional · Reliable' },
   { id: 'luxury', name: 'Luxury', preset: 'entrepreneur', category: "Let's connect", tagline: 'Excellence · Discretion · Service' },
+  { id: 'realestate', name: 'Real Estate', preset: 'realEstate', category: 'Real Estate', tagline: 'Buy · Sell · Rent' },
+  { id: 'hc', name: 'Health', preset: 'healthcare', category: 'Healthcare', tagline: 'Care · Treat · Heal' },
+  { id: 'bw', name: 'Beauty', preset: 'services', category: 'Beauty & Wellness', tagline: 'Style · Care · Glow' },
+  { id: 'lf', name: 'Legal & Finance', preset: 'entrepreneur', category: 'Legal & Finance', tagline: 'Advice · Protect · Plan' },
+  { id: 'hs', name: 'Home Services', preset: 'services', category: 'Home Services', tagline: 'Fix · Build · Maintain' },
+  { id: 'cc', name: 'Corporate', preset: 'entrepreneur', category: "Let's connect", tagline: 'Strategy · Growth · Results' },
 ];
-const collOf = id => STYLE_BY_ID[id] ? (STYLE_BY_ID[id].layout === 'professional' ? 'professional' : 'luxury') : 'personal';
+const collOf = id => STYLE_BY_ID[id] ? (STYLE_BY_ID[id].layout === 'professional' ? 'professional' : STYLE_BY_ID[id].layout === 'estate' ? (STYLE_BY_ID[id].biz || 'realestate') : 'luxury') : 'personal';
 const COLOURS = [
   { id: 'forest', name: 'Forest Green', bg: '#06120d', accent: '#f2c98a' },
   { id: 'burgundy', name: 'Burgundy Rose', bg: '#1a0a0e', accent: '#f2a3a8' },
@@ -361,11 +438,42 @@ const PRESETS = {
   services: { category: 'Services', tagline: 'Design · Style · Transform' },
   healthcare: { category: 'Healthcare', tagline: 'Care · Treat · Smile' },
 };
-const PROFESSIONS = ['Entrepreneur / Business owner', 'Real Estate', 'Healthcare', 'Interior / Design services', 'Consultant / Coach', 'Legal / Finance', 'Retail / Shop', 'Other'];
-const PROF_PRESET = { 'Entrepreneur / Business owner': 'entrepreneur', 'Real Estate': 'realEstate', 'Healthcare': 'healthcare', 'Interior / Design services': 'services', 'Consultant / Coach': 'entrepreneur', 'Legal / Finance': 'entrepreneur', 'Retail / Shop': 'services', 'Other': 'entrepreneur' };
+const PROFESSIONS = ['Entrepreneur / Business owner', 'Real Estate', 'Healthcare', 'Beauty & Wellness', 'Home Services', 'Interior / Design services', 'Consultant / Coach', 'Legal / Finance', 'Retail / Shop', 'Other'];
+const BIZ_ICON = {"Real Estate":["Property","M3 10.5 12 3l9 7.5V21H3z"],"Healthcare":["Health","M12 5v14M5 12h14"],"Beauty & Wellness":["Beauty","M6 3a3 3 0 1 0 0 6a3 3 0 1 0 0-6M6 15a3 3 0 1 0 0 6a3 3 0 1 0 0-6M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"],"Legal / Finance":["Legal","M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"],"Home Services":["Trades","M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"],"Consultant / Coach":["Corporate","M3 7h18v13H3zM8 7V4h8v3M3 12h18"],"Entrepreneur / Business owner":["Personal","M12 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8M4 21a8 8 0 0 1 16 0"]};
+/* Step 2 starts with "What's your business?". Each type shows only the design collections made for it. */
+const BUSINESSES = [
+  { prof: 'Entrepreneur / Business owner', name: 'Personal', sub: 'Any profession', colls: ['personal', 'professional', 'luxury'] },
+  { prof: 'Real Estate', name: 'Real Estate', sub: 'Agents, brokers, builders', colls: ['realestate'], hiddenColls: ['luxury', 'professional'] },
+  { prof: 'Healthcare', name: 'Health & Clinics', sub: 'Doctors, dentists, clinics', colls: ['hc'], hiddenColls: ['professional', 'personal'] },
+  { prof: 'Beauty & Wellness', name: 'Beauty & Wellness', sub: 'Salons, stylists, spas, trainers', colls: ['bw'], hiddenColls: ['luxury', 'personal'] },
+  { prof: 'Legal / Finance', name: 'Legal & Finance', sub: 'Lawyers, CAs, insurance advisors', colls: ['lf'], hiddenColls: ['professional', 'luxury'] },
+  { prof: 'Consultant / Coach', name: 'Corporate & Consultants', sub: 'Sales, founders, freelancers', colls: ['cc'], hiddenColls: ['professional', 'luxury'] },
+];
+/* Personal shows Personal, Professional and Luxury. Business categories show only their own designs; hiddenColls lists extra designs to restore later. */
+const VISIBLE_BIZ = BUSINESSES.filter(b => !b.hidden);
+const thumbBlocks = (c, w, h) => { const s = w / 58, px = n => (n * s).toFixed(1) + 'px', bg = c.bg, ink = c.ink, acc = c.accent, mix = p => 'color-mix(in srgb, ' + ink + ' ' + p + '%, ' + bg + ')', B = (l, t, ww, hh, r, b, sh) => ({ l: px(l), t: px(t), w: px(ww), h: px(hh), r: px(r), bg: b, sh: sh || 'none' });
+  if (c.mode === 'poster') return [B(0, 0, 58, 44, 0, mix(18)), B(6, 56, 34, 5, 2, ink), B(6, 65, 22, 3, 2, acc)];
+  if (c.mode === 'list') return [B(18, 9, 22, 22, 11, mix(22))].concat([37, 47, 57, 67].map(y => B(7, y, 44, 6, 2, mix(12))));
+  if (c.mode === 'blueprint') return [B(0, 0, 58, 32, 0, acc)].concat([[5, 38], [31, 38], [5, 58], [31, 58]].map(([x, y]) => B(x, y, 22, 16, 3, mix(12))));
+  return [B(14, 7, 30, 30, 15, mix(22), '0 0 0 ' + px(2) + ' #FFFFFF'), B(6, 42, 46, 31, 4, '#FFFFFF'), B(11, 48, 26, 4, 2, acc)]; };
+const firstStyleOf = id => (id === 'professional' ? PRO_STYLES : id === 'luxury' ? LUX_STYLES : id === 'realestate' ? RE_STYLES : BIZ_PAL[id] ? BIZ_STYLES.filter(s => s.biz === id) : COLOURS)[0].id;
+const bizOf = p => BUSINESSES.find(b => b.prof === p) || BUSINESSES[0];
+const PROF_PRESET = { 'Entrepreneur / Business owner': 'entrepreneur', 'Real Estate': 'realEstate', 'Healthcare': 'healthcare', 'Beauty & Wellness': 'services', 'Home Services': 'services', 'Interior / Design services': 'services', 'Consultant / Coach': 'entrepreneur', 'Legal / Finance': 'entrepreneur', 'Retail / Shop': 'services', 'Other': 'entrepreneur' };
 const LAYOUTS = [
   { id: 'original', name: 'Original', tag: 'Flip card · any profession', thumb: 'linear-gradient(180deg, #134a33 0%, #06120d 55%, #06120d 70%, #f2c98a 70% 78%, #06120d 78%)' },
 ];
+/* Real estate fields that change by the client's country: [label, placeholder]. null keeps the default. */
+const RE_REGION = {
+  IN: { brokerage: ['Agency / firm', 'Skyline Realty'], licenseNo: ['RERA number', 'A51800012345'], listingsUrl: [null, '99acres, MagicBricks, Housing.com or your site'], bookingUrl: ['Site visit booking link', null], officeAddress: [null, 'Hill Road, Bandra West, Mumbai 400050'] },
+  US: { licenseNo: ['License number', '0712345'] },
+};
+/* Business fields: labels by business and country. */
+const BIZ_LABEL = {
+  'Healthcare': { regNo: { IN: ['Medical Council reg. no.', 'KMC 12345'], US: ['NPI or state licence no.', '1234567890'] }, bookingUrl: ['Appointment booking link', 'Practo, Calendly or clinic site'] },
+  'Legal / Finance': { regNo: { IN: ['Bar / CA / ARN no.', 'K/1234/2008'], US: ['State Bar / licence no.', 'NE Bar #24561'] }, bookingUrl: ['Consultation booking link', 'Calendly or booking page'] },
+  'Home Services': { regNo: { IN: ['GST no. (optional)', '29ABCDE1234F1Z5'], US: ['Contractor licence no.', 'NE #54321'] }, bookingUrl: ['Quote request link', 'Form or booking page (optional)'] },
+  'Beauty & Wellness': { bookingUrl: ['Booking link', 'Fresha, Booksy or Calendly'] },
+};
 const FIELDS = [
   { k: 'firstName', label: 'First name', req: 'all', ph: 'Rahul', ac: 'given-name', span: 1 },
   { k: 'lastName', label: 'Last name', ph: 'Sharma', ac: 'family-name', span: 1 },
@@ -380,12 +488,21 @@ const FIELDS = [
   { k: 'linkedin', label: 'LinkedIn', ph: 'linkedin.com/in/yourname', type: 'text', ac: 'off', span: 1 },
   { k: 'brokerage', label: 'Brokerage', req: 'all', re: true, ph: 'Lone Star Realty Group', ac: 'organization', span: 1 },
   { k: 'licenseNo', label: 'License number', req: 'all', re: true, ph: '0712345', ac: 'off', span: 1 },
-  { k: 'licenseState', label: 'License state', re: true, ph: 'TX', ac: 'off', span: 1 },
+  { k: 'licenseState', label: 'License state', re: true, usOnly: true, ph: 'TX', ac: 'off', span: 1 },
   { k: 'facebook', label: 'Facebook', re: true, ph: 'facebook.com/yourpage', type: 'text', ac: 'off', span: 1 },
   { k: 'listingsUrl', label: 'Listings page', re: true, ph: 'Zillow, Realtor.com or your site', type: 'text', ac: 'url', span: 2 },
-  { k: 'bookingUrl', label: 'Showing booking link', re: true, ph: 'Calendly or booking page (optional)', type: 'text', ac: 'url', span: 2 },
+  { k: 'bookingUrl', label: 'Showing booking link', biz: ['Real Estate', 'Healthcare', 'Beauty & Wellness', 'Legal / Finance', 'Home Services'], ph: 'Calendly or booking page (optional)', type: 'text', ac: 'url', span: 2 },
+  { k: 'regNo', label: 'Registration number', biz: ['Healthcare', 'Legal / Finance', 'Home Services'], ph: '', ac: 'off', span: 1 },
+  { k: 'quals', label: 'Qualifications', biz: ['Healthcare'], ph: 'BDS, MDS', ac: 'off', span: 1 },
+  { k: 'practice', label: 'Practice areas', biz: ['Legal / Finance'], ph: 'Property, contracts, family law', ac: 'off', span: 2 },
+  { k: 'services', label: 'Services', biz: ['Beauty & Wellness', 'Home Services'], ph: 'Separate with commas', ac: 'off', span: 2 },
+  { k: 'serviceArea', label: 'Service area', biz: ['Home Services'], ph: 'Omaha and 20 miles around', ac: 'off', span: 1 },
+  { k: 'insured', label: 'Insured?', biz: ['Home Services'], ph: 'Yes', ac: 'off', span: 1, usOnly: true },
+  { k: 'emergency', label: '24×7 emergency?', biz: ['Home Services'], ph: 'Yes / No', ac: 'off', span: 1 },
+  { k: 'hours', label: 'Opening hours', biz: ['Healthcare', 'Beauty & Wellness'], ph: 'Mon–Sat · 10 am – 7 pm', ac: 'off', span: 2 },
+  { k: 'meetingUrl', label: 'Meeting link', biz: ['Consultant / Coach', 'Entrepreneur / Business owner'], ph: 'Calendly or Google booking page', type: 'text', ac: 'url', span: 2 },
   { k: 'officeAddress', label: 'Office address', re: true, ph: '401 Congress Ave, Austin, TX 78701', ac: 'street-address', span: 2 },
-  { k: 'iabsUrl', label: 'Texas IABS form link', re: true, tx: true, ph: 'Link to your IABS PDF', type: 'text', ac: 'off', span: 2 },
+  { k: 'iabsUrl', label: 'Texas IABS form link', re: true, tx: true, usOnly: true, ph: 'Link to your IABS PDF', type: 'text', ac: 'off', span: 2 },
   { k: 'bio', label: 'Short bio', ph: 'One or two sentences about what you do.', area: true, span: 2 },
   { k: 'notes', label: 'Notes for our designer', ph: 'Colours you like, services to list, tagline ideas…', area: true, span: 2, dfmOnly: true },
 ];
@@ -403,10 +520,18 @@ const slugify = s => String(s || '').toLowerCase().normalize('NFKD').replace(/[\
 const autoSlug = d => (slugify(d.firstName).replace(/-/g, '') + String(d.phone || '').replace(/\D/g, '').slice(-4)).slice(0, 40) || 'card';
 const addYear = () => { const d = new Date(); d.setFullYear(d.getFullYear() + 1); return d.toISOString().slice(0, 10); };
 const DRAFT_KEY = 'nbr-order-draft';
+/* Card changes are done by our team. Put your business WhatsApp number here (digits with country code, e.g. '919876543210'); empty = email. */
+const SUPPORT_WA = '';
+const SUPPORT_EMAIL = 'hello@nexbizrise.com';
+const CHANGES_INCLUDED = { basic: 2, motion: 4 };
+const changeLink = (msg, subj) => SUPPORT_WA ? 'https://wa.me/' + SUPPORT_WA + '?text=' + encodeURIComponent(msg) : 'mailto:' + SUPPORT_EMAIL + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(msg);
 const readLocal = () => { try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); } catch (e) { return []; } };
-const EMPTY = { profession: PROFESSIONS[0], layout: 'original', colour: 'forest', photo: '', photoX: 50, photoY: 50, photoZoom: 1, firstName: '', lastName: '', title: '', company: '', phone: '', whatsapp: '', email: '', city: '', website: '', instagram: '', linkedin: '', bio: '', notes: '', seasonal: true, greeting: '', brokerage: '', licenseNo: '', licenseState: '', facebook: '', listingsUrl: '', bookingUrl: '', officeAddress: '', iabsUrl: '' };
+const EMPTY = { profession: '', layout: 'original', colour: 'forest', photo: '', photoX: 50, photoY: 50, photoZoom: 1, firstName: '', lastName: '', title: '', company: '', phone: '', whatsapp: '', email: '', city: '', website: '', instagram: '', linkedin: '', bio: '', notes: '', seasonal: true, greeting: '', brokerage: '', licenseNo: '', licenseState: '', facebook: '', listingsUrl: '', bookingUrl: '', officeAddress: '', iabsUrl: '' };
 
 const NBR_PHOTO_MAX = 1080;
+/* Total GIF play time in seconds (sum of frame delays; 0 delay plays as 0.1s in browsers). */
+const gifSeconds = b => { let t = 0; for (let i = 0; i < b.length - 5; i++) if (b[i] === 0x21 && b[i + 1] === 0xF9 && b[i + 2] === 0x04) { const cs = b[i + 4] | (b[i + 5] << 8); t += (cs < 2 ? 10 : cs); i += 7; } return t / 100; };
+const isGifSrc = d => /^data:image\/gif/i.test(d.photoData || '') || /\.gif(\?|$)/i.test(d.photo || '') || NBR_VID.test(d.photo || '') || /^data:video\//i.test(d.photoData || '');
 const nbrCompress = file => new Promise((res, rej) => {
   if (file.type === 'image/gif') return res(file);
   const img = new Image(), u = URL.createObjectURL(file);
@@ -419,10 +544,60 @@ const nbrCompress = file => new Promise((res, rej) => {
   img.onerror = () => { URL.revokeObjectURL(u); rej(new Error('image')); };
   img.src = u;
 });
+/* Video portraits: photo divs (data-ph) get a muted looping <video> layered inside. */
+const NBR_VID = /\.(mp4|webm)(\?|#|$)|#video$|^data:video\//i;
+const nbrSyncVids = (src, root) => {
+  const isV = NBR_VID.test(src || '');
+  (root || document).querySelectorAll('[data-ph]').forEach(el => {
+    let v = el.querySelector('video[data-nbrv]');
+    if (!isV) { if (v) v.remove(); return; }
+    if (!v) {
+      v = document.createElement('video'); v.setAttribute('data-nbrv', ''); v.setAttribute('aria-hidden', 'true');
+      v.muted = true; v.defaultMuted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', ''); v.preload = 'auto';
+      v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;border-radius:inherit;';
+      if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      el.appendChild(v);
+    }
+    if (v.getAttribute('src') !== src) { v.setAttribute('src', src); }
+    v.style.objectPosition = el.style.backgroundPosition || '50% 50%';
+    if (v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+  });
+};
+/* Shrinks a phone video to a <=10 s, <=720px silent clip in the browser (MediaRecorder). */
+const NBR_VID_MAX_IN = 200 * 1048576;
+const nbrVideo = (file, onPct) => new Promise((res, rej) => {
+  const v = document.createElement('video'), u = URL.createObjectURL(file);
+  v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto'; v.src = u;
+  v.onerror = () => { URL.revokeObjectURL(u); rej(new Error('read')); };
+  v.onloadedmetadata = () => {
+    const dur = isFinite(v.duration) && v.duration > 0 ? v.duration : 10, len = Math.min(dur, 10);
+    const W = v.videoWidth, H = v.videoHeight; if (!W || !H) { rej(new Error('read')); return; }
+    const sc = Math.min(1, 720 / Math.max(W, H)), cw = Math.round(W * sc / 2) * 2, ch = Math.round(H * sc / 2) * 2;
+    const c = document.createElement('canvas'); c.width = cw; c.height = ch; const ctx = c.getContext('2d');
+    const mime = ['video/mp4;codecs=avc1.42E01E', 'video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].find(m => { try { return window.MediaRecorder && MediaRecorder.isTypeSupported(m); } catch (e) { return false; } });
+    if (!mime || !c.captureStream) { URL.revokeObjectURL(u); if (/^video\/(mp4|webm)$/.test(file.type) && file.size <= 5 * 1048576 && dur <= 10.5) res(file); else rej(new Error('unsupported')); return; }
+    const rec = new MediaRecorder(c.captureStream(30), { mimeType: mime, videoBitsPerSecond: 1500000 }), chunks = [];
+    rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    rec.onstop = () => { URL.revokeObjectURL(u); const b = new Blob(chunks, { type: mime.split(';')[0] }); b.size ? res(b) : rej(new Error('empty')); };
+    let done = false;
+    const stop = () => { if (done) return; done = true; try { v.pause(); } catch (e) {} setTimeout(() => rec.state !== 'inactive' && rec.stop(), 120); };
+    const draw = () => { if (done) return; ctx.drawImage(v, 0, 0, cw, ch); if (onPct) onPct(Math.min(99, Math.round(v.currentTime / len * 100))); if (v.currentTime >= len || v.ended) stop(); else requestAnimationFrame(draw); };
+    v.onended = stop;
+    v.currentTime = 0;
+    v.play().then(() => { rec.start(250); draw(); }).catch(() => { URL.revokeObjectURL(u); rej(new Error('play')); });
+  };
+});
 /* Upload to Cloudflare R2 via the site's /api/upload. Returns '' when R2 isn't available (caller falls back to Supabase storage). */
 const nbrUpload = async blob => {
-  if (!/(^|\.)nexbizrise\.com$|\.pages\.dev$/.test(location.hostname)) return '';
-  try { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': blob.type }, body: blob }); if (!r.ok) return ''; const j = await r.json(); return j.url || ''; } catch (e) { return ''; }
+  window.__nbrUpErr = '';
+  if (!/(^|\.)nexbizrise\.com$|\.pages\.dev$|\.workers\.dev$/.test(location.hostname)) { window.__nbrUpErr = 'preview'; return ''; }
+  try {
+    const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': blob.type || 'application/octet-stream' }, body: blob });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.url) { window.__nbrUpErr = r.status + ' ' + (j.error || 'no url') + ' · ' + Math.round(blob.size / 1024) + 'KB ' + (blob.type || '?'); return ''; }
+    return j.url;
+  } catch (e) { window.__nbrUpErr = 'network: ' + (e && e.message || e); return ''; }
 };
 
 class Component extends DCLogic {
@@ -439,10 +614,12 @@ class Component extends DCLogic {
   };
   resetTs = () => { try { if (window.turnstile && this.tsWidget != null) window.turnstile.reset(this.tsWidget); } catch (e) {} this.tsToken = ''; };
 
+  componentDidUpdate() { try { nbrSyncVids(this.state.d.photo); } catch (e) {} }
   componentDidMount() {
     this.onMsg = ev => { if (ev.data && ev.data.type === 'nbr-preview-ready') this.postPreview(); };
     window.addEventListener('message', this.onMsg);
     this.onResize = () => this.setState({ vw: window.innerWidth, vh: window.innerHeight });
+    try { if (/[?&]qa=1/.test(location.search)) window.__nbrOrder = this; } catch (e) {}
     const tok = this.editTokenFromUrl();
     if (tok) { document.documentElement.setAttribute('data-skin', 'card'); this.setState({ standalone: true, editToken: tok, editLoading: true, step: 2, maxStep: 3 }); this.loadEdit(tok); }
     else try {
@@ -453,11 +630,17 @@ class Component extends DCLogic {
         document.documentElement.setAttribute('data-skin', 'card');
       }
       const rq = (q.get('region') || '').toUpperCase(); if (rq === 'IN' || rq === 'US') upd.region = rq; else this.detectRegion();
-      try { const dr = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); if (dr && dr.d && (dr.d.firstName || dr.d.phone || dr.d.email || dr.d.photo)) Object.assign(upd, { d: { ...EMPTY, ...dr.d }, plan: dr.plan || 'basic', step: dr.step || 1, maxStep: dr.maxStep || dr.step || 1 }); } catch (e) {}
+      try { const dr = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); if (dr && dr.d && (dr.d.firstName || dr.d.phone || dr.d.email || dr.d.photo)) Object.assign(upd, { d: (x => { const pd = String(x.photoData || ''); x.photo = pd.startsWith('data:image/') ? pd : /^https:\/\//.test(x.photo || '') ? x.photo : ''; if (!x.photo) x.photoData = ''; return x; })({ ...EMPTY, ...dr.d }), plan: dr.plan || 'basic', step: dr.step || 1, maxStep: dr.maxStep || dr.step || 1 }); } catch (e) {}
       if (plan === 'basic' || plan === 'motion') Object.assign(upd, { plan, step: Math.max(2, upd.step || 1), maxStep: Math.max(2, upd.maxStep || 1) });
+      else if (q.get('from') || q.get('region')) Object.assign(upd, { step: 1 });
+      { const qc = q.get('colour'); if (qc && STYLE_BY_ID[qc]) upd.d = { ...EMPTY, ...(upd.d || {}), colour: qc, profession: STYLE_BY_ID[qc].layout === 'estate' ? 'Real Estate' : ((upd.d || {}).profession || EMPTY.profession) }; }
+      if (upd.d) { const vb = VISIBLE_BIZ.find(b => b.prof === upd.d.profession); if (!vb || !vb.colls.includes(collOf(upd.d.colour))) { upd.d = { ...upd.d, profession: vb ? vb.prof : '', colour: vb ? firstStyleOf(vb.colls[0]) : EMPTY.colour }; if (!vb) { upd.step = Math.min(upd.step || 1, 2); upd.maxStep = Math.min(upd.maxStep || 1, 2); } } }
       this.setState(upd);
     } catch (e) {}
     this.onResize(); window.addEventListener('resize', this.onResize);
+    this.lastY = window.scrollY || 0;
+    this.onScrollHdr = () => { const y = window.scrollY || 0, dy = y - this.lastY; if (Math.abs(dy) < 6) return; this.lastY = y; const hide = this.state.vw < 960 && y > 80 && dy > 0; if (hide !== !!this.state.hdrHidden) this.setState({ hdrHidden: hide }); };
+    window.addEventListener('scroll', this.onScrollHdr, { passive: true });
   }
   backToCard = () => {
     const local = /\.dc\.html$/.test(decodeURIComponent(location.pathname));
@@ -470,20 +653,22 @@ class Component extends DCLogic {
     if (!reg) { try { const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; reg = /Kolkata|Calcutta/.test(tz) || /-IN$/i.test(navigator.language || '') ? 'IN' : 'US'; } catch (e) { reg = 'US'; } }
     if (!this.state.regionTouched) this.setState({ region: reg });
   }
-  componentWillUnmount() { window.removeEventListener('message', this.onMsg); window.removeEventListener('resize', this.onResize); clearTimeout(this.pvT); }
+  componentWillUnmount() { window.removeEventListener('scroll', this.onScrollHdr); window.removeEventListener('message', this.onMsg); window.removeEventListener('resize', this.onResize); clearTimeout(this.pvT); }
   setState(u, cb) {
     return super.setState(u, () => { const S = this.state; if (S.d !== this.__lastD || S.plan !== this.__lastPlan) { this.__lastD = S.d; this.__lastPlan = S.plan; clearTimeout(this.pvT); this.pvT = setTimeout(this.postPreview, 100); } if (S.step === 4 && !S.done && !S.editToken) this.renderTs(); if (cb) cb(); });
   }
 
   row(slug, active, forSave) {
-    const d = this.state.d, preset = PROF_PRESET[d.profession] || 'entrepreneur', pre = PRESETS[preset];
+    const d0 = this.state.d, prof0 = d0.profession, d = { ...d0 };
+    FIELDS.forEach(f => { if ((f.re && prof0 !== 'Real Estate') || (f.biz && !f.biz.includes(prof0)) || (f.usOnly && this.state.region === 'IN') || (f.tx && String(d0.licenseState || '').trim().toUpperCase() !== 'TX')) d[f.k] = ''; });
+    const preset = PROF_PRESET[d.profession] || 'entrepreneur', pre = PRESETS[preset];
     const reg = this.state.region || 'US', p = toE164(d.phone, reg);
     const stl = STYLE_BY_ID[d.colour], cl = COLLECTIONS.find(c => c.id === collOf(d.colour));
     const preset2 = cl.preset || preset, pre2 = PRESETS[preset2] || pre;
     return { slug, region: this.state.region || 'US', layout: stl ? stl.layout : 'original', photo_x: Math.round(d.photoX ?? 50), photo_y: Math.round(d.photoY ?? 50), photo_zoom: Number(d.photoZoom || 1), phone_display: fmtPhone(d.phone, reg), signature: '', titles: '', contact_photo_url: '', show_powered_by: true,
       profession: d.profession, profession_other: '', city: d.city || '', notes: d.notes || '', prefix: '', first_name: d.firstName, last_name: d.lastName || '', title: d.title || '', company: d.company || '',
       preset: preset2, colour: d.colour, category: cl.category || pre2.category, tagline: cl.tagline || pre2.tagline, phone: p, whatsapp: d.whatsapp ? toE164(d.whatsapp, reg).replace(/\D/g, '') : '', email: d.email || '', linkedin: d.linkedin || '', instagram: d.instagram || '', website: d.website || '',
-      extras: d.profession === 'Real Estate' ? { brokerage: (d.brokerage || '').trim(), license_no: (d.licenseNo || '').trim(), license_state: (d.licenseState || '').trim().toUpperCase().slice(0, 2), facebook: normLink('facebook', d.facebook), listings_url: normLink('listings', d.listingsUrl), booking_url: normLink('booking', d.bookingUrl), office_address: (d.officeAddress || '').trim(), iabs_url: normLink('iabs', d.iabsUrl), lead_capture: true, seasonal: this.state.plan === 'motion' && d.seasonal !== false, greeting: this.state.plan === 'motion' ? String(d.greeting || '').trim().slice(0, 60) : '' } : { lead_capture: true, seasonal: this.state.plan === 'motion' && d.seasonal !== false, greeting: this.state.plan === 'motion' ? String(d.greeting || '').trim().slice(0, 60) : '' },
+      extras: { meeting_url: normLink('booking', d.meetingUrl), booking_url: normLink('booking', d.bookingUrl), reg_no: (d.regNo || '').trim(), quals: (d.quals || '').trim(), hours: (d.hours || '').trim(), services: (d.services || '').trim(), practice: (d.practice || '').trim(), service_area: (d.serviceArea || '').trim(), insured: (d.insured || '').trim(), emergency: (d.emergency || '').trim(), ...(d.profession === 'Real Estate' ? { brokerage: (d.brokerage || '').trim(), license_no: (d.licenseNo || '').trim(), license_state: this.state.region === 'IN' ? '' : (d.licenseState || '').trim().toUpperCase().slice(0, 2), facebook: normLink('facebook', d.facebook), listings_url: normLink('listings', d.listingsUrl), booking_url: normLink('booking', d.bookingUrl), office_address: (d.officeAddress || '').trim(), iabs_url: normLink('iabs', d.iabsUrl), lead_capture: true, seasonal: this.state.plan === 'motion' && d.seasonal !== false, greeting: this.state.plan === 'motion' ? String(d.greeting || '').trim().slice(0, 60) : '' } : { lead_capture: true, seasonal: this.state.plan === 'motion' && d.seasonal !== false, greeting: this.state.plan === 'motion' ? String(d.greeting || '').trim().slice(0, 60) : '' }) },
       quote: '', bio: d.bio || '', photo_url: (forSave ? d.photoData : d.photo) || '', plan: this.state.plan, renewal: addYear(), active: !!active };
   }
   postPreview = () => {
@@ -513,21 +698,35 @@ class Component extends DCLogic {
 
   saveDraft = () => {
     const S = this.state;
-    if (S.editToken) return;
+    if (S.editToken || window.__nbrOrder === this) return;
     if (S.done) { if (this.lastDraftD !== 'done') { this.lastDraftD = 'done'; try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} } return; }
     if (this.lastDraftD === S.d && this.lastDraftStep === S.step && this.lastDraftPlan === S.plan) return;
     this.lastDraftD = S.d; this.lastDraftStep = S.step; this.lastDraftPlan = S.plan;
     clearTimeout(this.draftT);
-    this.draftT = setTimeout(() => { const S2 = this.state; if (S2.done) return; const v = { d: S2.d, plan: S2.plan, step: S2.step, maxStep: S2.maxStep }; try { localStorage.setItem(DRAFT_KEY, JSON.stringify(v)); } catch (e) { try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...v, d: { ...S2.d, photo: '' } })); } catch (e2) {} } }, 400);
+    this.draftT = setTimeout(() => { const S2 = this.state; if (S2.done) return; const dd = { ...S2.d, photo: String(S2.d.photo || '').startsWith('blob:') ? '' : S2.d.photo }; const v = { d: dd, plan: S2.plan, step: S2.step, maxStep: S2.maxStep }; try { localStorage.setItem(DRAFT_KEY, JSON.stringify(v)); } catch (e) { try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...v, d: { ...dd, photo: '', photoData: '' } })); } catch (e2) {} } }, 400);
   };
   set = (k, v) => this.setState(s => ({ d: { ...s.d, [k]: v }, errors: { ...s.errors, [k]: '' } }));
   pickPhoto = () => { const i = this.fileRef.current; if (i) { i.value = ''; i.click(); } };
   readPhoto = file => {
     if (!file) return;
-    if (!/^image\/(png|jpe?g|webp|gif)$/.test(file.type)) { this.setState({ photoMsg: 'Use a JPG, PNG, WebP or GIF.' }); return; }
+    const motion = this.state.plan === 'motion';
+    if (/^video\//.test(file.type) || /\.(mov|mp4|m4v|webm)$/i.test(file.name || '')) {
+      if (!motion) { this.setState({ photoMsg: 'Videos are part of the Motion Card. Use a photo (JPG, PNG or WebP), or switch to Motion.' }); return; }
+      if (file.size > NBR_VID_MAX_IN) { this.setState({ photoMsg: 'That video is too large. Please record a shorter clip (3 to 10 seconds).' }); return; }
+      this.setState({ vidBusy: true, vidPct: 0, photoMsg: '' });
+      nbrVideo(file, p => { if (p !== this.state.vidPct) this.setState({ vidPct: p }); }).then(b => {
+        if (b.size > 5 * 1048576) { this.setState({ vidBusy: false, photoMsg: 'That video is still over 5 MB after shrinking. Please record a shorter clip.' }); return; }
+        const fr = new FileReader(); fr.onload = () => { const bu = URL.createObjectURL(b) + '#video'; this.setState(s => ({ vidBusy: false, photoMsg: '', d: { ...s.d, photo: bu, photoData: fr.result, photoX: 50, photoY: 50, photoZoom: 1 } })); }; fr.readAsDataURL(b);
+      }).catch(() => this.setState({ vidBusy: false, photoMsg: "We couldn't read that video on this device. Try an MP4, or upload a GIF or photo." }));
+      return;
+    }
+    if (!/^image\/(png|jpe?g|webp|gif)$/.test(file.type)) { this.setState({ photoMsg: motion ? 'Use a JPG, PNG, WebP or GIF.' : 'Use a photo (JPG, PNG or WebP).' }); return; }
     if (file.type === 'image/gif') {
-      if (file.size > 1.5 * 1048576) { this.setState({ photoMsg: 'GIF is over 1.5 MB. Send a smaller one, or a photo and we will make the motion clip.' }); return; }
-      const fr = new FileReader(); fr.onload = () => { const bu = URL.createObjectURL(file); this.setState(s => ({ d: { ...s.d, photo: bu, photoData: fr.result, photoX: 50, photoY: 50, photoZoom: 1 } })); this.setState({ photoMsg: '' }); }; fr.readAsDataURL(file); return;
+      if (!motion) { this.setState({ photoMsg: 'Moving photos (GIF) are part of the Motion Card. Use a photo (JPG, PNG or WebP), or switch to Motion.' }); return; }
+      if (file.size > 5 * 1048576) { this.setState({ photoMsg: 'GIF is over 5 MB. Please upload a shorter or smaller GIF.' }); return; }
+      file.arrayBuffer().then(buf => { const sec = gifSeconds(new Uint8Array(buf));
+      if (sec > 10.05) { this.setState({ photoMsg: 'GIF is ' + sec.toFixed(1) + ' seconds long. Please upload a GIF of 10 seconds or less.' }); return; }
+      const fr = new FileReader(); fr.onload = () => { const bu = URL.createObjectURL(file); this.setState(s => ({ d: { ...s.d, photo: bu, photoData: fr.result, photoX: 50, photoY: 50, photoZoom: 1 } })); this.setState({ photoMsg: '' }); }; fr.readAsDataURL(file); }).catch(() => this.setState({ photoMsg: "We couldn't read that GIF. Try another file." })); return;
     }
     if (file.size > 15 * 1048576) { this.setState({ photoMsg: 'Photo is over 15 MB. Please pick a smaller one.' }); return; }
     nbrCompress(file).then(b => {
@@ -551,13 +750,14 @@ class Component extends DCLogic {
   validate() {
     const d = this.state.d, dfm = this.state.mode === 'dfm', e = {};
     const isRE = d.profession === 'Real Estate';
-    FIELDS.forEach(f => { if (f.re && !isRE) return; if ((f.req === 'all' || (f.req === 'builder' && !dfm)) && !(this.state.editToken && f.k === 'email') && !String(d[f.k] || '').trim()) e[f.k] = 'Enter your ' + f.label.toLowerCase(); });
+    if (!this.state.editToken && !BUSINESSES.some(b => b.prof === d.profession)) e.profession = 'Pick your card category';
+    FIELDS.forEach(f => { if (f.re && !isRE) return; if (f.biz && !f.biz.includes(d.profession)) return; if ((f.req === 'all' || (f.req === 'builder' && !dfm)) && !(this.state.editToken && f.k === 'email') && !String(d[f.k] || '').trim()) e[f.k] = 'Enter your ' + f.label.toLowerCase(); });
     if (d.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())) e.email = 'Enter a valid email';
     if (d.phone && String(d.phone).replace(/\D/g, '').length < 7) e.phone = 'Enter a valid mobile number';
     ['website', 'instagram', 'linkedin'].forEach(k => { const v = normLink(k, d[k]); if (v !== (d[k] || '')) d[k] = v; if (v && !/^https?:\/\/[^\s.]+\.[^\s]+/.test(v)) e[k] = k === 'website' ? 'Enter a web address, like yourbusiness.com' : 'Enter your ' + (k === 'instagram' ? 'Instagram' : 'LinkedIn') + ' username or link'; });
     return e;
   }
-  goStep = n => { if (n === 3 && this.state.vw >= 960) n = this.state.step > 3 ? 2 : 4; this.setState(s => ({ step: n, maxStep: Math.max(s.maxStep, n), submitError: '' }), () => { [80, 400, 1200].forEach(ms => setTimeout(this.measurePreview, ms)); if (this.state.step === 4) this.renderTs(); }); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  goStep = n => { if (n > 2 && !this.state.editToken && !VISIBLE_BIZ.some(b => b.prof === this.state.d.profession)) { this.setState(s => ({ errors: { ...(s.errors || {}), profession: 'Pick your card category' } })); n = 2; } if (n === 3 && this.state.vw >= 960) n = this.state.step > 3 ? 2 : 4; this.setState(s => ({ step: n, maxStep: Math.max(s.maxStep, n), submitError: '' }), () => { [80, 400, 1200].forEach(ms => setTimeout(this.measurePreview, ms)); if (this.state.step === 4) this.renderTs(); }); window.scrollTo({ top: 0, behavior: 'smooth' }); };
   next = () => {
     const { step } = this.state;
     if (step === 2) {
@@ -603,12 +803,15 @@ class Component extends DCLogic {
     const order = { ref: S.ref || '', order_no: 'NBR-' + Date.now().toString(36).slice(-6).toUpperCase(), mode: S.mode, plan: S.plan, region: S.region || 'US', price: priceOf(S.region, S.plan).base, tax: priceOf(S.region, S.plan).tax, total: priceOf(S.region, S.plan).total, currency: (PRICING[S.region] || PRICING.US).code, status: 'new',
       customer_name: [d.firstName, d.lastName].filter(Boolean).join(' '), customer_email: d.email.trim(), customer_phone: d.phone.trim(), notes: d.notes || '',
       card: this.row(slug, S.mode === 'builder', true), created_at: new Date().toISOString(), coupon: this.couponFor(S) ? this.couponFor(S).code : '' };
+    if (!this.orderKey) { try { this.orderKey = crypto.randomUUID(); } catch (e) { this.orderKey = ''; } }
+    order.idem = this.orderKey;
+    if (S.d.photo && !order.card.photo_url) { this.setState({ busy: false, submitError: 'Please add your photo again (Step 2), then place your order.' }); return; }
     order.card.photo_url = await this.storePhoto(order.card.photo_url || '', slug);
-    if (String(order.card.photo_url).startsWith('data:')) { this.setState({ busy: false, submitError: 'Your photo could not be uploaded. Please try again, or remove the photo and add it later with your edit link.' }); return; }
+    if (String(order.card.photo_url).startsWith('data:')) { this.setState({ busy: false, submitError: 'Your photo could not be uploaded. Please try again, or remove the photo and add it later with your edit link.' + (window.__nbrUpErr ? ' (' + window.__nbrUpErr + ')' : '') }); return; }
     let remote = false;
     try {
       const r = VIA_WORKER() ? await fetch('/api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ts: this.tsToken || '', body: { payload: order } }) }) : await fetch(SUPABASE_URL + '/rest/v1/rpc/place_order', { method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ payload: order }) });
-      if (r.ok) { const j = await r.json(); if (j && j.slug) { order.order_no = j.order_no || order.order_no; order.card.slug = j.slug; order.card.public_id = j.public_id || ''; order.edit_token = j.edit_token || ''; if (j.total != null) { order.total = j.total; order.discount = j.discount; } remote = true; } }
+      if (r.ok) { const j = await r.json(); if (j && j.slug) { this.orderKey = ''; order.order_no = j.order_no || order.order_no; order.card.slug = j.slug; order.card.public_id = j.public_id || ''; order.edit_token = j.edit_token || ''; if (j.total != null) { order.total = j.total; order.discount = j.discount; } remote = true; } }
       else { const j = await r.json().catch(() => ({})); if (/bot check/i.test(j.message || '')) { this.resetTs(); this.setState({ busy: false, submitError: 'Please complete the security check above, then place your order.' }); return; } if (/invalid coupon/i.test(j.message || '')) { this.setState({ busy: false, coupon: null, couponMsg: 'This coupon is no longer valid. It has been removed; check the new total and try again.', couponOk: false }); return; } if (/too many/i.test(j.message || '')) { this.setState({ busy: false, submitError: 'Too many orders from this connection in the last hour. For team orders, message us on WhatsApp and we will set up everyone at once.' }); return; } }
     } catch (err) {}
     this.resetTs();
@@ -622,7 +825,7 @@ class Component extends DCLogic {
   async storePhoto(pd, slug) {
     if (!String(pd || '').startsWith('data:')) return pd || '';
     try {
-      const blob = await (await fetch(pd)).blob(), ext = blob.type === 'image/gif' ? 'gif' : blob.type === 'image/webp' ? 'webp' : 'jpg';
+      const blob = await (await fetch(pd)).blob(), ext = blob.type === 'image/gif' ? 'gif' : blob.type === 'image/webp' ? 'webp' : blob.type === 'video/mp4' ? 'mp4' : blob.type === 'video/webm' ? 'webm' : 'jpg';
       const r2 = await nbrUpload(blob);
       if (r2) return r2;
     } catch (e) {}
@@ -643,7 +846,7 @@ class Component extends DCLogic {
         firstName: s(j.first_name), lastName: s(j.last_name), title: s(j.title), company: s(j.company), phone: s(j.phone), whatsapp: j.whatsapp ? '+' + String(j.whatsapp).replace(/\D/g, '') : '',
         email: s(j.email), city: s(j.city), website: s(j.website), instagram: s(j.instagram), linkedin: s(j.linkedin), bio: s(j.bio),
         seasonal: x.seasonal !== false, greeting: s(x.greeting), brokerage: s(x.brokerage), licenseNo: s(x.license_no), licenseState: s(x.license_state), facebook: s(x.facebook),
-        listingsUrl: s(x.listings_url), bookingUrl: s(x.booking_url), officeAddress: s(x.office_address), iabsUrl: s(x.iabs_url) };
+        listingsUrl: s(x.listings_url), bookingUrl: s(x.booking_url), officeAddress: s(x.office_address), iabsUrl: s(x.iabs_url), meetingUrl: s(x.meeting_url), regNo: s(x.reg_no), quals: s(x.quals), hours: s(x.hours), services: s(x.services), practice: s(x.practice), serviceArea: s(x.service_area), insured: s(x.insured), emergency: s(x.emergency) };
       this.setState({ d, plan: j.plan === 'motion' ? 'motion' : 'basic', region: j.region === 'IN' ? 'IN' : 'US', regionTouched: true, editLoading: false, editError: '', editInfo: { slug: j.slug, pid: j.public_id || '', active: j.active !== false, orig: { colour: j.colour || '', category: j.category, tagline: j.tagline, preset: j.preset, profession: j.profession || '', mapped: d.profession } } });
     } catch (e) { this.setState({ editLoading: false, editError: 'error' }); }
   }
@@ -655,7 +858,7 @@ class Component extends DCLogic {
     this.setState({ busy: true, submitError: '' });
     const info = S.editInfo || {}, card = this.row(info.slug || '', true, true);
     card.photo_url = S.d.photoData ? await this.storePhoto(S.d.photoData, info.slug) : (/^https:\/\//.test(S.d.photo || '') ? S.d.photo : '');
-    if (String(card.photo_url).startsWith('data:')) { this.setState({ busy: false, submitError: 'Your new photo could not be uploaded. Please try again.' }); return; }
+    if (String(card.photo_url).startsWith('data:')) { this.setState({ busy: false, submitError: 'Your new photo could not be uploaded. Please try again.' + (window.__nbrUpErr ? ' (' + window.__nbrUpErr + ')' : '') }); return; }
     const o = info.orig || {};
     if (o.colour && collOf(o.colour) === collOf(S.d.colour) && o.mapped === S.d.profession) { if (o.category != null) card.category = o.category; if (o.tagline != null) card.tagline = o.tagline; if (o.preset) card.preset = o.preset; }
     if (o.profession && !PROFESSIONS.includes(o.profession) && S.d.profession === 'Other') card.profession = o.profession;
@@ -685,9 +888,10 @@ class Component extends DCLogic {
     const S = this.state, d = S.d, dfm = S.mode === 'dfm', err = S.errors || {};
     if (d !== this.__pvD || S.plan !== this.__pvPlan) { this.__pvD = d; this.__pvPlan = S.plan; clearTimeout(this.pvT2); this.pvT2 = setTimeout(() => this.postPreview(), 120); }
     const col = COLOURS.find(c => c.id === d.colour) || STYLE_BY_ID[d.colour] || COLOURS[0];
-    const collId = collOf(d.colour), ci = COLLECTIONS.findIndex(c => c.id === collId);
-    const listFor = id => id === 'professional' ? PRO_STYLES : id === 'luxury' ? LUX_STYLES : COLOURS;
-    const goColl = step => { const n = COLLECTIONS[(ci + step + COLLECTIONS.length) % COLLECTIONS.length]; this.set('colour', listFor(n.id)[0].id); };
+    const COLLS = bizOf(d.profession).colls.map(id => COLLECTIONS.find(c => c.id === id)).filter(Boolean);
+    const collId = collOf(d.colour), ci = Math.max(0, COLLS.findIndex(c => c.id === collId));
+    const listFor = id => id === 'professional' ? PRO_STYLES : id === 'luxury' ? LUX_STYLES : id === 'realestate' ? RE_STYLES : BIZ_PAL[id] ? BIZ_STYLES.filter(s => s.biz === id) : COLOURS;
+    const goColl = step => { const n = COLLS[(ci + step + COLLS.length) % COLLS.length]; this.set('colour', listFor(n.id)[0].id); };
     const plan = PLANS.find(p => p.id === S.plan) || PLANS[0];
     const layout = LAYOUTS[0];
     const on = (x, a, b) => (x ? a : b);
@@ -695,14 +899,21 @@ class Component extends DCLogic {
     const url = done ? this.urlOf(done) : '';
     return {
       orderHref: /\.dc\.html$/.test(decodeURIComponent(location.pathname)) ? './Order%20Card.dc.html' : 'https://card.nexbizrise.com/order',
+      ...(() => { const mob = S.vw < 960, imm = mob && S.step === 3 && !S.done && !(S.editToken && (S.editLoading || S.editError));
+        if (imm !== this.__imm || !!S.hdrHidden !== this.__hh) { this.__imm = imm; this.__hh = !!S.hdrHidden; setTimeout(() => { try { window.dispatchEvent(new CustomEvent('nbr-order-ui', { detail: { immersive: imm, hideHeader: !!S.hdrHidden && mob } })); } catch (e) {} }, 0); }
+        return { showSaHeader: !!S.standalone && !imm, hdrH: mob ? '54px' : '62px', hdrY: mob && S.hdrHidden ? 'translateY(-100%)' : 'none', hdrLogo: mob ? '28px' : '34px', hdrLogoH: mob ? '32px' : '38px', hdrFont: mob ? '18px' : '20px', hdrWide: !mob, hdrNarrow: mob }; })(),
+      ...(() => { const r = S.ref || '', local = /\.dc\.html$/.test(decodeURIComponent(location.pathname));
+        const path = /^nbr_[a-f0-9]{6}$/.test(r) ? '/c/' + r : /^[a-z0-9]+(-[a-z0-9]+)*$/.test(r) ? '/' + r : '';
+        if (!path) return { closeHref: local ? './NexBizRise%20Website%20v2.dc.html' : 'https://nexbizrise.com/', closeLabel: 'Leave and go to the NexBizRise home page' };
+        return { closeHref: local ? '/card.html' : (/^card\./.test(location.hostname) ? '' : 'https://card.nexbizrise.com') + path, closeLabel: 'Close and go back to the card' }; })(),
       standalone: !!S.standalone, homeHref: (() => { const local = /\.dc\.html$/.test(decodeURIComponent(location.pathname)); const slug = S.ref && /^[a-z0-9-]+$/.test(S.ref) ? S.ref : '';
         return local ? './NexBizRise%20Website%20v2.dc.html' : 'https://nexbizrise.com/'; })(),
       showIntro: S.vw >= 960 && !S.editToken,
-      headerChip: S.editToken ? 'Edit your card' : 'Create your card', showSteps: !S.editToken,
+      headerChip: S.editToken ? 'Edit your card' : 'Create your card', showSteps: !S.editToken && !(S.step === 3 && S.vw < 960),
       showForm: !(S.editToken && (S.editLoading || S.editError)), editMsgShow: !!(S.editToken && (S.editLoading || S.editError)),
       editMsgTitle: S.editLoading ? 'Loading your card…' : S.editError === 'invalid' ? 'This edit link isn’t valid' : S.editError === 'expired' ? 'Your card plan has ended' : 'Couldn’t load your card',
       editMsgText: S.editLoading ? 'One moment.' : S.editError === 'invalid' ? 'It may have been reset. Message us and we’ll send you a new one.' : S.editError === 'expired' ? 'Renew your card to make changes. Message us and we’ll help.' : S.editError === 'busy' ? 'Too many tries from this connection. Please wait an hour and try again.' : 'Check your connection and refresh the page.',
-      hasEditLink: !!(done && done.tok), editLinkLabel: done && done.tok ? BASE_HOST + '/e/' + done.tok : '', copyEditLink: this.copyEditLink, copyEditLabel: S.editCopied ? 'Copied ✓' : 'Copy edit link',
+      hasEditLink: false, changesNote: 'Your plan includes ' + (CHANGES_INCLUDED[S.plan] || 2) + ' changes a year, made by our team. Send us what you want changed and we’ll update your card.', changeHref: done ? changeLink('Hi NexBizRise, I’d like a change to my card ' + this.urlOf(done) + (done.orderNo ? ' (order ' + done.orderNo + ')' : '') + ':\n', 'Card change request' + (done.orderNo ? ' · ' + done.orderNo : '')) : '#', editLinkLabel: done && done.tok ? BASE_HOST + '/e/' + done.tok : '', copyEditLink: this.copyEditLink, copyEditLabel: S.editCopied ? 'Copied ✓' : 'Copy edit link',
       notEditDone: !(done && done.edit), isEditDone: !!(done && done.edit), keepEditing: this.keepEditing,
       rootPad: S.vw < 960 ? '14px 16px 40px' : 'clamp(32px,5vw,56px) 24px clamp(64px,8vw,104px)',
       modesGap: S.vw < 960 ? '12px' : '32px', modesCols: S.vw < 960 ? 'repeat(2,minmax(0,1fr))' : 'repeat(auto-fit,minmax(min(100%,280px),1fr))', modesColGap: S.vw < 960 ? '8px' : '12px', bodyGap: S.vw < 960 ? '12px' : '40px',
@@ -710,7 +921,7 @@ class Component extends DCLogic {
         const mobile = S.vw < 960;
         if (!mobile) return { display: 'flex', scrolling: 'auto', ih: '806px', showNext: false, mobile: false, desktop: true, flex: '0 0 318px', order: '0', top: '88px', pad: '0', bg: 'transparent', w: '318px', h: '657px', scale: '0.8154' };
         const docH = S.pvDocH || 806, w = Math.min(390, S.vw - 32), sc = w / 390, full = Math.round(docH * sc);
-        return { display: S.step === 3 ? 'flex' : 'none', scrolling: 'no', ih: docH + 'px', showNext: true, nextText: S.editToken ? (S.busy ? 'Saving…' : 'Save changes') : 'Looks good · Continue', showBack: true, mobile: false, desktop: false, flex: '1 1 100%', order: '-1', top: 'auto', pad: '0', bg: 'transparent', w: w + 'px', h: full + 'px', scale: sc.toFixed(4),
+        return { display: S.step === 3 ? 'flex' : 'none', scrolling: 'no', ih: docH + 'px', showNext: true, nextText: S.editToken ? (S.busy ? 'Saving…' : 'Save changes') : 'Continue', showBack: true, mobile: false, desktop: false, flex: '1 1 100%', order: '-1', top: 'auto', pad: '0', bg: 'transparent', w: w + 'px', h: full + 'px', scale: sc.toFixed(4),
           expanded: S.pvOpen ? 'true' : 'false', toggleLabel: S.pvOpen ? 'Collapse preview' : 'See full card', icon: S.pvOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6',
           toggle: () => this.setState(s => ({ pvOpen: !s.pvOpen })) };
       })(),
@@ -722,23 +933,42 @@ class Component extends DCLogic {
       steps: STEP_LABELS.map((label, i) => ({ label, i })).filter(x => !(S.vw >= 960 && x.i === 2)).map(({ label, i }) => { const n = i + 1, cur = n === S.step, reach = n <= S.maxStep; return { n, label, done: n < S.step, pillFg: cur ? 'var(--btn-ink)' : n < S.step ? 'var(--ink)' : reach ? 'var(--ink-3)' : 'var(--faint)', current: cur ? 'step' : 'false', locked: !reach, cursor: reach ? 'pointer' : 'default', go: () => reach && this.goStep(n), bar: n <= S.step ? 'var(--btn)' : 'rgba(var(--fg-rgb),0.12)', ink: cur ? 'var(--ink)' : (reach ? 'var(--ink-3)' : 'var(--faint)') }; }),
       isStep1: S.step === 1, isStep2: S.step === 2, isStep3: S.step === 2, isStep5: S.step === 4,
       reviewSub: S.vw < 960 ? 'This is how people will see it. Happy with it? Continue to payment. Want changes? Go back and edit.' : 'Check the preview on the right. Happy with it? Continue to payment.',
-      planLine: plan.name + ' · 1 year', madeByLine: dfm ? 'Designed by our team' : 'Card setup, link and QR code', payEmail: d.email || 'your email',
-      plans: PLANS.map(p => { const c = p.id === S.plan; return { ...p, popular: !!p.popular, price: money(S.region, (PRICING[S.region] || PRICING.US)[p.id]), hasWas: !!(PRICING[S.region] || PRICING.US)[p.id + 'Was'], was: money(S.region, (PRICING[S.region] || PRICING.US)[p.id + 'Was'] || 0), checked: c ? 'true' : 'false', pick: () => this.setState({ plan: p.id }), border: c ? '2px solid var(--btn)' : '1px solid rgba(var(--fg-rgb),0.12)', bg: c ? 'rgba(var(--acc-rgb),0.06)' : 'var(--surface)' }; }),
+      changesIncl: CHANGES_INCLUDED[S.plan] || 2, planLine: plan.name + ' · 1 year', madeByLine: dfm ? 'Designed by our team' : 'Card setup, link and QR code', payEmail: d.email || 'your email',
+      plans: PLANS.map(p => { const c = p.id === S.plan; return { ...p, popular: !!p.popular, price: money(S.region, (PRICING[S.region] || PRICING.US)[p.id]), hasWas: !!(PRICING[S.region] || PRICING.US)[p.id + 'Was'], was: money(S.region, (PRICING[S.region] || PRICING.US)[p.id + 'Was'] || 0), checked: c ? 'true' : 'false', pick: () => this.setState(s => (p.id === 'basic' && isGifSrc(s.d)) ? { plan: p.id, d: { ...s.d, photo: '', photoData: '' }, photoMsg: 'Digital Card uses a still photo, so we removed your moving portrait. Please add a photo (JPG, PNG or WebP).' } : { plan: p.id }), border: c ? (S.vw < 960 ? '2px solid var(--accent)' : '2px solid var(--btn)') : '1px solid rgba(var(--fg-rgb),0.12)', bg: c ? 'rgba(var(--acc-rgb),0.06)' : 'var(--surface)', radioRing: c ? 'var(--accent)' : 'rgba(var(--fg-rgb),0.25)', radioDot: c ? '1' : '0', thumb: S.vw < 960, motion: p.id === 'motion', img: p.id === 'motion' ? '/portrait.gif' : '/portrait.jpg', pad: S.vw < 960 ? '18px' : '22px', priceFs: S.vw < 960 ? '32px' : '36px', featFs: S.vw < 960 ? '13.5px' : '14px' }; }),
+      addPhotoTitle: S.plan === 'motion' ? 'Add your moving portrait' : 'Add your photo', uploadLabel: S.vidBusy ? 'Preparing video…' : S.plan === 'motion' ? 'Upload video or GIF' : 'Upload photo',
+      addPhotoHint: S.vidBusy ? 'Preparing your video… ' + (S.vidPct || 0) + '%. Keep this page open.' : S.plan === 'motion' ? 'Record a short selfie video (3 to 10 seconds), or upload a video or GIF. We keep the first 10 seconds. A still photo also works.' : 'A clear, front-facing photo works best.',
+      photoAccept: S.plan === 'motion' ? 'video/*,image/png,image/jpeg,image/webp,image/gif' : 'image/png,image/jpeg,image/webp',
+      teamHref: 'mailto:' + SUPPORT_EMAIL + '?subject=' + encodeURIComponent('Custom order for my team (20+)'), teamPad: S.vw < 960 ? '18px' : '22px',
+      thumbName: [d.firstName, d.lastName].filter(Boolean).join(' ') || 'Your Name', thumbTitle: d.title || 'Your title',
       designSub: dfm ? 'Tell us what you like. Our designer uses this as the starting point.' : (S.vw < 960 ? "Pick your colours. You'll see the full card after your details." : 'The preview updates as you choose.'),
+      bizHint: bizOf(d.profession).sub + '.',
+      ...(() => { const cur = BUSINESSES.find(b => b.prof === d.profession), open = !!S.bizOpen, ic = cur ? BIZ_ICON[cur.prof] || [cur.name, ''] : null; return { bizPicked: !!cur, bizLabel: cur ? ic[0] : 'Pick the category that fits you best', bizIcon: ic ? ic[1] : '', bizFs: cur ? '16px' : '15px', bizFw: cur ? '700' : '500', bizInk: cur ? 'var(--ink)' : 'var(--faint)', bizBorder: err.profession ? '1.5px solid var(--danger)' : open ? '1.5px solid var(--btn)' : '1px solid rgba(var(--fg-rgb),0.15)', hasBizErr: !!err.profession, bizErr: err.profession || '', bizOpen: open, bizOpenStr: open ? 'true' : 'false', bizChevron: open ? 'rotate(180deg)' : 'none', toggleBiz: () => this.setState(s => ({ bizOpen: !s.bizOpen })), closeBiz: () => this.setState({ bizOpen: false }),
+        bizItems: VISIBLE_BIZ.map(b => { const on = b === cur; return { short: (BIZ_ICON[b.prof] || [b.name])[0], sub: b.sub, icon: (BIZ_ICON[b.prof] || [])[1] || '', tileBg: on ? 'var(--btn)' : 'var(--bg-2)', tileInk: on ? 'var(--btn-ink)' : 'var(--ink)', rowBg: on ? 'var(--bg-2)' : 'transparent', selected: on ? 'true' : 'false', checkOp: on ? '1' : '0', pick: () => { const first = listFor(b.colls[0])[0].id; this.setState(s => ({ bizOpen: false, swEnd: false, errors: { ...(s.errors || {}), profession: undefined }, d: { ...s.d, profession: b.prof, colour: first } })); } }; }) }; })(),
+      bizValue: bizOf(d.profession).prof, bizOptions: BUSINESSES.map(b => ({ value: b.prof, label: b.name + ' · ' + b.sub })),
+      onBiz: e => { const b = BUSINESSES.find(x => x.prof === e.target.value) || BUSINESSES[0]; const first = listFor(b.colls[0])[0].id; this.setState(s => ({ d: { ...s.d, profession: b.prof, colour: first } })); },
+      bizTiles: BUSINESSES.map(b => { const on = b.prof === d.profession || (b === BUSINESSES[0] && !BUSINESSES.some(x => x.prof === d.profession)); return { name: b.name, sub: b.sub, pressed: on ? 'true' : 'false', border: on ? 'rgba(16,24,32,0.9)' : 'rgba(255,255,255,0.85)', bg: on ? 'linear-gradient(180deg,#1b2632,#0f1822)' : 'rgba(255,255,255,0.55)', ink: on ? '#FFFFFF' : 'var(--ink)', shadow: on ? '0 8px 18px -8px rgba(16,24,32,0.55), inset 0 1px 0 rgba(255,255,255,0.18)' : 'inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 6px -3px rgba(16,24,32,0.18)', pick: () => { const first = listFor(b.colls[0])[0].id; this.setState(s => ({ d: { ...s.d, profession: b.prof, colour: first } })); } }; }),
       profession: d.profession, professionOptions: PROFESSIONS, onProfession: e => this.set('profession', e.target.value),
       layouts: LAYOUTS.map(l => { const c = l.id === d.layout; return { ...l, checked: c ? 'true' : 'false', border: c ? '2px solid var(--btn)' : '1px solid rgba(var(--fg-rgb),0.10)', pick: () => this.set('layout', l.id) }; }),
       colourName: col.name,
-      collName: COLLECTIONS[ci].name, collPrev: () => goColl(-1), collNext: () => goColl(1), collPos: (ci + 1) + ' of ' + COLLECTIONS.length, collDots: COLLECTIONS.map((_, i) => ({ w: i === ci ? '16px' : '4px', bg: i === ci ? 'var(--btn)' : 'rgba(var(--fg-rgb),0.18)' })),
-      colours: listFor(collId).map(c => { const s = c.id === d.colour; return { ...c, checked: s ? 'true' : 'false', ring: s ? '0 0 0 3px var(--bg), 0 0 0 5px var(--btn)' : '0 0 0 1px rgba(var(--fg-rgb),0.12)', pick: () => this.set('colour', c.id) }; }),
-      detailsTitle: S.editToken ? 'Edit your card' : 'Your details', detailsSub: S.editToken ? 'Update anything below, then save. Changes go live straight away.' : dfm ? 'Only name, mobile and email are required. Add anything else you want on the card.' : (S.vw < 960 ? "Fields marked * are required. You'll preview your card next." : 'Fields marked * are required. Everything shows on your card as you type.'),
-      avatarBg: d.photo ? 'url("' + d.photo + '")' : col.bg, accent: col.accent, initials: d.photo ? '' : (((d.firstName || '')[0] || '') + ((d.lastName || '')[0] || '')).toUpperCase() || '+',
-      adjDown: this.adjDown, adjBgColor: col.bg, adjBg: d.photo ? 'url("' + d.photo + '")' : 'none', adjPos: (d.photoX ?? 50) + '% ' + (d.photoY ?? 50) + '%', adjZoom: String(d.photoZoom || 1),
+      swShow: S.vw >= 960 || !!S.swOpen, swGap: listFor(collId).some(c => c.layout === 'estate' && c.mode) ? '12px' : '16px', swOpenStr: S.swOpen ? 'true' : 'false', swChevron: S.swOpen ? 'rotate(180deg)' : 'none', swPillBd: S.swOpen ? '1.5px solid var(--btn)' : '1px solid rgba(var(--fg-rgb),0.15)', swToggle: () => this.setState(s => ({ swOpen: !s.swOpen, swEnd: false })),
+      showCollSw: COLLS.length > 1, swJustify: listFor(collId).length > 5 ? 'flex-start' : 'center', swFade: listFor(collId).length > 5 && !S.swEnd, onSwScroll: e => { const el = e.currentTarget, end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4; if (end !== !!this.state.swEnd) this.setState({ swEnd: end }); },
+      collName: COLLS[ci].name, collPrev: () => goColl(-1), collNext: () => goColl(1), collPos: (ci + 1) + ' of ' + COLLS.length, collDots: COLLS.map((_, i) => ({ w: i === ci ? '16px' : '4px', bg: i === ci ? 'var(--btn)' : 'rgba(var(--fg-rgb),0.18)' })),
+      colours: listFor(collId).map(c => { const s = c.id === d.colour, th = c.layout === 'estate' && !!c.mode; return { ...c, isDot: !th, isThumb: th, blocks: th ? thumbBlocks(c, 58, 80) : [], labelInk: s ? 'var(--ink)' : 'var(--muted)', checked: s ? 'true' : 'false', ring: s ? '0 0 0 3px var(--bg), 0 0 0 5px var(--btn)' : '0 0 0 1px rgba(var(--fg-rgb),0.12)', ring2: s ? '0 0 0 2px var(--bg), 0 0 0 4px var(--btn)' : '0 0 0 1px rgba(var(--fg-rgb),0.14)', pick: () => this.set('colour', c.id) }; }),
+      pillThumb: !!(col.layout === 'estate' && col.mode), pillDot: !(col.layout === 'estate' && col.mode), pillName: col.layout === 'estate' && col.mode ? col.name : 'Colour', pillBg: col.bg, pillBlocks: col.layout === 'estate' && col.mode ? thumbBlocks(col, 26, 36) : [],
+      hasDetailsSub: !!(S.editToken || dfm), detailsTitle: S.editToken ? 'Edit your card' : 'Your details', detailsSub: S.editToken ? 'Update anything below, then save. Changes go live straight away.' : dfm ? 'Only name, mobile and email are required. Add anything else you want on the card.' : (S.vw < 960 ? "Fields marked * are required. You'll preview your card next." : 'Fields marked * are required. Everything shows on your card as you type.'),
+      avatarBg: d.photo && !NBR_VID.test(d.photo) ? 'url("' + d.photo + '")' : col.bg, accent: col.accent, initials: d.photo ? '' : (((d.firstName || '')[0] || '') + ((d.lastName || '')[0] || '')).toUpperCase() || '+',
+      adjDown: this.adjDown, adjBgColor: col.bg, adjBg: d.photo && !NBR_VID.test(d.photo) ? 'url("' + d.photo + '")' : 'none', adjPos: (d.photoX ?? 50) + '% ' + (d.photoY ?? 50) + '%', adjZoom: String(d.photoZoom || 1),
       zoomLabel: Math.round((d.photoZoom || 1) * 100) + '%', onZoom: e => this.set('photoZoom', Number(e.target.value)),
-      focusPresets: [['Top', 50, 15, null], ['Centre', 50, 50, null], ['Bottom', 50, 85, null], ['Reset', 50, 50, 1]].map(([label, x, y, z]) => ({ label, pick: () => this.setState(s => ({ d: { ...s.d, photoX: x, photoY: y, photoZoom: z || s.d.photoZoom } })) })),
-      hasPhoto: !!d.photo, photoLabel: d.photo ? 'Change photo' : 'Upload photo', removePhoto: () => this.setState(s => ({ d: { ...s.d, photo: '', photoData: '', photoX: 50, photoY: 50, photoZoom: 1 } })), pickPhoto: this.pickPhoto, fileRef: this.fileRef,
+      noPhotoAdj: !d.photo, focusPresets: [['Top', 50, 15, null], ['Centre', 50, 50, null], ['Bottom', 50, 85, null], ['Reset', 50, 50, 1]].map(([label, x, y, z]) => ({ label, icon: { Top: 'M12 19V5M5 12l7-7 7 7', Centre: 'M12 3v18M3 12h18', Bottom: 'M12 5v14M5 12l7 7 7-7', Reset: 'M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5' }[label], bg: z == null && Math.round(d.photoY ?? 50) === y ? 'var(--bg-2)' : 'var(--surface)', bd: z == null && Math.round(d.photoY ?? 50) === y ? 'rgba(var(--fg-rgb),0.22)' : 'rgba(var(--fg-rgb),0.13)', pick: () => this.setState(s => ({ d: { ...s.d, photoX: x, photoY: y, photoZoom: z || s.d.photoZoom } })) })),
+      phPad: d.photo ? '16px' : '28px 16px 24px', phBorder: d.photo ? '1px solid rgba(var(--fg-rgb),0.10)' : '1px dashed rgba(var(--fg-rgb),0.18)', hasPhoto: !!d.photo, photoLabel: d.photo ? 'Change photo' : 'Upload photo', hasPhotoMsg: !!S.photoMsg, noPhotoMsg: !S.photoMsg, editOpen: !!S.editOpen,
+      photoMain: () => { const s = this.state.d; this.photoSnap = { photo: s.photo, photoData: s.photoData, photoX: s.photoX, photoY: s.photoY, photoZoom: s.photoZoom }; if (s.photo) this.setState({ editOpen: true }); else this.pickPhoto(); },
+      cancelEdit: () => { const p = this.photoSnap; this.setState(s => ({ editOpen: false, d: p ? { ...s.d, ...p } : s.d })); },
+      saveEdit: () => { this.photoSnap = null; this.setState({ editOpen: false }); },
+      resetPhoto: () => this.setState(s => ({ d: { ...s.d, photoX: 50, photoY: 50, photoZoom: 1 } })),
+      removeEdit: () => { this.photoSnap = null; this.setState(s => ({ editOpen: false, d: { ...s.d, photo: '', photoData: '', photoX: 50, photoY: 50, photoZoom: 1 } })); }, removePhoto: () => this.setState(s => ({ d: { ...s.d, photo: '', photoData: '', photoX: 50, photoY: 50, photoZoom: 1 } })), pickPhoto: this.pickPhoto, fileRef: this.fileRef,
       onPhoto: e => this.readPhoto(e.target.files && e.target.files[0]), onDragOver: e => e.preventDefault(), onDrop: e => { e.preventDefault(); this.readPhoto(e.dataTransfer.files && e.dataTransfer.files[0]); },
-      photoNote: S.photoMsg || (S.plan === 'motion' ? 'A clear, front-facing photo. We turn it into the moving portrait. You can also upload your own GIF.' : 'A clear, front-facing photo. Square works best. JPG, PNG or WebP.'),
-      fields: FIELDS.filter(f => (!f.dfmOnly || dfm) && (!f.re || d.profession === 'Real Estate') && (!f.tx || String(d.licenseState || '').trim().toUpperCase() === 'TX')).map(f => { const req = (f.req === 'all' || (f.req === 'builder' && !dfm)) && !(S.editToken && f.k === 'email'); return { id: 'o-' + f.k, label: f.label + (req ? ' *' : ''), ph: f.ph, ac: f.ac || 'on', type: f.type || 'text', value: d[f.k] || '', onChange: e => this.set(f.k, e.target.value), ph: f.k === 'phone' ? (PRICING[S.region] || PRICING.US).phone : f.k === 'city' ? (PRICING[S.region] || PRICING.US).city : f.ph,
+      photoNote: S.photoMsg || (S.plan === 'motion' ? 'Front-facing video or GIF, up to 10 seconds.' : 'Front-facing photo, square works best.'),
+      fields: FIELDS.filter(f => (!f.dfmOnly || dfm) && (!f.re || d.profession === 'Real Estate') && (!f.biz || f.biz.includes(d.profession)) && (!f.usOnly || S.region !== 'IN') && (!f.tx || String(d.licenseState || '').trim().toUpperCase() === 'TX')).map(f => { const req = (f.req === 'all' || (f.req === 'builder' && !dfm)) && !(S.editToken && f.k === 'email'); const bl = (BIZ_LABEL[d.profession] || {})[f.k]; const rr = (bl ? (Array.isArray(bl) ? bl : bl[S.region] || bl.US) : null) || (d.profession === 'Real Estate' ? ((RE_REGION[S.region] || {})[f.k]) : null) || []; return { id: 'o-' + f.k, label: (rr[0] || f.label) + (req ? ' *' : ''), ph: f.ph, ac: f.ac || 'on', type: f.type || 'text', value: d[f.k] || '', onChange: e => this.set(f.k, e.target.value), ph: f.k === 'phone' ? (PRICING[S.region] || PRICING.US).phone : f.k === 'city' ? (PRICING[S.region] || PRICING.US).city : (rr[1] || f.ph),
         isInput: !f.area, isArea: !!f.area, span: f.span === 2 ? '1 / -1' : 'span 1', hasError: !!err[f.k], error: err[f.k] || '', invalid: err[f.k] ? 'true' : 'false', border: err[f.k] ? 'var(--danger)' : 'rgba(var(--fg-rgb),0.15)' }; }),
       reviewName: [d.firstName, d.lastName].filter(Boolean).join(' ') || 'Your name',
       reviewRole: [d.title, d.company].filter(Boolean).join(' · ') || (d.photo ? '' : 'No photo. Your initials show instead.'),
