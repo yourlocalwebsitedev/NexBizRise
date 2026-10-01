@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#E9E4DA;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#101820;}a{color:#0B7C86;}a:hover{color:#101820;}</style>
+</helmet>
+<section style="padding:48px;display:flex;flex-direction:column;gap:28px;">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px;">
+    <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-0.02em;">Design picker: 3 options</h1>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#4A525C;">One word for everything: <b>Style</b> (collection + colour). Arrows are replaced with tappable chips. Each option shows open and collapsed.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+
+    <!-- 1a -->
+    <div id="1a" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;"><span style="padding:4px 10px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:13px;font-weight:800;">1a</span><span style="font-size:17px;font-weight:800;">Chips + swatches, bottom sheet</span></div>
+      <p style="margin:0;max-width:680px;font-size:14px;line-height:1.5;color:#4A525C;">Collections as a row of chips (no hidden arrows). Swatches below. Tap the handle to collapse to one line.</p>
+      <div style="display:flex;gap:24px;">
+        <div style="width:320px;height:660px;border-radius:36px;background:#F5F2EC;box-shadow:0 0 0 10px #101820,0 20px 40px -20px rgba(0,0,0,0.5);overflow:hidden;position:relative;display:flex;flex-direction:column;">
+          <div style="flex:1;padding:16px;display:flex;justify-content:center;">
+            <div style="width:230px;height:340px;border-radius:18px;background:#0f1a2e;overflow:hidden;display:flex;flex-direction:column;"><div style="height:150px;background:linear-gradient(180deg,#2a3a5c,#0f1a2e);"></div><div style="padding:14px;display:flex;flex-direction:column;gap:8px;"><span style="width:120px;height:10px;border-radius:4px;background:#f1ece2;"></span><span style="width:80px;height:6px;border-radius:3px;background:#d8b36a;"></span><div style="margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;"><span style="height:30px;border-radius:8px;background:#17243d;"></span><span style="height:30px;border-radius:8px;background:#17243d;"></span><span style="height:30px;border-radius:8px;background:#17243d;"></span></div></div></div>
+          </div>
+          <div style="background:#F5F2EC;border-radius:20px 20px 0 0;box-shadow:0 -10px 24px -12px rgba(16,24,32,0.3);padding:8px 14px 18px;display:flex;flex-direction:column;gap:12px;">
+            <span style="align-self:center;width:40px;height:5px;border-radius:3px;background:rgba(16,24,32,0.2);"></span>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;"><span style="font-size:12px;font-weight:800;letter-spacing:0.12em;color:#6B7280;">STYLE</span><span style="font-size:13px;font-weight:700;">Executive · Navy</span></div>
+            <div style="display:flex;gap:8px;overflow:hidden;">
+              <span style="flex:none;height:36px;padding:0 14px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:13.5px;font-weight:700;display:flex;align-items:center;">Professional</span>
+              <span style="flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(16,24,32,0.18);font-size:13.5px;font-weight:600;display:flex;align-items:center;">Luxury</span>
+              <span style="flex:none;height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(16,24,32,0.18);font-size:13.5px;font-weight:600;display:flex;align-items:center;">Personal</span>
+            </div>
+            <div style="display:flex;gap:14px;justify-content:center;">
+              <span style="width:40px;height:40px;border-radius:50%;background:#0f1a2e;box-shadow:0 0 0 3px #F5F2EC,0 0 0 5px #101820;display:grid;place-items:center;"><span style="width:14px;height:14px;border-radius:50%;background:#d8b36a;"></span></span>
+              <span style="width:40px;height:40px;border-radius:50%;background:#1d3b2f;display:grid;place-items:center;"><span style="width:14px;height:14px;border-radius:50%;background:#e8c98a;"></span></span>
+              <span style="width:40px;height:40px;border-radius:50%;background:#3a1f2b;display:grid;place-items:center;"><span style="width:14px;height:14px;border-radius:50%;background:#f0b8a0;"></span></span>
+              <span style="width:40px;height:40px;border-radius:50%;background:#f1ece2;box-shadow:inset 0 0 0 1px rgba(16,24,32,0.15);display:grid;place-items:center;"><span style="width:14px;height:14px;border-radius:50%;background:#0B7C86;"></span></span>
+              <span style="width:40px;height:40px;border-radius:50%;background:#1b1b1b;display:grid;place-items:center;"><span style="width:14px;height:14px;border-radius:50%;background:#c9a45c;"></span></span>
+            </div>
+            <span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Continue →</span>
+          </div>
+        </div>
+        <div style="width:320px;height:660px;border-radius:36px;background:#F5F2EC;box-shadow:0 0 0 10px #101820,0 20px 40px -20px rgba(0,0,0,0.5);overflow:hidden;position:relative;display:flex;flex-direction:column;">
+          <div style="flex:1;padding:16px;display:flex;justify-content:center;">
+            <div style="width:250px;height:470px;border-radius:18px;background:#0f1a2e;overflow:hidden;display:flex;flex-direction:column;"><div style="height:210px;background:linear-gradient(180deg,#2a3a5c,#0f1a2e);"></div><div style="padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="width:140px;height:11px;border-radius:4px;background:#f1ece2;"></span><span style="width:90px;height:6px;border-radius:3px;background:#d8b36a;"></span><div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;"><span style="height:34px;border-radius:8px;background:#17243d;"></span><span style="height:34px;border-radius:8px;background:#17243d;"></span><span style="height:34px;border-radius:8px;background:#17243d;"></span></div><span style="margin-top:6px;height:34px;border-radius:999px;background:#d8b36a;"></span></div></div>
+          </div>
+          <div style="background:#F5F2EC;border-radius:20px 20px 0 0;box-shadow:0 -10px 24px -12px rgba(16,24,32,0.3);padding:8px 14px 18px;display:flex;flex-direction:column;gap:10px;">
+            <span style="align-self:center;width:40px;height:5px;border-radius:3px;background:rgba(16,24,32,0.2);"></span>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:10px;">
+              <span style="height:52px;border-radius:999px;border:1.5px solid #101820;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="width:18px;height:18px;border-radius:50%;background:#0f1a2e;box-shadow:inset 0 0 0 5px #0f1a2e,inset 0 0 0 9px #d8b36a;"></span>Style ⌃</span>
+              <span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Continue →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:24px;font-size:13px;font-weight:700;color:#4A525C;"><span style="width:320px;text-align:center;">Open</span><span style="width:320px;text-align:center;">Collapsed</span></div>
+    </div>
+
+    <!-- 1b -->
+    <div id="1b" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;"><span style="padding:4px 10px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:13px;font-weight:800;">1b</span><span style="font-size:17px;font-weight:800;">Picker on top, preview underneath</span></div>
+      <p style="margin:0;max-width:680px;font-size:14px;line-height:1.5;color:#4A525C;">Style bar sits at the top and collapses into a single chip. The card is right below, so every tap is visible. Continue pinned at the bottom.</p>
+      <div style="display:flex;gap:24px;">
+        <div style="width:320px;height:660px;border-radius:36px;background:#F5F2EC;box-shadow:0 0 0 10px #101820,0 20px 40px -20px rgba(0,0,0,0.5);overflow:hidden;position:relative;display:flex;flex-direction:column;">
+          <div style="padding:14px 14px 12px;background:#FFFFFF;border-bottom:1px solid rgba(16,24,32,0.08);display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:15px;font-weight:800;">Pick your style</span><span style="font-size:13px;font-weight:700;color:#0B7C86;">Hide ⌃</span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);padding:3px;border-radius:12px;background:#EDE8DF;">
+              <span style="height:34px;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,0.12);font-size:13px;font-weight:800;display:grid;place-items:center;">Professional</span>
+              <span style="height:34px;font-size:13px;font-weight:600;color:#4A525C;display:grid;place-items:center;">Luxury</span>
+              <span style="height:34px;font-size:13px;font-weight:600;color:#4A525C;display:grid;place-items:center;">Personal</span>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:center;">
+              <span style="width:36px;height:36px;border-radius:50%;background:#0f1a2e;box-shadow:0 0 0 3px #FFFFFF,0 0 0 5px #101820;"></span>
+              <span style="width:36px;height:36px;border-radius:50%;background:#1d3b2f;"></span>
+              <span style="width:36px;height:36px;border-radius:50%;background:#3a1f2b;"></span>
+              <span style="width:36px;height:36px;border-radius:50%;background:#f1ece2;box-shadow:inset 0 0 0 1px rgba(16,24,32,0.15);"></span>
+              <span style="width:36px;height:36px;border-radius:50%;background:#1b1b1b;"></span>
+            </div>
+          </div>
+          <div style="flex:1;padding:14px;display:flex;justify-content:center;overflow:hidden;">
+            <div style="width:240px;height:420px;border-radius:18px;background:#0f1a2e;overflow:hidden;display:flex;flex-direction:column;"><div style="height:180px;background:linear-gradient(180deg,#2a3a5c,#0f1a2e);"></div><div style="padding:14px;display:flex;flex-direction:column;gap:8px;"><span style="width:130px;height:10px;border-radius:4px;background:#f1ece2;"></span><span style="width:80px;height:6px;border-radius:3px;background:#d8b36a;"></span></div></div>
+          </div>
+          <div style="padding:12px 14px 18px;background:#F5F2EC;box-shadow:0 -10px 24px -12px rgba(16,24,32,0.3);"><span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Continue →</span></div>
+        </div>
+        <div style="width:320px;height:660px;border-radius:36px;background:#F5F2EC;box-shadow:0 0 0 10px #101820,0 20px 40px -20px rgba(0,0,0,0.5);overflow:hidden;position:relative;display:flex;flex-direction:column;">
+          <div style="padding:10px 14px;display:flex;justify-content:center;">
+            <span style="height:40px;padding:0 8px 0 6px;border-radius:999px;background:#FFFFFF;box-shadow:0 4px 12px -4px rgba(16,24,32,0.25);display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;"><span style="width:28px;height:28px;border-radius:50%;background:#0f1a2e;box-shadow:inset 0 0 0 8px #0f1a2e,inset 0 0 0 14px #d8b36a;"></span>Professional · Navy<span style="padding:4px 10px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:12px;">Change</span></span>
+          </div>
+          <div style="flex:1;padding:4px 14px;display:flex;justify-content:center;overflow:hidden;">
+            <div style="width:260px;height:500px;border-radius:18px;background:#0f1a2e;overflow:hidden;display:flex;flex-direction:column;"><div style="height:220px;background:linear-gradient(180deg,#2a3a5c,#0f1a2e);"></div><div style="padding:16px;display:flex;flex-direction:column;gap:8px;"><span style="width:140px;height:11px;border-radius:4px;background:#f1ece2;"></span><span style="width:90px;height:6px;border-radius:3px;background:#d8b36a;"></span><div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;"><span style="height:34px;border-radius:8px;background:#17243d;"></span><span style="height:34px;border-radius:8px;background:#17243d;"></span><span style="height:34px;border-radius:8px;background:#17243d;"></span></div></div></div>
+          </div>
+          <div style="padding:12px 14px 18px;background:#F5F2EC;box-shadow:0 -10px 24px -12px rgba(16,24,32,0.3);"><span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Continue →</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:24px;font-size:13px;font-weight:700;color:#4A525C;"><span style="width:320px;text-align:center;">Open</span><span style="width:320px;text-align:center;">Collapsed</span></div>
+    </div>
+
+    <!-- 1c -->
+    <div id="1c" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;"><span style="padding:4px 10px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:13px;font-weight:800;">1c</span><span style="font-size:17px;font-weight:800;">One swipe row: every style in one strip</span></div>
+      <p style="margin:0;max-width:680px;font-size:14px;line-height:1.5;color:#4A525C;">No collection switch at all. One scrolling strip grouped by small labels. Simplest to use; longer strip.</p>
+      <div style="width:320px;height:660px;border-radius:36px;background:#F5F2EC;box-shadow:0 0 0 10px #101820,0 20px 40px -20px rgba(0,0,0,0.5);overflow:hidden;position:relative;display:flex;flex-direction:column;">
+        <div style="flex:1;padding:16px;display:flex;justify-content:center;">
+          <div style="width:240px;height:400px;border-radius:18px;background:#0f1a2e;overflow:hidden;display:flex;flex-direction:column;"><div style="height:170px;background:linear-gradient(180deg,#2a3a5c,#0f1a2e);"></div><div style="padding:14px;display:flex;flex-direction:column;gap:8px;"><span style="width:130px;height:10px;border-radius:4px;background:#f1ece2;"></span><span style="width:80px;height:6px;border-radius:3px;background:#d8b36a;"></span></div></div>
+        </div>
+        <div style="background:#F5F2EC;border-radius:20px 20px 0 0;box-shadow:0 -10px 24px -12px rgba(16,24,32,0.3);padding:14px 0 18px;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:10px;padding:0 14px;overflow:hidden;align-items:flex-end;">
+            <span style="flex:none;display:flex;flex-direction:column;gap:6px;"><span style="font-size:10.5px;font-weight:800;letter-spacing:0.1em;color:#6B7280;">PROFESSIONAL</span><span style="display:flex;gap:8px;"><span style="width:38px;height:38px;border-radius:50%;background:#0f1a2e;box-shadow:0 0 0 3px #F5F2EC,0 0 0 5px #101820;"></span><span style="width:38px;height:38px;border-radius:50%;background:#1d3b2f;"></span><span style="width:38px;height:38px;border-radius:50%;background:#3a1f2b;"></span></span></span>
+            <span style="flex:none;width:1px;height:38px;background:rgba(16,24,32,0.15);"></span>
+            <span style="flex:none;display:flex;flex-direction:column;gap:6px;"><span style="font-size:10.5px;font-weight:800;letter-spacing:0.1em;color:#6B7280;">LUXURY</span><span style="display:flex;gap:8px;"><span style="width:38px;height:38px;border-radius:50%;background:#f4efe6;box-shadow:inset 0 0 0 1px rgba(16,24,32,0.15);"></span><span style="width:38px;height:38px;border-radius:50%;background:#1b1b1b;"></span></span></span>
+          </div>
+          <div style="padding:0 14px;"><span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Continue →</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

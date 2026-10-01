@@ -1,0 +1,70 @@
+name: Nightly database backup + keep-alive
+
+# Dumps the Supabase database every night, encrypts it, and keeps it as a download for 30 days.
+# Needs two repo secrets (Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL     Supabase → Project Settings → Database → Connection string (URI, "Session pooler"), with your DB password filled in
+#   BACKUP_PASSPHRASE   any long password you choose. Keep it safe: you need it to open a backup.
+# Restore:  gpg -d nbr-db-YYYY-MM-DD.sql.gz.gpg | gunzip > backup.sql   then run backup.sql in a database.
+
+on:
+  schedule:
+    - cron: '30 20 * * *'   # 02:00 IST every day
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reminders:
+    # Emails clients whose card renews in 30 / 7 / 0 days. Needs repo secret CRON_KEY (same value as the 'cron' row in app_secrets).
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          KEY: ${{ secrets.CRON_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then echo "CRON_KEY not set, skipping"; exit 0; fi
+          curl -fsS -X POST -H "x-cron-key: $KEY" https://nexbizrise.com/api/cron/reminders
+
+  keepalive:
+    # A tiny read every day so the free Supabase project never pauses for inactivity. Needs no secrets.
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -fsS -o /dev/null -w "%{http_code}\n" -H "apikey: sb_publishable_bqmJ-YGyd6h1UEnpM3RryA_eTWdpNbV" "https://hyaqvmrtqafqhbhcdecd.supabase.co/rest/v1/public_cards?select=slug&limit=1"
+
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check secrets are set
+        env:
+          DB: ${{ secrets.SUPABASE_DB_URL }}
+          PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          if [ -z "$DB" ] || [ -z "$PASS" ]; then echo "Add SUPABASE_DB_URL and BACKUP_PASSPHRASE repo secrets first."; exit 1; fi
+
+      - name: Install PostgreSQL 17 client
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y postgresql-client-17
+
+      - name: Dump, compress, encrypt
+        env:
+          DB: ${{ secrets.SUPABASE_DB_URL }}
+          PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          F="nbr-db-$(date -u +%F).sql.gz.gpg"
+          /usr/lib/postgresql/17/bin/pg_dump "$DB" --no-owner --no-privileges --schema=public \
+            | gzip -9 \
+            | gpg --batch --yes --pinentry-mode loopback --passphrase "$PASS" --symmetric --cipher-algo AES256 -o "$F"
+          test -s "$F"
+          ls -lh "$F"
+          echo "FILE=$F" >> "$GITHUB_ENV"
+
+      - name: Keep for 30 days
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FILE }}
+          path: ${{ env.FILE }}
+          retention-days: 30
+          if-no-files-found: error

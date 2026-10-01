@@ -33,7 +33,7 @@ input,textarea,select{font:inherit;}
 <div style="min-height:100vh;display:flex;flex-direction:column;">
   <header style="position:sticky;top:0;z-index:20;background:var(--header-bg);backdrop-filter:blur(12px);border-bottom:1px solid rgba(var(--fg-rgb),0.07);color:var(--ink-2);padding:0 24px;min-height:64px;display:flex;align-items:center;gap:16px;">
     <div style="display:flex;align-items:baseline;gap:10px;flex:1;min-width:0;">
-      <a href="#/" style="display:flex;align-items:center;gap:6px;color:var(--ink);"><img src="assets/nexbizrise-logo.png" alt="" width="48" height="36" style="height:32px;width:auto;flex:none;"></img><span style="font-size:19px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span></a>
+      <a href="#/" style="display:flex;align-items:center;gap:6px;color:var(--ink);"><x-import component-from-global-scope="nbr-logo" from="./brand.js" height="32" font="19" hint-size="140px,32px"></x-import></a>
       <span style="font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);padding:3px 8px;border:1px solid rgba(var(--brand-rgb),0.35);border-radius:6px;">Tap Card Admin</span>
     </div>
     <button type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid rgba(var(--fg-rgb),0.16);border-radius:10px;color:var(--ink-2);cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ themeIcon }}"></path></svg></button>
@@ -115,26 +115,25 @@ input,textarea,select{font:inherit;}
       <div style="display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.07);">
         <sc-for list="{{ rows }}" as="r" hint-placeholder-count="4">
           <div style="padding:var(--row-pad);display:flex;flex-wrap:wrap;align-items:center;gap:var(--row-gap);border-top:1px solid rgba(var(--fg-rgb),0.06);">
-            <div style="display:flex;align-items:center;gap:12px;flex:1 1 240px;min-width:0;">
+            <div style="display:flex;align-items:center;gap:12px;flex:1 1 220px;min-width:0;">
               <div aria-hidden="true" style="width:var(--av);height:var(--av);border-radius:50%;flex:none;background:{{ r.avatarBg }};background-size:cover;background-position:50% 18%;display:grid;place-items:center;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;font-size:18px;color:{{ r.accent }};">{{ r.initialsShown }}</div>
               <div style="display:flex;flex-direction:column;gap:2px;min-width:0;">
                 <span style="font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.name }}</span>
                 <span style="font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.role }}</span>
               </div>
             </div>
-            <a href="{{ r.url }}" target="_blank" rel="noopener" style="flex:1 1 200px;min-width:0;font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.urlLabel }}</a>
-            <div style="display:flex;align-items:center;gap:8px;flex:0 0 150px;">
-              <span aria-hidden="true" style="width:22px;height:22px;border-radius:6px;background:{{ r.bg }};box-shadow:inset 0 0 0 5px {{ r.bg }}, inset 0 0 0 11px {{ r.accent }};flex:none;"></span>
-              <span style="font-size:13px;color:var(--ink-3);">{{ r.colourName }}</span>
+            <div style="flex:1 1 190px;min-width:0;display:flex;flex-direction:column;gap:4px;">
+              <a href="{{ r.url }}" target="_blank" rel="noopener" style="min-width:0;font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.urlLabel }}</a>
+              <span style="display:flex;align-items:center;gap:6px;min-width:0;"><span aria-hidden="true" style="width:14px;height:14px;border-radius:4px;background:{{ r.bg }};box-shadow:inset 0 0 0 3px {{ r.bg }}, inset 0 0 0 7px {{ r.accent }};flex:none;"></span><span style="font-size:12.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.colourName }}</span></span>
             </div>
-            <div style="display:flex;flex-direction:column;gap:2px;flex:0 0 130px;">
+            <div style="display:flex;flex-direction:column;gap:2px;flex:0 0 118px;">
               <span style="font-size:13px;font-weight:600;">{{ r.plan }}</span>
               <span style="font-size:12px;color:var(--muted);">Renews {{ r.renewal }}</span>
               <sc-if value="{{ r.hasStats }}"><span title="Last 30 days" style="font-size:12px;color:var(--muted);">{{ r.stats }}</span></sc-if>
             </div>
             <span style="flex:none;padding:4px 10px;border-radius:999px;background:{{ r.statusBg }};color:{{ r.statusInk }};font-size:12px;font-weight:700;">{{ r.status }}</span>
             <sc-if value="{{ r.edited }}"><span title="The client changed this card with their edit link. Open it to clear." style="flex:none;padding:4px 10px;border-radius:999px;background:rgba(250,204,21,0.14);color:#FDE68A;font-size:12px;font-weight:700;">Edited by client</span></sc-if>
-            <div style="display:flex;gap:6px;flex:none;margin-left:auto;">
+            <div style="display:flex;gap:6px;flex:none;margin-left:auto;flex-wrap:nowrap;">
               <button type="button" onClick="{{ r.onQR }}" aria-label="{{ r.qrAria }}" style="width:40px;height:40px;border-radius:10px;border:1px solid rgba(var(--fg-rgb),0.10);background:var(--surface);color:var(--ink-2);display:grid;place-items:center;cursor:pointer;" style-hover="background:var(--surface-hi);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><path d="M14 14h3v3M21 14v.01M14 21h.01M17 21h4v-4"></path></svg></button>
               <button type="button" onClick="{{ r.onEdit }}" style="height:40px;padding:0 14px;border-radius:10px;border:1px solid rgba(var(--fg-rgb),0.10);background:var(--surface);color:var(--ink-2);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;" style-hover="background:var(--surface-hi);">Edit</button>
             </div>
@@ -256,6 +255,7 @@ input,textarea,select{font:inherit;}
                 <span style="font-size:13px;font-weight:600;">{{ o.plan }}</span>
                 <span style="font-size:12px;color:var(--muted);">{{ o.price }}</span>
               </div>
+              <span style="flex:none;padding:4px 10px;border-radius:999px;background:{{ o.payBg }};color:{{ o.payInk }};font-size:12px;font-weight:700;">{{ o.payLabel }}</span>
               <label style="display:flex;flex-direction:column;gap:4px;flex:0 0 150px;">
                 <span style="position:absolute;left:-9999px;">Status for {{ o.no }}</span>
                 <select value="{{ o.status }}" onChange="{{ o.onStatus }}" style="height:40px;padding:0 10px;border-radius:10px;border:1px solid {{ o.statusBorder }};background:var(--surface);color:var(--ink-2);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:600;">
@@ -265,6 +265,7 @@ input,textarea,select{font:inherit;}
                 </select>
               </label>
               <div style="display:flex;gap:6px;flex:none;margin-left:auto;">
+                <sc-if value="{{ o.unpaid }}"><button type="button" onClick="{{ o.onMarkPaid }}" style="height:40px;padding:0 14px;border-radius:10px;border:1px solid rgba(0,214,179,0.45);background:rgba(0,214,179,0.1);color:var(--ink-2);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Mark paid</button></sc-if>
                 <sc-if value="{{ o.hasCard }}"><button type="button" onClick="{{ o.onOpen }}" style="height:40px;padding:0 14px;border-radius:10px;border:1px solid rgba(var(--fg-rgb),0.10);background:var(--surface);color:var(--ink-2);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer;" style-hover="background:var(--surface-hi);">Edit card</button></sc-if>
               </div>
               <sc-if value="{{ o.hasNotes }}"><p style="margin:0;flex:1 1 100%;padding:10px 12px;border-radius:10px;background:var(--bg-2);font-size:13px;line-height:1.5;color:var(--ink-3);">{{ o.notes }}</p></sc-if>
@@ -287,7 +288,7 @@ input,textarea,select{font:inherit;}
         </div>
 
         <section onDragOver="{{ onDragOver }}" onDragLeave="{{ onDragLeave }}" onDrop="{{ onDrop }}" style="background:var(--surface);border-radius:16px;border:{{ dropBorder }};padding:20px;display:flex;flex-direction:column;gap:14px;">
-          <h2 style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">Photo or GIF</h2>
+          <h2 style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">Photo, GIF or video</h2>
           <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
             <div aria-hidden="true" onClick="{{ pickPhoto }}" style="cursor:pointer;width:88px;height:88px;border-radius:18px;flex:none;background:{{ pvAvatarBg }};background-size:cover;background-position:50% 18%;display:grid;place-items:center;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;font-size:32px;color:{{ pvAccent }};">{{ pvInitialsShown }}</div>
             <div style="display:flex;flex-direction:column;gap:8px;flex:1;min-width:180px;">
@@ -484,13 +485,7 @@ input,textarea,select{font:inherit;}
           <sc-if value="{{ hasEditToken }}"><a href="{{ sendHref }}" target="_blank" rel="noopener" style="height:46px;border-radius:12px;background:var(--brand);color:#04121A;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;text-decoration:none;">Send on WhatsApp</a></sc-if>
           <sc-if value="{{ noEditToken }}"><button type="button" onClick="{{ resetEditLink }}" style="height:46px;border-radius:12px;background:var(--brand);color:#04121A;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;text-decoration:none;border:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;">Send to client</button></sc-if>
         </div>
-        <div style="flex:none;width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);">
-          <span style="font-size:13.5px;font-weight:600;color:var(--ink-2);">{{ changesLabel }}</span>
-          <div style="display:flex;gap:6px;">
-            <button type="button" onClick="{{ undoChange }}" aria-label="Remove one change" style="width:36px;height:36px;border-radius:10px;border:1px solid rgba(var(--fg-rgb),0.14);background:transparent;color:var(--ink-2);font-size:18px;font-weight:700;cursor:pointer;">−</button>
-            <button type="button" onClick="{{ addChange }}" aria-label="Add one change" style="width:36px;height:36px;border-radius:10px;border:0;background:var(--brand);color:#04121A;font-size:18px;font-weight:700;cursor:pointer;">+</button>
-          </div>
-        </div>
+        
         <button type="button" onClick="{{ downloadQR }}" style="flex:none;height:44px;width:100%;border:0;border-radius:12px;background:transparent;color:var(--ink-2);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;">Download QR (SVG)</button>
         <sc-if value="{{ hasEditLink }}">
           <div style="flex:none;width:100%;display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid rgba(var(--fg-rgb),0.08);">
@@ -519,7 +514,7 @@ const SUPABASE_KEY = 'sb_publishable_bqmJ-YGyd6h1UEnpM3RryA_eTWdpNbV';   // publ
 const CARD_BASE = 'https://card.nexbizrise.com';  // where the card site is deployed
 const LINK_STYLE = 'path';   // 'path' → /rahul-sharma · 'query' → /?c=rahul-sharma
 const BASE_HOST = CARD_BASE.replace(/^https?:\/\//, '');
-const CHANGES_INCLUDED = { basic: 2, motion: 4 };
+const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
 const TODAY = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00');
 const toRow = c => ({ region: c.region || 'IN', layout: c.layout || 'original', photo_x: Math.round(c.photoX ?? 50), photo_y: Math.round(c.photoY ?? 50), photo_zoom: Number(c.photoZoom || 1), phone_display: c.phoneDisplay || '', signature: c.signature || '', titles: c.titles || '', contact_photo_url: c.contactPhoto || '', show_powered_by: c.showPoweredBy !== false, profession: c.profession || '', profession_other: c.professionOther || '', city: c.city || '', notes: c.notes || '', slug: c.slug, prefix: c.prefix || '', first_name: c.firstName, last_name: c.lastName || '', title: c.title, company: c.company || '', preset: c.preset, colour: c.colour, category: c.category || '', tagline: c.tagline || '', phone: c.phone, whatsapp: c.whatsapp || '', email: c.email || '', linkedin: c.linkedin || '', instagram: c.instagram || '', website: c.website || '', quote: c.quote || '', bio: c.bio || '', photo_url: c.photo || '', plan: c.plan, renewal: c.renewal, active: !!c.active, extras: { ...(c.extras || {}), seasonal: c.seasonal !== false, seasonal_addon: c.plan !== 'motion' && !!c.seasonAddon, greeting: String(c.greeting || '').trim().slice(0, 60) } });
 const dataToBlobUrl = p => { if (!String(p || '').startsWith('data:')) return p || ''; try { const [m, b64] = p.split(','); const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return URL.createObjectURL(new Blob([u], { type: m.slice(5).split(';')[0] })); } catch (e) { return ''; } };
@@ -527,7 +522,7 @@ const fromRow = r => ({ changesUsed: Number(r.changes_used) || 0, publicId: r.pu
 
 const COLOURS = [
   { id: 'forest',   name: 'Forest Green',  bg: '#06120d', accent: '#f2c98a', bgTop: '#0b2a1d', bgBack: '#134a33' },
-  { id: 'burgundy', name: 'Burgundy Rose', bg: '#1a0a0e', accent: '#f2a3a8' },
+  { id: 'burgundy', name: 'Rosé', bg: '#1a0a0e', accent: '#f2a3a8' },
   { id: 'teal',     name: 'Deep Teal',     bg: '#061618', accent: '#74d3c6' },
   { id: 'plum',     name: 'Royal Plum',    bg: '#140a1c', accent: '#d6b4ee' },
   { id: 'espresso', name: 'Espresso',      bg: '#160d09', accent: '#e8a57f' },
@@ -542,19 +537,19 @@ const PRESETS = {
 const PROFESSIONS = ['Entrepreneur / Business owner', 'Real Estate', 'Healthcare', 'Interior / Design services', 'Consultant / Coach', 'Legal / Finance', 'Retail / Shop', 'Other'];
 const PROF_PRESET = { 'Entrepreneur / Business owner': 'entrepreneur', 'Real Estate': 'realEstate', 'Healthcare': 'healthcare', 'Interior / Design services': 'services', 'Consultant / Coach': 'entrepreneur', 'Legal / Finance': 'entrepreneur', 'Retail / Shop': 'services', 'Other': 'entrepreneur' };
 const PRO_STYLES = [
-  { id: 'pro-executive', name: 'Executive', layout: 'professional', mode: 'banner', bg: '#0f1a2e', ink: '#f1ece2', card: '#17243d', accent: '#d8b36a', on: '#15120a', font: "'Cormorant Garamond',Georgia,serif", rad: '12px', align: 'left', boxed: true },
-  { id: 'pro-minimal', name: 'Minimal', layout: 'professional', mode: 'side', bg: '#ffffff', ink: '#111418', card: '#f3f4f6', accent: '#111418', on: '#ffffff', font: "Figtree,system-ui,sans-serif", rad: '10px', align: 'left', boxed: false },
-  { id: 'pro-classic', name: 'Classic', layout: 'professional', mode: 'ring', bg: '#f4efe6', ink: '#1c1a17', card: '#fbf8f2', accent: '#b08a45', on: '#ffffff', font: "'Cormorant Garamond',Georgia,serif", rad: '2px', align: 'center', boxed: false },
-  { id: 'pro-modern', name: 'Modern', layout: 'professional', mode: 'tile', bg: '#1f2124', ink: '#f2f0ec', card: '#2a2d31', accent: '#c7ccd4', on: '#15171a', font: "'Bricolage Grotesque',system-ui,sans-serif", rad: '999px', align: 'left', boxed: true },
-  { id: 'pro-corporate', name: 'Corporate', layout: 'professional', mode: 'band', bg: '#eef2f7', ink: '#14243b', card: '#ffffff', accent: '#2f5d9a', on: '#ffffff', font: "Figtree,system-ui,sans-serif", rad: '12px', align: 'center', boxed: true },
-  { id: 'pro-studio', name: 'Studio', layout: 'professional', mode: 'hero', bg: '#0b0b0c', ink: '#f5f3ee', card: '#161618', accent: '#e6d3a3', on: '#15120a', font: "'Bricolage Grotesque',system-ui,sans-serif", rad: '14px', align: 'left', boxed: true },
+  { id: 'pro-executive', name: 'Midnight', layout: 'professional', mode: 'banner', bg: '#0f1a2e', ink: '#f1ece2', card: '#17243d', accent: '#d8b36a', on: '#15120a', font: "'Cormorant Garamond',Georgia,serif", rad: '12px', align: 'left', boxed: true },
+  { id: 'pro-minimal', name: 'Paper', layout: 'professional', mode: 'side', bg: '#ffffff', ink: '#111418', card: '#f3f4f6', accent: '#111418', on: '#ffffff', font: "Figtree,system-ui,sans-serif", rad: '10px', align: 'left', boxed: false },
+  { id: 'pro-classic', name: 'Ivory', layout: 'professional', mode: 'ring', bg: '#f4efe6', ink: '#1c1a17', card: '#fbf8f2', accent: '#b08a45', on: '#ffffff', font: "'Cormorant Garamond',Georgia,serif", rad: '2px', align: 'center', boxed: false },
+  { id: 'pro-modern', name: 'Graphite', layout: 'professional', mode: 'tile', bg: '#1f2124', ink: '#f2f0ec', card: '#2a2d31', accent: '#c7ccd4', on: '#15171a', font: "'Bricolage Grotesque',system-ui,sans-serif", rad: '999px', align: 'left', boxed: true },
+  { id: 'pro-corporate', name: 'Harbor', layout: 'professional', mode: 'band', bg: '#eef2f7', ink: '#14243b', card: '#ffffff', accent: '#2f5d9a', on: '#ffffff', font: "Figtree,system-ui,sans-serif", rad: '12px', align: 'center', boxed: true },
+  { id: 'pro-studio', name: 'Noir', layout: 'professional', mode: 'hero', bg: '#0b0b0c', ink: '#f5f3ee', card: '#161618', accent: '#e6d3a3', on: '#15120a', font: "'Bricolage Grotesque',system-ui,sans-serif", rad: '14px', align: 'left', boxed: true },
 ];
 const LUX_STYLES = [
   { id: 'lux-champagne', name: 'Champagne', layout: 'luxuryEstate', bg: '#f4efe6', ink: '#1c1a17', accent: '#c9a45c', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
-  { id: 'lux-onyx', name: 'Onyx & Gold', layout: 'luxuryEstate', bg: '#0c0b0a', ink: '#f3ead8', accent: '#d4af37', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
+  { id: 'lux-onyx', name: 'Onyx', layout: 'luxuryEstate', bg: '#0c0b0a', ink: '#f3ead8', accent: '#d4af37', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
   { id: 'lux-emerald', name: 'Emerald', layout: 'luxuryEstate', bg: '#0b2a20', ink: '#f1e9d6', accent: '#d9b56a', frame: 'circle', font: "'Cormorant Garamond',Georgia,serif" },
   { id: 'lux-marble', name: 'Marble', layout: 'luxuryEstate', bg: '#f7f6f3', ink: '#22201d', accent: '#9c8a6e', frame: 'square', font: "Newsreader,Georgia,serif" },
-  { id: 'lux-velvet', name: 'Burgundy Velvet', layout: 'luxuryEstate', bg: '#2a0d14', ink: '#f5e6e0', accent: '#e0b28a', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
+  { id: 'lux-velvet', name: 'Velvet', layout: 'luxuryEstate', bg: '#2a0d14', ink: '#f5e6e0', accent: '#e0b28a', frame: 'arch', font: "'Cormorant Garamond',Georgia,serif" },
   { id: 'lux-sapphire', name: 'Sapphire', layout: 'luxuryEstate', bg: '#0e1633', ink: '#eef0f7', accent: '#b8c4e6', frame: 'circle', font: "Newsreader,Georgia,serif" },
 ];
 const STYLE_BY_ID = Object.fromEntries(PRO_STYLES.concat(LUX_STYLES).map(s => [s.id, s]));
@@ -761,7 +756,7 @@ class Component extends DCLogic {
     const live = rows.filter(r => / · Live$/.test(r.offer)).length;
     return {
       couponRows: rows, noCoupons: rows.length === 0,
-      couponsSummary: S.couponsError || (rows.length + ' coupons · ' + live + ' live. Discounts are checked and applied on the server at checkout.'),
+      couponsSummary: S.couponsError || (plural(rows.length, 'coupon') + ' · ' + live + ' live. Discounts are checked and applied on the server at checkout.'),
       cf: { ...f, valueLabel: f.kind === 'percent' ? 'Percent off' : 'Amount off', busy: !!S.cfBusy, saveLabel: S.cfBusy ? 'Saving…' : 'Save coupon', hasMsg: !!S.cfMsg, msg: S.cfMsg || '', msgColor: S.cfOk ? 'var(--brand)' : 'var(--danger)',
         onCode: e => setF('code', e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 32)), onKind: e => setF('kind', e.target.value), onValue: e => setF('value', e.target.value),
         onRegion: e => setF('region', e.target.value), onPlan: e => setF('plan', e.target.value), onMax: e => setF('maxUses', e.target.value), onPer: e => setF('perEmail', e.target.value), onExp: e => setF('expires', e.target.value),
@@ -810,6 +805,18 @@ class Component extends DCLogic {
     merged.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
     this.setState({ ordersSetup: setup, orders: merged, ordersSyncedAt: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) });
   }
+  markPaid = async (o) => {
+    if (!window.confirm('Mark ' + o.order_no + ' as paid? Only do this if you received the money outside Stripe/Razorpay.')) return;
+    const upd = { pay_status: 'paid', paid_at: new Date().toISOString(), pay_provider: 'manual' };
+    const { error } = await this.sb.from('orders').update(upd).eq('id', o.id);
+    if (error) { this.toastMsg('Could not update: ' + error.message); return; }
+    this.setState(s => ({ orders: s.orders.map(x => x.id === o.id ? { ...x, ...upd } : x) }));
+    if (o.mode !== 'dfm' && o.card_id) {
+      const r = await this.sb.from('cards').update({ active: true }).eq('id', o.card_id);
+      if (!r.error) this.setState(s => ({ clients: s.clients.map(c => c.id === o.card_id ? { ...c, active: true } : c) }));
+      this.toastMsg(o.order_no + ' paid · card is live');
+    } else this.toastMsg(o.order_no + ' marked paid');
+  };
   setOrderStatus = async (o, status) => {
     if (o.local) {
       try { const l = JSON.parse(localStorage.getItem('nbr-orders') || '[]').map(x => x.id === o.id ? { ...x, status } : x); localStorage.setItem('nbr-orders', JSON.stringify(l)); } catch (e) {}
@@ -1000,7 +1007,7 @@ class Component extends DCLogic {
 
     const ORD_ST = { new: ['New', 'rgba(var(--brand-rgb),0.55)'], in_progress: ['In progress', 'rgba(250,204,21,0.55)'], delivered: ['Delivered', 'rgba(0,214,179,0.55)'] };
     const ocount = st => S.orders.filter(o => (S.oregion === 'all' || o.region === S.oregion) && (o.status || 'new') === st).length;
-    const regStat = reg => { const l = S.orders.filter(o => o.region === reg); return l.length + ' orders · ' + l.filter(o => (o.status || 'new') === 'new').length + ' new · ' + money(reg, l.reduce((n, o) => n + Number(o.price || 0), 0)) + (reg === 'IN' ? ' + GST' : ''); };
+    const regStat = reg => { const l = S.orders.filter(o => o.region === reg); return plural(l.length, 'order') + ' · ' + l.filter(o => (o.status || 'new') === 'new').length + ' new · ' + money(reg, l.filter(o => o.pay_status === 'paid').reduce((n, o) => n + Number(o.price || 0) - Number(o.discount || 0), 0)) + ' paid' + (reg === 'IN' ? ' + GST' : ''); };
     const inRegion = S.orders.filter(o => S.oregion === 'all' || o.region === S.oregion);
     const orderRows = inRegion.filter(o => S.ofilter === 'all' || (o.status || 'new') === S.ofilter).map(o => {
       const client = S.clients.find(c => c.id === o.card_id) || S.clients.find(c => o.card && c.slug === o.card.slug);
@@ -1010,18 +1017,19 @@ class Component extends DCLogic {
         mode: o.mode === 'dfm' ? 'Design for me' : 'Self-built', modeBg: o.mode === 'dfm' ? 'rgba(214,180,238,0.16)' : 'rgba(var(--brand-rgb),0.12)', modeInk: o.mode === 'dfm' ? '#D6B4EE' : 'var(--accent)',
         plan: (PLANS[o.plan] || PLANS.basic).name, price: money(o.region === 'IN' ? 'IN' : 'US', o.total || (Number(o.price || 0) + Number(o.tax || 0))) + (o.region === 'IN' ? ' incl. GST' : '') + ' / year' + (o.local ? ' · this browser only' : ''), regionLabel: o.region === 'IN' ? '🇮🇳 India' : '🇺🇸 USA',
         status: st, statusBorder: ORD_ST[st][1], onStatus: e => this.setOrderStatus(o, e.target.value),
+        ...(() => { const ps = o.pay_status || 'unpaid'; const P = { paid: ['Paid' + (o.pay_provider ? ' · ' + (o.pay_provider === 'manual' ? 'manual' : o.pay_provider[0].toUpperCase() + o.pay_provider.slice(1)) : ''), 'rgba(0,214,179,0.14)', '#5EEAD4'], unpaid: ['Awaiting payment', 'rgba(250,204,21,0.14)', '#FDE68A'], refunded: ['Refunded', 'rgba(255,90,90,0.14)', '#FFB4B4'], waived: ['No charge', 'rgba(var(--fg-rgb),0.08)', 'var(--ink-3)'] }[ps] || ['Awaiting payment', 'rgba(250,204,21,0.14)', '#FDE68A']; return { payLabel: P[0], payBg: P[1], payInk: P[2], unpaid: ps === 'unpaid' && !o.local, onMarkPaid: () => this.markPaid(o) }; })(),
         hasCard: !!client, onOpen: () => client && this.editClient(client), hasNotes: !!o.notes, notes: 'Notes: ' + (o.notes || '') };
     });
     return {
       tabs: [['clients', 'Clients', 0], ['orders', 'Orders', ocount('new')], ['leads', 'Leads', (S.leads || []).filter(l => l.status === 'new').length], ['coupons', 'Coupons', 0]].map(([id, label, n]) => { const on = S.tab === id; return { label, selected: on ? 'true' : 'false', pick: () => this.setState({ tab: id }), bg: on ? 'var(--surface-hi)' : 'transparent', ink: on ? 'var(--ink)' : 'var(--muted)', hasBadge: n > 0, badge: String(n) }; }),
       tabClients: S.tab === 'clients', tabOrders: S.tab === 'orders', tabCoupons: S.tab === 'coupons', tabLeads: S.tab === 'leads',
-      leadsSummary: (S.leads || []).length + ' leads · ' + (S.leads || []).filter(l => l.status === 'new').length + ' new', leadsEmpty: !(S.leads || []).length, refreshLeads: () => this.loadLeads(),
+      leadsSummary: plural((S.leads || []).length, 'lead') + ' · ' + (S.leads || []).filter(l => l.status === 'new').length + ' new', leadsEmpty: !(S.leads || []).length, refreshLeads: () => this.loadLeads(),
       leadRows: (S.leads || []).map(l => { const c = S.clients.find(x => x.id === l.card_id); return { id: l.id, name: l.name, phone: l.phone, telHref: 'tel:' + l.phone, waHref: 'https://wa.me/' + String(l.phone || '').replace(/\D/g, ''), email: l.email || '', hasEmail: !!l.email, mailHref: 'mailto:' + (l.email || ''),
         topic: l.topic || '', hasTopic: !!l.topic, message: l.message || '', hasMessage: !!l.message, card: c ? this.nameOf(c) : l.slug, when: new Date(l.created_at).toLocaleString(undefined, { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }),
         statuses: [['new', 'New'], ['contacted', 'Contacted'], ['closed', 'Closed']].map(([id, label]) => { const on = l.status === id; return { label, pressed: on ? 'true' : 'false', bg: on ? 'var(--brand)' : 'transparent', ink: on ? '#04121A' : 'var(--ink-2)', pick: () => this.setLeadStatus(l, id) }; }) }; }),
       ...this.couponVals(S),
-      regionTabs: [['all', 'All countries', S.orders.length + ' orders'], ['IN', '🇮🇳 India', regStat('IN')], ['US', '🇺🇸 USA', regStat('US')]].map(([id, label, sub]) => { const on = S.oregion === id; return { label, sub, selected: on ? 'true' : 'false', pick: () => this.setState({ oregion: id }), border: on ? '2px solid var(--brand)' : '1px solid rgba(var(--fg-rgb),0.10)', bg: on ? 'rgba(var(--brand-rgb),0.07)' : 'var(--surface)' }; }),
-      ordersSummary: (S.ordersSyncedAt ? 'Synced ' + S.ordersSyncedAt + ' · auto-refreshes every 20s · ' : '') + inRegion.length + ' orders · ' + ocount('new') + ' new · ' + ocount('in_progress') + ' in progress · ' + ocount('delivered') + ' delivered',
+      regionTabs: [['all', 'All countries', plural(S.orders.length, 'order')], ['IN', '🇮🇳 India', regStat('IN')], ['US', '🇺🇸 USA', regStat('US')]].map(([id, label, sub]) => { const on = S.oregion === id; return { label, sub, selected: on ? 'true' : 'false', pick: () => this.setState({ oregion: id }), border: on ? '2px solid var(--brand)' : '1px solid rgba(var(--fg-rgb),0.10)', bg: on ? 'rgba(var(--brand-rgb),0.07)' : 'var(--surface)' }; }),
+      ordersSummary: (S.ordersSyncedAt ? 'Synced ' + S.ordersSyncedAt + ' · auto-refreshes every 20s · ' : '') + plural(inRegion.length, 'order') + ' · ' + ocount('new') + ' new · ' + ocount('in_progress') + ' in progress · ' + ocount('delivered') + ' delivered',
       ordersNeedSetup: S.ordersSetup, refreshOrders: () => this.loadOrders(),
       orderFilters: [['all', 'All'], ['new', 'New'], ['in_progress', 'In progress'], ['delivered', 'Delivered']].map(([id, label]) => { const on = S.ofilter === id; return { label, selected: on ? 'true' : 'false', pick: () => this.setState({ ofilter: id }), bg: on ? 'var(--brand)' : 'var(--surface)', ink: on ? '#04121A' : 'var(--ink-3)', border: on ? 'var(--brand)' : 'rgba(var(--fg-rgb),0.14)' }; }),
       orderRows, noOrderRows: orderRows.length === 0,
@@ -1034,7 +1042,7 @@ class Component extends DCLogic {
       adminSql: "insert into public.admins (user_id) select id from auth.users where email = '" + String(S.userEmail || 'you@example.com').replace(/'/g, "''") + "';",
       hasLoadError: !!S.loadError, loadError: S.loadError,
       emptyText: S.clients.length ? 'No clients match. Try another search or filter.' : 'No clients yet. Click New client to add the first one.',
-      summary: S.clients.length + ' clients · ' + count('Active') + ' active · ' + count('Renews soon') + ' renewing within 30 days · ' + (count('Expired') + count('Paused')) + ' expired or paused' + (() => { const live = S.clients.filter(c => c.active); const sum = reg => live.filter(c => (c.region || 'IN') === reg).reduce((n, c) => n + (PRICING[reg][c.plan] || 0), 0); return ' · Yearly revenue ' + money('IN', sum('IN')) + ' + ' + money('US', sum('US')); })(),
+      summary: plural(S.clients.length, 'client') + ' · ' + count('Active') + ' active · ' + count('Renews soon') + ' renewing within 30 days · ' + (count('Expired') + count('Paused')) + ' expired or paused' + (() => { const live = S.clients.filter(c => c.active); const sum = reg => live.filter(c => (c.region || 'IN') === reg).reduce((n, c) => n + (PRICING[reg][c.plan] || 0), 0); return ' · Yearly revenue ' + money('IN', sum('IN')) + ' + ' + money('US', sum('US')); })(),
       newClient: this.newClient, search: S.search, onSearch: e => this.setState({ search: e.target.value }),
       filters: FIL.map(([id, label]) => { const on = S.filter === id; return { label, selected: on ? 'true' : 'false', pick: () => this.setState({ filter: id }), bg: on ? 'var(--brand)' : 'var(--surface)', ink: on ? '#04121A' : 'var(--ink-3)', border: on ? 'var(--brand)' : 'rgba(var(--fg-rgb),0.14)' }; }),
       rows, noRows: rows.length === 0,
@@ -1043,7 +1051,7 @@ class Component extends DCLogic {
       hasPhoto: !!d.photo, noPhoto: !d.photo, removePhoto: () => { this.pendingFile = null; this.setDraft('photo', ''); }, onPhoto: this.onPhoto, pickPhoto: this.pickPhoto, fileRef: this.fileRef,
       uploadLabel: d.photo ? 'Change photo' : 'Upload photo', onDragOver: this.onDragOver, onDragLeave: this.onDragLeave, onDrop: this.onDrop,
       dropBorder: S.dragging ? '2px dashed var(--brand)' : '1px solid rgba(var(--fg-rgb),0.07)',
-      photoNote: d.photo ? (S.photoInfo && (d.photo.startsWith('blob:') || d.photo.startsWith('data:')) ? S.photoInfo : 'Current photo') + '. Square works best. GIFs animate on the card.' : 'Click Upload or drag a file here. JPG, PNG or GIF, square, under 8 MB. No photo shows initials.',
+      photoNote: d.photo ? (S.photoInfo && (d.photo.startsWith('blob:') || d.photo.startsWith('data:')) ? S.photoInfo : 'Current photo') + '. Square works best. GIFs and videos play on the card.' : 'Click Upload or drag a file here. JPG, PNG, GIF or a short video (up to 10 s), square, under 5 MB. No photo shows initials.',
       pvAvatarBg: d.photo ? 'url("' + d.photo + '")' : col.bg, pvInitialsShown: d.photo ? '' : this.initialsOf(d),
       draftPreset: d.preset, presetOptions: Object.keys(PRESETS).map(k => ({ value: k, label: PRESETS[k].label })),
       onPreset: e => { const p = PRESETS[e.target.value]; this.setState(s => ({ draft: { ...s.draft, preset: e.target.value, category: p.category, tagline: p.tagline } })); setTimeout(this.queuePreview, 0); },
@@ -1091,9 +1099,9 @@ class Component extends DCLogic {
       modalUrl: mUrl, closeModal: this.closeModal, doneRef: this.doneRef, stop: e => e.stopPropagation(),
       copyLink: this.copyLink, copyLabel: S.copied ? 'Copied ✓' : 'Copy link', downloadQR: this.downloadQR,
       copyEditLink: this.copyEditLink, resetEditLink: this.resetEditLink, copyEditLabel: modalClient && modalClient.editToken ? (S.editCopied ? 'Copied ✓' : 'Copy edit link') : 'Create new edit link', hasEditLink: !!modalClient, editBtn: this.editBtn, editNote: modalClient && modalClient.editToken ? 'Copy it now and send it to the client. For security it is only shown once.' : 'For special cases only. Changes are normally made by you. An edit link lets the client change their card themselves; it is shown once, and a new one stops the old one working.',
-      sendHref: modalClient ? 'https://wa.me/' + String(modalClient.whatsapp || modalClient.phone || '').replace(/\D/g, '') + '?text=' + encodeURIComponent('Hi ' + modalClient.firstName + ', your NexBizRise digital card is live: ' + mUrl + '\n\nYour plan includes ' + (CHANGES_INCLUDED[modalClient.plan] || 2) + ' changes a year. Just message us here with what you want changed.') : '#',
+      sendHref: modalClient ? 'https://wa.me/' + String(modalClient.whatsapp || modalClient.phone || '').replace(/\D/g, '') + '?text=' + encodeURIComponent('Hi ' + modalClient.firstName + ', your NexBizRise digital card is live: ' + mUrl + '\n\nNeed a change? Just message us here with what you want changed and we will update it.') : '#',
       hasEditToken: true, noEditToken: false,
-      changesLabel: modalClient ? 'Changes this year: ' + (modalClient.changesUsed || 0) + ' of ' + (CHANGES_INCLUDED[modalClient.plan] || 2) + ((modalClient.changesUsed || 0) > (CHANGES_INCLUDED[modalClient.plan] || 2) ? ' · extra changes are chargeable' : '') : '', addChange: () => this.bumpChanges(1), undoChange: () => this.bumpChanges(-1),
+     
       qrNode: modalClient ? React.createElement('div', { style: { width: '100%', height: '100%' }, dangerouslySetInnerHTML: { __html: this.qrSvg(mUrl).replace('<svg', '<svg style="width:100%;height:100%;display:block"') } }) : null,
       toast: S.toast,
       themeLabel: S.theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode',

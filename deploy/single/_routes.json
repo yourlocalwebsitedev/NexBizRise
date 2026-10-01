@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/support.js",
+    "/qrcode.js",
+    "/brand.js",
+    "/assets/*",
+    "/portrait.jpg",
+    "/portrait.gif"
+  ]
+}

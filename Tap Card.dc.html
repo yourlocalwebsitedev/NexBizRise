@@ -178,7 +178,7 @@ a:hover{color:#f3efe6;}
               <span style="width:40px;height:40px;border-radius:10px;background:rgba(243,239,230,0.08);display:grid;place-items:center;flex:none;">
                 <sc-if value="{{ s.isLinkedin }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 5.9V21h-4v-5.5c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9V9Z"></path></svg></sc-if>
                 <sc-if value="{{ s.isInstagram }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="#f3efe6" stroke="none"></circle></svg></sc-if>
-                <sc-if value="{{ s.isFacebook }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M14 22v-8h2.7l.4-3.2H14V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.3c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.8V14h2.8v8H14Z"></path></svg></sc-if>
+                <sc-if value="{{ s.isX }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.4L5.3 21H2.2l7.3-8.3L1.8 3h6.4l4.4 5.9L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"></path></svg></sc-if><sc-if value="{{ s.isFacebook }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M14 22v-8h2.7l.4-3.2H14V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.3c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.8V14h2.8v8H14Z"></path></svg></sc-if>
                 <sc-if value="{{ s.isYoutube }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="#f3efe6" aria-hidden="true"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.7-1.7C19.3 5.2 12 5.2 12 5.2s-7.3 0-8.9.4A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.7 1.7c1.6.4 8.9.4 8.9.4s7.3 0 8.9-.4a2.5 2.5 0 0 0 1.7-1.7C23 15.2 23 12 23 12Zm-13 3.2V8.8l5.5 3.2-5.5 3.2Z"></path></svg></sc-if>
                 <sc-if value="{{ s.isWebsite }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f3efe6" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"></path></svg></sc-if>
               </span>
@@ -210,9 +210,9 @@ a:hover{color:#f3efe6;}
     <footer style="padding:36px 24px 0;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
       <p style="margin:0;font-family:Newsreader,Georgia,serif;font-style:italic;font-size:16px;color:rgba(243,239,230,0.66);text-wrap:balance;">{{ footerLine }}</p>
       <sc-if value="{{ hasCompliance }}" hint-placeholder-val="{{ false }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.5;color:rgba(243,239,230,0.66);"><span style="text-wrap:balance;">{{ complianceLine }}</span><sc-if value="{{ isTX }}"><span style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;"><sc-if value="{{ hasIabs }}"><a href="{{ iabsUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Information About Brokerage Services</a></sc-if><a href="{{ cpnUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Consumer Protection Notice</a></span></sc-if></div></sc-if>
-      <sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:#f3efe6;">
+      <sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" style="min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:#f3efe6;">
             <span style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:color-mix(in srgb, #f3efe6 60%, #06120d);">Powered by NexBizRise</span>
-            <span style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;">Get a card like this<span aria-hidden="true">→</span></span>
+            <span style="font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 12px;">Get a card like this<span aria-hidden="true">→</span></span>
           </button></sc-if>
     </footer>
 
@@ -259,9 +259,9 @@ a:hover{color:#f3efe6;}
         </div>
         <sc-if value="{{ hasCompliance }}" hint-placeholder-val="{{ false }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.5;color:color-mix(in srgb, var(--lxInk,#1c1a17) 72%, var(--lxBg,#f4efe6));"><span style="text-wrap:balance;">{{ complianceLine }}</span><sc-if value="{{ isTX }}"><span style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;"><sc-if value="{{ hasIabs }}"><a href="{{ iabsUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Information About Brokerage Services</a></sc-if><a href="{{ cpnUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Consumer Protection Notice</a></span></sc-if></div></sc-if>
         <sc-if value="{{ showPlans }}">
-          <button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="min-height:44px;padding:0 12px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;">
+          <button type="button" onClick="{{ openPlans }}" style="min-height:44px;padding:0 12px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;">
             <span style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:color-mix(in srgb, var(--lxInk,#1c1a17) 62%, var(--lxBg,#f4efe6));">Powered by NexBizRise</span>
-            <span style="font-size:12px;font-weight:600;color:var(--lxInk,#1c1a17);display:inline-flex;align-items:center;gap:5px;">Get a card like this<span aria-hidden="true">→</span></span>
+            <span style="font-size:14px;font-weight:700;color:var(--lxInk,#1c1a17);display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 12px;">Get a card like this<span aria-hidden="true">→</span></span>
           </button>
         </sc-if>
       </div>
@@ -313,9 +313,9 @@ a:hover{color:#f3efe6;}
             <sc-for list="{{ socialsNoWeb }}" as="s"><a href="{{ s.url }}" target="_blank" rel="noopener" style="min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--pInk);font-size:15px;font-weight:600;border-bottom:1px solid color-mix(in srgb, var(--pInk) 10%, transparent);">{{ s.label }}<span aria-hidden="true" style="color:var(--pAcc);">→</span></a></sc-for>
           </div></sc-if>
           <sc-if value="{{ hasCompliance }}" hint-placeholder-val="{{ false }}"><div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.5;color:color-mix(in srgb, var(--pInk) 65%, var(--pBg));"><span style="text-wrap:balance;">{{ complianceLine }}</span><sc-if value="{{ isTX }}"><span style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;"><sc-if value="{{ hasIabs }}"><a href="{{ iabsUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Information About Brokerage Services</a></sc-if><a href="{{ cpnUrl }}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;">TREC Consumer Protection Notice</a></span></sc-if></div></sc-if>
-          <sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="margin-top:6px;min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:var(--pInk);">
+          <sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" style="margin-top:6px;min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:var(--pInk);">
             <span style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:color-mix(in srgb, var(--pInk) 55%, var(--pBg));">Powered by NexBizRise</span>
-            <span style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;">Get a card like this<span aria-hidden="true">→</span></span>
+            <span style="font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 12px;">Get a card like this<span aria-hidden="true">→</span></span>
           </button></sc-if>
         </div>
       </div>
@@ -419,6 +419,7 @@ a:hover{color:#f3efe6;}
           <div style="width:176px;height:176px;border-radius:50%;padding:7px;background:#FFFFFF;box-shadow:0 12px 30px -14px rgba(0,0,0,0.4);box-sizing:border-box;"><div style="width:100%;height:100%;border-radius:50%;overflow:hidden;"><sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}"><div role="img" data-ph="1" aria-label="{{ photoAlt }}" style="width:100%;height:100%;background-image:{{ photoBg }};background-size:cover;background-position:{{ photoPos }};"></div></sc-if><sc-if value="{{ noPhoto }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="width:100%;height:100%;display:grid;place-items:center;background:var(--eCard);color:var(--eInk);font-family:'DM Serif Display',Georgia,serif;font-size:52px;">{{ initials }}</div></sc-if></div></div>
           <h1 style="margin:16px 0 0;font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;text-align:center;">{{ displayName }}</h1>
           <sc-if value="{{ hasTitle }}" hint-placeholder-val="{{ true }}"><span style="margin-top:4px;font-size:11px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;opacity:0.8;text-align:center;">{{ title }}</span></sc-if>
+          <sc-if value="{{ hasBook }}" hint-placeholder-val="{{ true }}"><a href="{{ ctaHref }}" target="_blank" rel="noopener" style="width:100%;max-width:420px;box-sizing:border-box;margin-top:18px;height:52px;border-radius:12px;background:var(--eAcc);color:var(--eOn);font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -14px rgba(0,0,0,0.45);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>{{ ctaText }}</a></sc-if>
           <div style="width:100%;max-width:420px;margin-top:20px;background:#FFFFFF;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 30px -18px rgba(0,0,0,0.35);box-sizing:border-box;">
             <sc-if value="{{ hasCompany }}"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;"><sc-if value="{{ eRoof }}"><svg width="92" height="34" viewBox="0 0 92 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 32 34 4l18 17M40 32 64 8l24 24"></path></svg></sc-if><span style="font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:700;text-transform:uppercase;text-align:center;">{{ company }}</span><span style="width:170px;height:1.5px;background:currentColor;"></span></div></sc-if>
             <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;">
@@ -426,7 +427,6 @@ a:hover{color:#f3efe6;}
               <sc-if value="{{ hasEEmail }}" hint-placeholder-val="{{ true }}"><a href="{{ mailHref }}" style="display:flex;align-items:center;gap:12px;color:inherit;min-width:0;"><span style="width:28px;height:28px;border-radius:50%;background:var(--eInk);color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 7l9 6 9-6"></path></svg></span><span style="overflow:hidden;text-overflow:ellipsis;">{{ eEmail }}</span></a></sc-if>
               <sc-if value="{{ hasCity }}"><a href="{{ directionsHref }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;color:inherit;"><span style="width:28px;height:28px;border-radius:50%;background:var(--eInk);color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path></svg></span>{{ eCity }}</a></sc-if>
             </div>
-            <sc-if value="{{ hasBook }}" hint-placeholder-val="{{ true }}"><a href="{{ ctaHref }}" target="_blank" rel="noopener" style="height:50px;border-radius:10px;background:var(--eAcc);color:var(--eOn);font-size:14.5px;font-weight:800;display:flex;align-items:center;justify-content:center;">{{ ctaText }}</a></sc-if>
           <sc-if value="{{ hasTags }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;gap:6px;"><sc-for list="{{ eTags }}" as="tg"><span style="padding:6px 11px;border-radius:999px;border:1px solid currentColor;font-size:12.5px;font-weight:600;opacity:0.85;">{{ tg.t }}</span></sc-for></div></sc-if>
             <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
               <a href="{{ msgHref }}" target="{{ msgTarget }}" rel="noopener" style="height:54px;border-radius:10px;background:#F3F0EB;color:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"></path></svg>{{ msgLabel }}</a>
@@ -445,9 +445,9 @@ a:hover{color:#f3efe6;}
           <sc-if value="{{ hasCompany }}"><div style="width:calc(100% + 40px);margin-top:28px;height:56px;background:var(--eAcc);color:var(--eOn);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;">{{ company }}</div></sc-if>
         </div>
       </sc-if>
-        <div style="display:flex;justify-content:center;padding:4px 20px 28px;"><sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:var(--eInk);">
+        <div style="display:flex;justify-content:center;padding:4px 20px 28px;"><sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" style="min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:var(--eInk);">
             <span style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:color-mix(in srgb, var(--eInk) 55%, var(--eBg));">Powered by NexBizRise</span>
-            <span style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;">Get a card like this<span aria-hidden="true">→</span></span>
+            <span style="font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 12px;">Get a card like this<span aria-hidden="true">→</span></span>
           </button></sc-if></div>
       </div>
     </sc-if>
@@ -484,9 +484,9 @@ a:hover{color:#f3efe6;}
           <div style="margin-top:auto;padding-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:color-mix(in srgb, var(--lsInk,#13233f) 72%, var(--lsBg,#f6f4f0));">
             <sc-if value="{{ hasCityLine }}" hint-placeholder-val="{{ true }}"><span>{{ cityLine }}</span></sc-if>
             </div>
-          <div style="display:flex;justify-content:center;"><sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" aria-haspopup="dialog" style="min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:var(--lsInk,#13233f);">
+          <div style="display:flex;justify-content:center;"><sc-if value="{{ showPlans }}"><button type="button" onClick="{{ openPlans }}" style="min-height:44px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:var(--lsInk,#13233f);">
             <span style="font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:color-mix(in srgb, var(--lsInk,#13233f) 55%, var(--lsBg,#f6f4f0));">Powered by NexBizRise</span>
-            <span style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;">Get a card like this<span aria-hidden="true">→</span></span>
+            <span style="font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 12px;">Get a card like this<span aria-hidden="true">→</span></span>
           </button></sc-if></div>
         </div>
       </div>
@@ -581,192 +581,7 @@ a:hover{color:#f3efe6;}
         </div>
       </div>
     </sc-if>
-    <sc-if value="{{ plansOpen }}" hint-placeholder-val="{{ false }}">
-      <div onClick="{{ closePlans }}" style="position:fixed;left:0;right:0;top:{{ vvTop }};height:{{ vvH }};z-index:60;background:rgba(3,10,7,0.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;">
-        <div role="dialog" aria-modal="true" aria-labelledby="plans-h" ref="{{ plansSheetRef }}" onClick="{{ stop }}" style="width:100%;max-width:440px;max-height:{{ sheetMax }};overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-padding:24px 0;background:#F5F2EC;color:#101820;border-radius:24px 24px 0 0;padding:12px 20px max(24px, env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:18px;box-shadow:0 -20px 60px -20px rgba(0,0,0,0.7);">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <sc-if value="{{ onForm }}">
-              <button type="button" onClick="{{ backToPlans }}" aria-label="Back to plans" style="width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#5A6068;display:grid;place-items:center;cursor:pointer;" style-hover="background:rgba(16,24,32,0.06);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
-            </sc-if>
-            <sc-if value="{{ onPlans }}"><span style="width:44px;"></span></sc-if>
-            <div aria-hidden="true" style="width:40px;height:5px;border-radius:3px;background:rgba(16,24,32,0.18);"></div>
-            <button type="button" onClick="{{ closePlans }}" aria-label="Close" style="width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#5A6068;display:grid;place-items:center;cursor:pointer;" style-hover="background:rgba(16,24,32,0.06);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
-          </div>
-
-          <sc-if value="{{ onPlans }}" hint-placeholder-val="{{ true }}">
-            <div style="display:flex;flex-direction:column;gap:14px;">
-              <h3 id="plans-h" style="margin:0 0 2px;text-align:center;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:26px;line-height:1.15;">Choose your card</h3>
-              <div style="border-radius:18px;padding:22px 20px;background:#FFFFFF;border:1.5px solid #101820;color:#101820;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;">
-                <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#0B7C86;">Build your digital identity</p>
-                <p style="margin:0;font-size:15px;line-height:1.45;color:#2E3440;text-wrap:balance;">Turn your contact information<br>into a professional digital profile.</p>
-                <div style="margin:6px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px;">
-                  <span style="padding:4px 10px;border-radius:999px;background:#E6F1F2;color:#086670;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Launch offer · Save {{ basicSave }}</span>
-                  <p style="margin:0;display:flex;align-items:baseline;gap:8px;"><s aria-label="Was {{ basicWas }}" style="font-size:18px;color:#6B7078;text-decoration-thickness:1.5px;">{{ basicWas }}</s><span style="font-family:Newsreader,Georgia,serif;font-size:40px;line-height:1;font-weight:500;letter-spacing:-0.02em;">{{ basicNow }}</span><span style="font-size:15px;color:#5A6068;">{{ perYear }}</span></p>
-                </div>
-                <button type="button" ref="{{ plansRef }}" onClick="{{ pickBasic }}" style="margin-top:8px;height:52px;width:100%;border:0;border-radius:999px;background:#101820;color:#F5F2EC;font-family:'Plus Jakarta Sans',Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;" style-hover="background:#2A333D;">Create My Card <span aria-hidden="true">→</span></button>
-              </div>
-              <p style="margin:4px 0 0;text-align:center;font-size:14px;color:#5A6068;">Need something more premium?</p>
-              <div style="border-radius:18px;padding:22px 20px;background:#FBF9F5;border:1px solid rgba(16,24,32,0.12);color:#101820;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;">
-                <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#101820;">Motion card</p>
-                <p style="margin:0;font-size:15px;line-height:1.45;color:#2E3440;">Animated background + premium design</p>
-                <div style="margin:6px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px;">
-                  <span style="padding:4px 10px;border-radius:999px;background:#E6F1F2;color:#086670;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">Launch offer · Save {{ motionSave }}</span>
-                  <p style="margin:0;display:flex;align-items:baseline;gap:8px;"><s aria-label="Was {{ motionWas }}" style="font-size:18px;color:#6B7078;text-decoration-thickness:1.5px;">{{ motionWas }}</s><span style="font-family:Newsreader,Georgia,serif;font-size:40px;line-height:1;font-weight:500;letter-spacing:-0.02em;">{{ motionNow }}</span><span style="font-size:15px;color:#5A6068;">{{ perYear }}</span></p>
-                </div>
-                <button type="button" onClick="{{ pickMotion }}" style="margin-top:8px;height:52px;width:100%;border:0;border-radius:999px;background:transparent;border:1.5px solid #101820;color:#101820;font-family:'Plus Jakarta Sans',Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;" style-hover="background:rgba(16,24,32,0.05);">Upgrade / Create <span aria-hidden="true">→</span></button>
-              </div>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ onForm }}" hint-placeholder-val="{{ false }}">
-            <div role="form" aria-labelledby="plans-h" style="display:flex;flex-direction:column;gap:16px;">
-              <div style="display:flex;flex-direction:column;gap:4px;">
-                <h3 id="plans-h" style="margin:0;font-family:Newsreader,Georgia,serif;font-weight:500;font-size:26px;line-height:1.15;">Your card details</h3>
-                <p style="margin:0;font-size:14px;line-height:1.45;color:#5A6068;">{{ sendNote }} Fields marked * are required.</p>
-              </div>
-
-              <div role="radiogroup" aria-label="Plan" style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:8px;">
-                <button type="button" role="radio" aria-checked="{{ isBasic }}" onClick="{{ setBasic }}" style="min-height:60px;padding:8px 12px;border-radius:12px;border:{{ basicBorder }};background:{{ basicBg }};color:#101820;font-family:Figtree,system-ui,sans-serif;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;cursor:pointer;text-align:left;"><span style="font-size:14px;font-weight:700;">Digital Card</span><span style="font-size:13px;color:#5A6068;"><s style="opacity:0.7;">{{ basicWas }}</s> {{ basicNow }} / year</span></button>
-                <button type="button" role="radio" aria-checked="{{ isMotion }}" onClick="{{ setMotion }}" style="min-height:60px;padding:8px 12px;border-radius:12px;border:{{ motionBorder }};background:{{ motionBg }};color:#101820;font-family:Figtree,system-ui,sans-serif;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;cursor:pointer;text-align:left;"><span style="font-size:14px;font-weight:700;">Motion Card</span><span style="font-size:13px;color:#5A6068;"><s style="opacity:0.7;">{{ motionWas }}</s> {{ motionNow }} / year</span></button>
-              </div>
-
-              <div role="radiogroup" aria-labelledby="colour-h" style="display:flex;flex-direction:column;gap:10px;">
-                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;">
-                  <span id="colour-h" style="font-size:14px;font-weight:600;color:#101820;">Card colour</span>
-                  <span style="font-size:13px;font-weight:600;color:#5A6068;">{{ colourName }}</span>
-                </div>
-                <div style="display:flex;gap:10px;overflow-x:auto;margin:0 -20px;padding:12px 20px 10px;scroll-padding-inline:20px;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
-                  <sc-for list="{{ colourOptions }}" as="c" hint-placeholder-count="8">
-                    <button type="button" role="radio" aria-checked="{{ c.selected }}" aria-label="{{ c.name }}" onClick="{{ c.pick }}" style="flex:none;width:84px;border:0;padding:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;scroll-snap-align:start;font-family:Figtree,system-ui,sans-serif;">
-                      <span style="position:relative;width:84px;height:120px;border-radius:14px;background:{{ c.bg }};box-shadow:{{ c.ring }};padding:12px 10px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:box-shadow .15s ease, transform .15s ease;transform:{{ c.lift }};">
-                        <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(160deg, {{ c.accent }}, {{ c.bg }});box-shadow:0 0 0 1.5px {{ c.accent }};"></span>
-                        <span style="width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,0.85);"></span>
-                        <span style="width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.4);"></span>
-                        <span style="margin-top:auto;width:100%;height:14px;border-radius:5px;background:{{ c.accent }};"></span>
-                        <span style="width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;"><span style="height:10px;border-radius:3px;background:rgba(255,255,255,0.12);"></span><span style="height:10px;border-radius:3px;background:rgba(255,255,255,0.12);"></span><span style="height:10px;border-radius:3px;background:rgba(255,255,255,0.12);"></span></span>
-                        <sc-if value="{{ c.isSel }}">
-                          <span style="position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:#101820;color:#ffffff;display:grid;place-items:center;box-shadow:0 0 0 2px #F5F2EC;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"></path></svg></span>
-                        </sc-if>
-                      </span>
-                      <span style="font-size:12px;line-height:1.25;font-weight:{{ c.weight }};color:#101820;text-align:center;">{{ c.name }}</span>
-                    </button>
-                  </sc-for>
-                </div>
-              </div>
-
-              <div role="radiogroup" aria-labelledby="design-h" style="display:flex;flex-direction:column;gap:10px;">
-                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;">
-                  <span id="design-h" style="font-size:14px;font-weight:600;color:#101820;">Card design</span>
-                  <span style="font-size:13px;font-weight:600;color:#5A6068;">{{ designName }}</span>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:8px;">
-                  <sc-for list="{{ designOptions }}" as="o" hint-placeholder-count="3">
-                    <div style="display:flex;align-items:center;gap:12px;padding:8px;border-radius:14px;border:{{ o.border }};background:{{ o.bg }};">
-                      <button type="button" role="radio" aria-checked="{{ o.selected }}" aria-label="{{ o.name }}" onClick="{{ o.pick }}" style="flex:1;min-width:0;min-height:56px;border:0;padding:0;background:transparent;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;font-family:Figtree,system-ui,sans-serif;color:#101820;">
-                        <span aria-hidden="true" style="width:44px;height:60px;border-radius:8px;flex:none;background:{{ o.thumb }};box-shadow:inset 0 0 0 1px rgba(16,24,32,0.1);"></span>
-                        <span style="display:flex;flex-direction:column;gap:2px;min-width:0;">
-                          <span style="font-size:15px;font-weight:700;">{{ o.name }}</span>
-                          <span style="font-size:13px;color:#5A6068;">{{ o.tag }}</span>
-                        </span>
-                      </button>
-                      <a href="{{ o.previewHref }}" target="_blank" rel="noopener" aria-label="{{ o.previewAria }}" style="flex:none;min-height:44px;padding:0 12px;border-radius:10px;border:1px solid rgba(16,24,32,0.18);background:#ffffff;color:#101820;font-size:13px;font-weight:700;display:flex;align-items:center;gap:4px;text-decoration:none;">Preview ↗</a>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="name" style="font-size:14px;font-weight:600;color:#101820;">Full name *</label>
-                <input id="name" name="name" type="text" inputMode="text" autoComplete="name" placeholder="e.g. Rahul Sharma" value="{{ ff_name_value }}" onChange="{{ ff_name_onChange }}" aria-invalid="{{ ff_name_invalid }}" aria-describedby="name-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_name_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p id="name-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_name_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="profession" style="font-size:14px;font-weight:600;color:#101820;">Profession *</label>
-                <select id="profession" name="profession" value="{{ ff_profession_value }}" onChange="{{ ff_profession_onChange }}" aria-invalid="{{ ff_profession_invalid }}" aria-describedby="profession-err" style="height:50px;padding:0 12px;border:1px solid {{ ff_profession_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;appearance:auto;">
-                  <sc-for list="{{ professionOptions }}" as="o"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
-                </select>
-                <p id="profession-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_profession_error }}</p>
-              </div>
-              <sc-if value="{{ showOtherProf }}" hint-placeholder-val="{{ false }}">
-                <div style="display:flex;flex-direction:column;gap:6px;">
-                  <label for="professionOther" style="font-size:14px;font-weight:600;color:#101820;">Your profession *</label>
-                  <input id="professionOther" name="professionOther" type="text" autoComplete="off" placeholder="e.g. Chartered Accountant, Photographer" value="{{ ff_professionOther_value }}" onChange="{{ ff_professionOther_onChange }}" aria-invalid="{{ ff_professionOther_invalid }}" aria-describedby="professionOther-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_professionOther_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                  <p id="professionOther-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_professionOther_error }}</p>
-                </div>
-              </sc-if>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="title" style="font-size:14px;font-weight:600;color:#101820;">Job title</label>
-                <input id="title" name="title" type="text" inputMode="text" autoComplete="organization-title" placeholder="e.g. Senior Property Consultant" value="{{ ff_title_value }}" onChange="{{ ff_title_onChange }}" aria-invalid="{{ ff_title_invalid }}" aria-describedby="title-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_title_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p id="title-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_title_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="company" style="font-size:14px;font-weight:600;color:#101820;">Business name</label>
-                <input id="company" name="company" type="text" inputMode="text" autoComplete="organization" placeholder="e.g. Skyline Realty" value="{{ ff_company_value }}" onChange="{{ ff_company_onChange }}" aria-invalid="{{ ff_company_invalid }}" aria-describedby="company-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_company_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p id="company-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_company_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="phone" style="font-size:14px;font-weight:600;color:#101820;">Mobile number *</label>
-                <input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="{{ phonePlaceholder }}" value="{{ ff_phone_value }}" onChange="{{ ff_phone_onChange }}" aria-invalid="{{ ff_phone_invalid }}" aria-describedby="phone-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_phone_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p id="phone-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_phone_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="whatsapp" style="font-size:14px;font-weight:600;color:#101820;">WhatsApp number</label>
-                <input id="whatsapp" name="whatsapp" type="tel" inputMode="tel" autoComplete="tel" placeholder="Leave blank if same as mobile" value="{{ ff_whatsapp_value }}" onChange="{{ ff_whatsapp_onChange }}" aria-invalid="{{ ff_whatsapp_invalid }}" aria-describedby="whatsapp-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_whatsapp_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p id="whatsapp-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_whatsapp_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="email" style="font-size:14px;font-weight:600;color:#101820;">Email</label>
-                <input id="email" name="email" type="email" inputMode="email" autoComplete="email" placeholder="you@business.com" value="{{ ff_email_value }}" onChange="{{ ff_email_onChange }}" aria-invalid="{{ ff_email_invalid }}" aria-describedby="email-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_email_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p id="email-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_email_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="city" style="font-size:14px;font-weight:600;color:#101820;">City</label>
-                <input id="city" name="city" type="text" inputMode="text" autoComplete="address-level2" placeholder="e.g. Hyderabad" value="{{ ff_city_value }}" onChange="{{ ff_city_onChange }}" aria-invalid="{{ ff_city_invalid }}" aria-describedby="city-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_city_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p id="city-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_city_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="links" style="font-size:14px;font-weight:600;color:#101820;">Website / social links</label>
-                <input id="links" name="links" type="url" inputMode="url" autoComplete="off" placeholder="Instagram, LinkedIn, website…" value="{{ ff_links_value }}" onChange="{{ ff_links_onChange }}" aria-invalid="{{ ff_links_invalid }}" aria-describedby="links-err" style="height:50px;padding:0 14px;border:1px solid {{ ff_links_border }};width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;">
-                <p style="margin:0;font-size:13px;color:#5A6068;">Separate several links with commas</p>
-                <p id="links-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_links_error }}</p>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <label for="notes" style="font-size:14px;font-weight:600;color:#101820;">Anything else?</label>
-                <textarea id="notes" name="notes" rows="3" placeholder="Tagline, services, colours you like…" value="{{ ff_notes_value }}" onChange="{{ ff_notes_onChange }}" style="padding:12px 14px;border:1px solid rgba(16,24,32,0.22);width:100%;border-radius:12px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:16px;outline:none;line-height:1.4;resize:vertical;"></textarea>
-                <p id="notes-err" aria-live="polite" style="margin:0;font-size:13px;font-weight:600;color:#b3261e;">{{ ff_notes_error }}</p>
-              </div>
-
-              <div style="padding:14px;border-radius:12px;background:rgba(16,24,32,0.06);display:flex;flex-direction:column;gap:10px;">
-                <p style="margin:0;font-size:14px;font-weight:600;color:#101820;">After you submit, send these in the same WhatsApp chat:</p>
-                <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;">
-                  <li style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.45;color:#2c3d34;"><span style="width:22px;height:22px;border-radius:50%;background:#101820;color:var(--accent,#f2c98a);font-size:12px;font-weight:700;display:grid;place-items:center;flex:none;">2</span><span><strong style="font-weight:600;color:#101820;">Face photos</strong> — clear, front-facing, good light, plain background</span></li>
-                  <li style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.45;color:#2c3d34;"><span style="width:22px;height:22px;border-radius:50%;background:#101820;color:var(--accent,#f2c98a);font-size:12px;font-weight:700;display:grid;place-items:center;flex:none;">1</span><span><strong style="font-weight:600;color:#101820;">Logo</strong> — PNG or JPG, highest quality you have</span></li>
-                </ul>
-              </div>
-
-              <sc-if value="{{ isIN }}" hint-placeholder-val="{{ true }}">
-              <button type="button" onClick="{{ submitWA }}" style="height:54px;width:100%;border:0;border-radius:14px;background:#101820;color:#F5F2EC;font-family:Figtree,system-ui,sans-serif;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;" style-hover="background:#1b3a2b;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"></path></svg>
-                Submit on WhatsApp
-              </button>
-              </sc-if>
-              <sc-if value="{{ isUS }}" hint-placeholder-val="{{ false }}">
-                <div style="display:flex;flex-direction:column;gap:8px;">
-                  <button type="button" onClick="{{ submitSMS }}" style="height:52px;width:100%;border:0;border-radius:14px;background:#101820;color:#F5F2EC;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">Send by text message</button>
-                  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
-                    <button type="button" onClick="{{ submitWA }}" style="height:52px;width:100%;border:1.5px solid #101820;border-radius:14px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">WhatsApp</button>
-                    <button type="button" onClick="{{ submitEmail }}" style="height:52px;width:100%;border:1.5px solid #101820;border-radius:14px;background:#ffffff;color:#101820;font-family:Figtree,system-ui,sans-serif;font-size:15px;font-weight:700;cursor:pointer;">Email</button>
-                  </div>
-                </div>
-              </sc-if>
-            </div>
-          </sc-if>
-
-          <div aria-hidden="true" style="height:1px;background:rgba(16,24,32,0.12);"></div>
-          <p style="margin:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#5A6068;">Powered by<span style="font-family:Newsreader,Georgia,serif;font-size:18px;font-weight:500;letter-spacing:0;text-transform:none;color:#101820;">NexBizRise</span></p>
-        </div>
-      </div>
-    </sc-if>
+    
   </main>
 </div>
 </x-dc>
@@ -1035,7 +850,7 @@ const TREC_CPN = 'https://www.trec.texas.gov/forms/consumer-protection-notice';
 const LEAD_TOPICS = { realEstate: ['Buying', 'Selling', 'Renting', 'Just connecting'] };
 const CTA_BY_PRESET = { realEstate: 'Book a site visit', healthcare: 'Book appointment', services: 'Book a consultation', entrepreneur: 'Book a call' };
 const DEMO_TWEAK = { 'US Realtor demo': 'realtor', 'Real Estate demo': 'realestate', 'Services demo': 'services', 'Healthcare demo': 'healthcare' };
-const SOCIAL_LABEL = { linkedin: 'LinkedIn', instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', website: 'Website' };
+const SOCIAL_LABEL = { linkedin: 'LinkedIn', instagram: 'Instagram', x: 'X', facebook: 'Facebook', youtube: 'YouTube', website: 'Website' };
 const toE164 = (raw, region) => { let s = String(raw || '').trim(); const plus = s.startsWith('+'); let n = s.replace(/\D/g, ''); if (!n) return ''; if (plus) return '+' + n; if (region === 'IN') { if (n.length === 11 && n[0] === '0') n = n.slice(1); if (n.length === 10) return '+91' + n; if (n.length === 12 && n.startsWith('91')) return '+' + n; } else { if (n.length === 10) return '+1' + n; if (n.length === 11 && n[0] === '1') return '+' + n; } return '+' + n; };
 const fmtPhone = (raw, region) => { const e = toE164(raw, region), n = e.replace(/\D/g, ''); if (n.length === 11 && n[0] === '1') return '+1 (' + n.slice(1, 4) + ') ' + n.slice(4, 7) + '-' + n.slice(7); if (n.length === 12 && n.startsWith('91')) return '+91 ' + n.slice(2, 7) + ' ' + n.slice(7); return String(raw || '').trim() || e; };
 const safeUrl = u => { const s = String(u || '').trim(); return /^(https?:\/\/|tel:|sms:|mailto:)/i.test(s) ? s : ''; };
@@ -1174,6 +989,7 @@ class Component extends DCLogic {
     const x = row.extras || {};
     if (row.website) socials.push({ type: 'website', handle: h(row.website), url: row.website });
     if (x.facebook) socials.push({ type: 'facebook', handle: h(x.facebook), url: x.facebook });
+    if (x.x_url && /^https:\/\/(www\.)?(x|twitter)\.com\/[A-Za-z0-9_]{1,30}\/?$/.test(x.x_url)) socials.push({ type: 'x', handle: '@' + x.x_url.replace(/\/+$/, '').split('/').pop(), url: x.x_url });
     if (String(row.photo_url || '').startsWith('data:')) { try { const [mm, b64] = row.photo_url.split(','); const bin = atob(b64), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); row = { ...row, photo_url: URL.createObjectURL(new Blob([u], { type: mm.slice(5).split(';')[0] })) + (/video/.test(mm) ? '#video' : '') }; } catch (e) {} }
     const m = { layout: row.layout || 'original', preset: row.preset, colour: row.colour, prefix: row.prefix, firstName: row.first_name, lastName: row.last_name,
       title: row.title, company: row.company, photoX: row.photo_x ?? 50, photoY: row.photo_y ?? 50, photoZoom: row.photo_zoom || 1, photo: row.photo_url, photoAlt: 'Portrait of ' + name, contactPhoto: row.contact_photo_url || row.photo_url,
@@ -1266,7 +1082,7 @@ class Component extends DCLogic {
     setTimeout(() => { try { nbrSyncVids(this.data().photo); } catch (e) {} }, 0);
     this.onTrackClick = ev => { try { const a = ev.target.closest && ev.target.closest('a[href]'); if (!a) return; const h = a.getAttribute('href') || ''; const e = /^tel:/i.test(h) ? 'call' : /^sms:/i.test(h) ? 'text' : /^mailto:/i.test(h) ? 'email' : /wa\.me|whatsapp/i.test(h) ? 'whatsapp' : (/^https?:/i.test(h) && !/nexbizrise\.com/i.test(h)) ? 'link' : ''; if (e) this.track(e); } catch (e) {} };
     document.addEventListener('click', this.onTrackClick, true);
-    try { if (new URLSearchParams(location.search).get('plans') === '1') setTimeout(() => this.setState({ plansOpen: true, planStep: 'plans' }), 300); } catch (e) {}
+    try { if (new URLSearchParams(location.search).get('plans') === '1' && !this.isPreview) setTimeout(() => this.pickPlan(''), 300); } catch (e) {}
     this.detectRegion();
     this.loadRemote();
     this.applyTheme();
@@ -1449,7 +1265,7 @@ class Component extends DCLogic {
       msgLabel: wa ? 'WhatsApp' : 'Text', msgAria: (wa ? 'WhatsApp ' : 'Text ') + d.firstName,
       mailHref: 'mailto:' + d.email, mailAria: 'Email ' + d.firstName,
       socials: (d.socials || []).map(s => ({ ...s, label: s.label || SOCIAL_LABEL[s.type] || s.type,
-        isLinkedin: s.type === 'linkedin', isInstagram: s.type === 'instagram', isFacebook: s.type === 'facebook', isYoutube: s.type === 'youtube', isWebsite: !SOCIAL_LABEL[s.type] || s.type === 'website' })),
+        isLinkedin: s.type === 'linkedin', isInstagram: s.type === 'instagram', isFacebook: s.type === 'facebook', isX: s.type === 'x', isYoutube: s.type === 'youtube', isWebsite: !SOCIAL_LABEL[s.type] || s.type === 'website' })),
       hasSocials: !!(d.socials && d.socials.length),
       rows: rows.map(r => ({ ...r, hasCopy: !!r.copy, onCopy: () => this.copy(r.copy, r.msg), copyAria: 'Copy ' + r.label.toLowerCase(),
         hasLink: !!r.href, linkAria: 'Open ' + r.label.toLowerCase() + ' in Maps' })),

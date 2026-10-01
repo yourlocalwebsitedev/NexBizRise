@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#F5F2EC;font-family:system-ui,sans-serif;color:#101820;}a{color:#0B7C86;}a:hover{color:#095F67;}</style></helmet>
+<div style="padding:24px;display:flex;flex-direction:column;gap:12px;">
+  <span style="font-size:20px;font-weight:800;">Card QA (real order form) · {{ status }}</span>
+  <span style="font-size:14px;color:#5A6068;">{{ summary }}</span>
+  <div style="display:grid;grid-template-columns:40px 170px 120px 80px minmax(0,1fr);gap:4px 12px;font-size:12.5px;line-height:1.4;">
+    <sc-for list="{{ fails }}" as="r">
+      <span style="font-weight:700;">{{ r.region }}</span><span style="font-weight:700;">{{ r.biz }}</span><span>{{ r.mode }}</span><span style="font-weight:700;color:#B42318;">{{ r.kind }}</span><span style="color:#B42318;">{{ r.msg }}</span>
+    </sc-for>
+  </div>
+  <iframe ref="{{ fRef }}" src="./Order%20Card.dc.html?qa=1" style="width:1280px;height:1100px;border:1px solid #ccc;background:#fff;"></iframe>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { fails: [], status: 'loading…', summary: '' };
+  fRef = React.createRef();
+  componentDidMount() { this.t = setInterval(() => { const w = this.fRef.current && this.fRef.current.contentWindow; if (w && w.__nbrOrder && w.__nbrOrder.previewRef && w.__nbrOrder.previewRef.current) { clearInterval(this.t); setTimeout(() => this.run(), 1500); } }, 300); }
+  componentWillUnmount() { clearInterval(this.t); }
+  async run() {
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const O = this.fRef.current.contentWindow.__nbrOrder;
+    const PRO = ['pro-executive', 'pro-minimal', 'pro-classic', 'pro-modern', 'pro-corporate', 'pro-studio'], LUX = ['lux-champagne', 'lux-onyx', 'lux-emerald', 'lux-marble', 'lux-velvet', 'lux-sapphire'], M = ['poster', 'list', 'blueprint', 'home'];
+    const BIZ = [
+      ['Entrepreneur / Business owner', ['forest'].concat(PRO, LUX), ['meetingUrl']],
+      ['Real Estate', M.map(m => 're-' + m), ['bookingUrl', 'facebook', 'listingsUrl', 'officeAddress', 'brokerage', 'licenseNo', 'licenseState', 'iabsUrl']],
+      ['Healthcare', M.map(m => 'hc-' + m), ['bookingUrl', 'regNo', 'quals', 'hours']],
+      ['Beauty & Wellness', M.map(m => 'bw-' + m), ['bookingUrl', 'services', 'hours']],
+      ['Legal / Finance', M.map(m => 'lf-' + m), ['bookingUrl', 'regNo', 'practice']],
+      ['Consultant / Coach', M.map(m => 'cc-' + m), ['meetingUrl']],
+    ];
+    const ALLX = ['company', 'city', 'website', 'instagram', 'linkedin', 'whatsapp', 'bio', 'meetingUrl', 'bookingUrl', 'facebook', 'listingsUrl', 'officeAddress', 'brokerage', 'licenseNo', 'licenseState', 'iabsUrl', 'regNo', 'quals', 'hours', 'services', 'practice', 'serviceArea', 'insured', 'emergency'];
+    const VAL = { company: 'ACMECO', city: 'CITYX', website: 'webqa.example.com', instagram: '@instaqa', linkedin: 'lnkqa', bio: 'BIOTEXT', meetingUrl: 'calendly.com/meetqa', bookingUrl: 'calendly.com/bookqa', facebook: 'facebook.com/fbqa', listingsUrl: 'listqa.example.com', officeAddress: 'OFFICEADDR', brokerage: 'BROKERX', licenseNo: 'LIC77', licenseState: 'TX', iabsUrl: 'iabsqa.example.com/f.pdf', regNo: 'REG123', quals: 'QUALMDS', hours: 'HOURSX', services: 'SVCA, SVCB', practice: 'PRACTAX' };
+    const fails = []; let pass = 0, total = 0;
+    const setD = (region, prof, colour, extra, full) => { const d = { profession: prof, colour, firstName: 'Jane', lastName: 'Doe', title: 'TITLEX', email: 'jane@x.com', phone: region === 'IN' ? '9876501234' : '8165550123' }; ALLX.forEach(k => { d[k] = ''; }); if (full) { ['company', 'city', 'website', 'instagram', 'linkedin', 'bio'].concat(extra).forEach(k => { if (region === 'IN' && (k === 'licenseState' || k === 'iabsUrl')) return; d[k] = VAL[k]; }); d.whatsapp = region === 'IN' ? '9876543210' : '8165550999'; } O.setState(s => ({ region, regionTouched: true, step: 2, maxStep: 2, mode: 'builder', d: { ...s.d, ...d } })); };
+    const read = () => { const doc = O.previewRef.current.contentDocument; const txt = doc.body.innerText; const deep = [...doc.querySelectorAll('p,span,a,h1,dd,dt,li')].map(e => e.textContent).join(' | '); const hrefs = [...doc.querySelectorAll('a[href]')].filter(a => a.offsetParent).map(a => a.href); return { txt, deep, hrefs }; };
+    const checkEmpty = (r) => { const bad = []; ['Book', 'Schedule', 'Hours', 'HOURS', 'About', 'Instagram', 'LinkedIn', 'Website', 'isting', 'irections', 'Facebook', 'PRACTICE', 'Practice', 'CLINIC', 'Clinic', 'BASED IN', 'AREA', 'IABS', 'ACMECO', 'CITYX', 'BIOTEXT', 'REG123', 'LIC77', 'BROKERX'].forEach(w => { if (r.txt.includes(w)) bad.push('"' + w + '"'); }); r.hrefs.forEach(h => { if (/calendly|maps\.|instagram|linkedin|facebook|webqa|listqa|wa\.me|iabsqa/.test(h)) bad.push('link ' + h.slice(0, 50)); }); return bad; };
+    const checkFull = (r, region, extra, orig) => { const miss = []; const T = s => r.txt.includes(s) || (orig && r.deep.includes(s)), H = s => r.hrefs.some(h => h.includes(s)); const ex = k => extra.includes(k) && !(region === 'IN' && (k === 'licenseState' || k === 'iabsUrl'));
+      [['ACMECO', 'company'], ['CITYX', 'city'], ['BIOTEXT', 'bio'], ['TITLEX', 'title']].forEach(([s, n]) => { if (!T(s)) miss.push(n); });
+      if (!H('lnkqa')) miss.push('linkedin'); if (!H('instaqa')) miss.push('instagram'); if (!H('webqa')) miss.push('website'); if (!H('wa.me/' + (region === 'IN' ? '919876543210' : '18165550999'))) miss.push('whatsapp');
+      if (ex('bookingUrl') && !H('bookqa')) miss.push('booking'); if (ex('meetingUrl') && !H('meetqa')) miss.push('meeting');
+      if (ex('regNo') && !T('REG123')) miss.push('reg no'); if (ex('quals') && !T('QUALMDS')) miss.push('quals'); if (ex('hours') && !T('HOURSX')) miss.push('hours'); if (ex('services') && !T('SVCA')) miss.push('services'); if (ex('practice') && !T('PRACTAX')) miss.push('practice');
+      if (ex('facebook') && !H('fbqa')) miss.push('facebook'); if (ex('listingsUrl') && !H('listqa')) miss.push('listings'); if (ex('officeAddress') && !T('OFFICEADDR') && !H('OFFICEADDR')) miss.push('office'); if (ex('brokerage') && !T('BROKERX')) miss.push('brokerage'); if (ex('licenseNo') && !T('LIC77')) miss.push('license'); if (ex('iabsUrl') && !H('iabsqa')) miss.push('IABS');
+      if (ex('licenseNo') && region === 'IN' && !T('RERA')) miss.push('RERA label');
+      return miss; };
+    for (const region of ['US', 'IN']) for (const [prof, colours, extra] of BIZ) for (const colour of colours) {
+      const orig = colour === 'forest';
+      const note = (kind, list) => { total++; if (list.length) fails.push({ region, biz: prof, mode: colour, kind, msg: list.join(' · ') }); else pass++; this.setState({ fails: fails.slice(), status: total + ' checks', summary: pass + ' passed, ' + fails.length + ' failed' }); };
+      setD(region, prof, colour, extra, false); await wait(800); note('EMPTY', checkEmpty(read()));
+      setD(region, prof, colour, extra, true); await wait(800); note('FULL', checkFull(read(), region, extra, orig));
+      setD(region, prof, colour, extra, false); await wait(800); note('CLEARED', checkEmpty(read()));
+      { const all = {}; Object.keys(VAL).forEach(k => { all[k] = VAL[k]; }); O.setState(s => ({ d: { ...s.d, ...all, profession: prof, colour } })); await wait(800); const r = read(), bad = [];
+        const FOR = { bookingUrl: ['bookqa', 1], meetingUrl: ['meetqa', 1], regNo: ['REG123', 0], quals: ['QUALMDS', 0], hours: ['HOURSX', 0], services: ['SVCA', 0], practice: ['PRACTAX', 0], facebook: ['fbqa', 1], listingsUrl: ['listqa', 1], officeAddress: ['OFFICEADDR', 0], brokerage: ['BROKERX', 0], licenseNo: ['LIC77', 0], iabsUrl: ['iabsqa', 1] };
+        Object.entries(FOR).forEach(([k, [tok, isLink]]) => { if (extra.includes(k) && !(region === 'IN' && (k === 'licenseState' || k === 'iabsUrl'))) return; const seen = isLink ? r.hrefs.some(h => h.includes(tok)) : r.txt.includes(tok); if (seen) bad.push(k + ' leaked'); });
+        if (!extra.includes('bookingUrl') && !extra.includes('meetingUrl') && /Book|Schedule/.test(r.txt)) bad.push('book button');
+        note('SWITCHED', bad); }
+    }
+    this.setState({ status: 'done · ' + total + ' checks' });
+  }
+  renderVals() { return { fails: this.state.fails, status: this.state.status, summary: this.state.summary, fRef: this.fRef }; }
+}
+</script>
+</body>
+</html>

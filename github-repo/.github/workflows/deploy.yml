@@ -1,0 +1,40 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main, test]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Block accidental secrets
+        run: |
+          if grep -rEn "sb_secret_|service_role|sk_live_|sk_test_|-----BEGIN [A-Z ]*PRIVATE KEY" --include="*.html" --include="*.js" --include="*.sql" --include="*.toml" . ; then
+            echo "Possible secret found. Remove it before deploying."; exit 1
+          fi
+
+      - name: Check the site file exists
+        run: test -s deploy/single/_worker.js
+
+      - name: Deploy to Pages project "nexbizrise" (main = live, test = preview)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy deploy/single --project-name=nexbizrise --branch=${{ github.ref_name }} --commit-dirty=true
+
+      - name: Health check
+        run: |
+          sleep 15
+          if [ "${{ github.ref_name }}" = "main" ]; then curl -fsS https://nexbizrise.com/__health; else curl -fsS https://${{ github.ref_name }}.nexbizrise.pages.dev/__health; fi

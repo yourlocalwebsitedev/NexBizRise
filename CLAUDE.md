@@ -1,0 +1,12 @@
+# Project notes
+- Deploy bundle lives in `deploy/website/` (one Cloudflare Pages project for nexbizrise.com + card.nexbizrise.com).
+- After changing any source DC, rebuild deploy copies: index.html ← NexBizRise Website v2.dc.html; order.html + Order Card.dc.html ← Order Card.dc.html; Admin Panel.dc.html; card.html + Tap Card.dc.html ← Tap Card.dc.html. In every copy replace `(./)?Tap%20Card.dc.html` with `/card.html`, and make static paths root-absolute (`/support.js`, `/qrcode.js`, `/brand.js` (deploy copy uses `/assets/` logo path), `/assets/`, `/portrait.*`) — they're served as static files via `deploy/single/_routes.json` (keep those files in deploy/single too).
+- Brand (logo, wordmark, brand colours) lives ONLY in `brand.js` → `<nbr-logo>` via `<x-import component-from-global-scope="nbr-logo" from="./brand.js">`. Order Card colour tokens (--gold/--mint/--sand) are in its helmet CSS vars.
+- Supabase: ALL database SQL lives in one file `supabase/ALL-IN-ONE.sql` (safe to re-run; never put it in deploy/). Update that file, don't add new SQL files.
+- Live deploy = `deploy/single/_worker.js` (whole site embedded; regenerate from deploy/website copies after every change, bump the `ok vN` health string). Dashboard asset uploads don't work for this project.
+- Pricing: IN ₹799 (was ₹999) / ₹1799 (was ₹2499) + 18% GST, US $49 (was $69) / $79 (was $99) (per year).
+- Deploy copies of index/order/card get SEO/OG meta injected after `<meta charset>` (favicon, canonical, og:*, twitter:*); worker rewrites card OG per slug, serves /robots.txt, /sitemap.xml, /api/demo (→ `submit_site_lead`).
+- Website contact phone + social URLs live in `CONTACT` / `SOCIALS` constants in the website logic (empty = hidden). Socials: Instagram + LinkedIn only.
+- Payments: Stripe (US, hosted Checkout) + Razorpay (India, on-page checkout). Cards start paused; worker verifies payment and calls `mark_order_paid` (needs `app_secrets` 'worker' row = NBR_WORKER_SECRET). Worker env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (endpoint /api/stripe/webhook, events checkout.session.completed + async_payment_succeeded), RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, RAZORPAY_WEBHOOK_SECRET (endpoint /api/razorpay/webhook, event order.paid). Without keys: order saved unpaid, admin sends link + "Mark paid".
+- Analytics: Cloudflare Web Analytics beacon injected by worker when env CF_BEACON_TOKEN is set.
+- Pending (do later): test video portraits on real iPhone/Android; re-run supabase/ALL-IN-ONE.sql for video URLs + new prices.

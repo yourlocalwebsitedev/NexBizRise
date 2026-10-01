@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>NexBizRise — Websites, AI Automations &amp; Missed Call Recovery for Local Businesses</title>
+<meta name="description" content="NexBizRise builds high-converting websites, AI-powered automations, and missed call recovery systems that help local businesses turn more leads into customers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<script>try{var t='light';document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<style>
+:root,[data-theme="dark"]{--bg:#070B14;--bg-2:#0A0F1A;--surface:#0F1624;--surface-1:#0C121E;--surface-hi:#1B2536;--header-bg:rgba(7,11,20,0.82);--ink:#FFFFFF;--ink-2:#E8EEF5;--ink-3:#C4CEDB;--body:#B4C0CF;--muted:#A0AEC0;--faint:#7D8CA1;--accent:#2DD4BF;--accent-hover:#5EEAD4;--accent-2:#2DD4BF;--btn:#14B8A6;--btn-ink:#04201D;--btn-hover:#2DD4BF;--acc-rgb:45,212,191;--danger:#FF8A8A;--fg-rgb:255,255,255;--shadow:rgba(0,0,0,0.45);color-scheme:dark;}
+[data-theme="light"]{--bg:#F6F8FB;--bg-2:#EDF1F6;--surface:#FFFFFF;--surface-1:#FFFFFF;--surface-hi:#E6ECF3;--header-bg:rgba(246,248,251,0.86);--ink:#0A0F1A;--ink-2:#1E293B;--ink-3:#334155;--body:#3F4B5C;--muted:#4F5D70;--faint:#64748B;--accent:#0B7C86;--accent-hover:#086670;--accent-2:#0B7C86;--btn:#0B7C86;--btn-ink:#FFFFFF;--btn-hover:#086670;--acc-rgb:11,124,134;--danger:#B42318;--fg-rgb:10,15,26;--shadow:rgba(15,23,42,0.12);color-scheme:light;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--ink-2);transition:background .25s,color .25s;font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{color:var(--accent-hover);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px;}
+::selection{background:var(--btn);color:var(--btn-ink);}
+input::placeholder,textarea::placeholder{color:var(--faint);}
+select option{background:var(--surface);color:var(--ink-2);}
+@keyframes nbrDash{to{stroke-dashoffset:-14;}}
+@keyframes nbrDrift{0%{transform:translate(0,0) scale(1);}50%{transform:translate(-40px,30px) scale(1.08);}100%{transform:translate(0,0) scale(1);}}
+@keyframes nbrPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--acc-rgb),0.45);}50%{box-shadow:0 0 0 8px rgba(var(--acc-rgb),0);}}
+@keyframes nbrBlink{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes nbrIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important;}}
+</style>
+</helmet>
+
+<div style="position:relative;overflow-x:clip;background:var(--bg);min-height:100vh;">
+
+<a href="#main" style="position:absolute;left:-9999px;top:8px;z-index:100;background:var(--btn);color:#070B14;padding:10px 14px;border-radius:8px;font-weight:700;" style-focus="left:8px;">Skip to content</a>
+
+<sc-if value="{{ show.chrome }}" hint-placeholder-val="{{ true }}">
+<header style="position:sticky;top:0;z-index:50;background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(var(--fg-rgb),0.06);">
+  <nav aria-label="Primary" style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+    <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:10px;color:var(--ink);">
+      <img src="assets/nexbizrise-mark-t.png" alt="" width="34" height="34" style="width:34px;height:34px;">
+      <span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span>
+    </a>
+    <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:30px;">
+        <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="6">
+          <a href="{{ l.href }}" style="font-size:14px;font-weight:600;padding:6px 0;border-bottom:2px solid {{ l.bar }};color:{{ l.color }};" style-hover="color:var(--ink);" aria-current="{{ l.current }}">{{ l.label }}</a>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+      <a href="#/contact" onClick="{{ onHeroCta }}" style="display:inline-flex;align-items:center;gap:8px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:14px;padding:11px 18px;border-radius:999px;transition:transform .2s, box-shadow .2s;" style-hover="color:var(--btn-ink);background:var(--btn-hover);transform:translateY(-1px);box-shadow:0 8px 24px rgba(var(--acc-rgb),0.35);">Get a Free Demo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+      </a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;">
+      <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpenStr }}" aria-controls="mobile-menu" aria-label="Open menu" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:rgba(var(--fg-rgb),0.05);border:1px solid rgba(var(--fg-rgb),0.12);border-radius:12px;color:var(--ink);cursor:pointer;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="{{ menuIcon }}"></path></svg>
+      </button>
+      </div>
+    </sc-if>
+  </nav>
+  <sc-if value="{{ showMenu }}" hint-placeholder-val="{{ false }}">
+    <div id="mobile-menu" style="border-top:1px solid rgba(var(--fg-rgb),0.06);padding:12px 24px 24px;display:flex;flex-direction:column;gap:4px;background:var(--bg);">
+      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="6">
+        <a href="{{ l.href }}" onClick="{{ closeMenu }}" style="color:var(--ink-2);font-size:17px;font-weight:600;padding:14px 4px;border-bottom:1px solid rgba(var(--fg-rgb),0.06);">{{ l.label }}</a>
+      </sc-for>
+      <a href="#/contact" onClick="{{ onHeroCta }}" style="margin-top:16px;display:flex;justify-content:center;align-items:center;gap:8px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:16px;padding:15px 18px;border-radius:999px;">Get a Free Demo →</a>
+    </div>
+  </sc-if>
+</header>
+</sc-if>
+
+<sc-if value="{{ show.admin }}" hint-placeholder-val="{{ false }}">
+  <dc-import name="Admin Panel" hint-size="100%,100vh"></dc-import>
+</sc-if>
+
+<sc-if value="{{ show.order }}" hint-placeholder-val="{{ false }}">
+  <dc-import name="Order Card" hint-size="100%,900px"></dc-import>
+</sc-if>
+
+<main id="main" style="display:flex;flex-direction:column;">
+
+<sc-if value="{{ show.hero }}" hint-placeholder-val="{{ true }}">
+<!-- HERO -->
+<section id="top" data-screen-label="Hero" style="position:relative;padding:clamp(48px,8vw,96px) 24px clamp(40px,6vw,72px);overflow:hidden;">
+  <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(var(--fg-rgb),0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--fg-rgb),0.025) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at 70% 30%,#000 10%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 70% 30%,#000 10%,transparent 70%);pointer-events:none;"></div>
+  <div style="position:relative;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,470px),1fr));gap:clamp(40px,6vw,72px);align-items:center;">
+    <div>
+      <p style="margin:0 0 22px;display:inline-flex;align-items:center;gap:10px;padding:7px 12px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.12);background:var(--surface);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.12em;color:var(--ink-3);"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A;animation:nbrBlink 1.6s ease-in-out infinite;"></span>AGENTIC AI FOR GROWING BUSINESSES</p>
+      <h1 style="margin:0;font-size:clamp(36px,6.2vw,72px);line-height:1.02;font-weight:800;letter-spacing:-0.035em;color:var(--ink);text-wrap:balance;">Helping Businesses <span style="display:block;color:var(--accent);">Get More Customers.</span></h1>
+      <p style="margin:24px 0 0;max-width:520px;font-size:clamp(17px,1.6vw,19px);line-height:1.6;color:var(--body);text-wrap:pretty;">Beautiful websites, AI-powered automations, and missed call recovery systems that turn more leads into real customers.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;">
+        <a href="#/contact" onClick="{{ onHeroCta }}" style="display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 26px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:16px;border-radius:999px;transition:transform .2s, box-shadow .2s;" style-hover="color:var(--btn-ink);background:var(--btn-hover);transform:translateY(-2px);box-shadow:0 12px 32px rgba(var(--acc-rgb),0.35);">Get a Free Demo
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </a>
+        <a href="#/how-it-works" style="display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 8px;color:var(--ink);font-weight:600;font-size:16px;" style-hover="color:var(--accent);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zM10 8l6 4-6 4z"></path></svg>
+          See How It Works</a>
+      </div>
+    </div>
+
+    <!-- hero workflow visual -->
+    <div style="display:flex;flex-direction:column;gap:14px;"><div style="display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;color:var(--faint);"><span>AI AGENT · WORKFLOW</span><span style="display:inline-flex;align-items:center;gap:6px;color:#16A34A;"><span style="width:7px;height:7px;border-radius:50%;background:#16A34A;animation:nbrBlink 1.6s ease-in-out infinite;"></span>LIVE · 142 RUNS TODAY</span></div>
+    <div role="img" aria-label="Workflow: an incoming call is missed, NexBizRise sends an AI follow-up text, the customer picks a service, the lead is qualified and an appointment is booked." style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:28px;align-items:center;">
+      <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}"><div style="--bg:#070B14;--bg-2:#0A0F1A;--surface:#0F1624;--ink:#FFFFFF;--ink-2:#E8EEF5;--ink-3:#C4CEDB;--body:#B4C0CF;--muted:#9FB0C4;--faint:#7D8CA1;--accent:#2DD4BF;--accent-2:#2DD4BF;--btn:#14B8A6;--btn-ink:#04201D;--acc-rgb:45,212,191;--fg-rgb:255,255,255;justify-self:center;width:228px;height:452px;border-radius:40px;padding:10px;background:linear-gradient(160deg,#2A3446,#0B111C 40%,#1A2232);box-shadow:0 40px 80px rgba(0,0,0,0.55),0 0 0 1px rgba(var(--fg-rgb),0.08);">
+        <div style="position:relative;height:100%;border-radius:31px;background:radial-gradient(120% 70% at 50% 0%,#0E3A3F,#060A12 70%);overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:18px 16px;box-sizing:border-box;">
+          <div style="width:80px;height:22px;border-radius:12px;background:#000;"></div>
+          <p style="margin:48px 0 0;font-size:13px;color:var(--muted);">Incoming Call</p>
+          <p style="margin:8px 0 0;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;">+1 (402) 555-0187</p>
+          <p style="margin:6px 0 0;font-size:12px;color:var(--faint);">Potential customer</p>
+          <div style="margin-top:auto;width:100%;display:flex;justify-content:space-around;padding-bottom:10px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:54px;height:54px;border-radius:50%;background:#22C55E;display:flex;align-items:center;justify-content:center;color:#fff;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.phone }}"></path></svg>
+              </div>
+              <span style="font-size:11px;color:var(--muted);">Accept</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <div style="width:54px;height:54px;border-radius:50%;background:#EF4444;display:flex;align-items:center;justify-content:center;color:#fff;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.phoneMissed }}"></path></svg>
+              </div>
+              <span style="font-size:11px;color:var(--muted);">Decline</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:12px;right:12px;top:200px;padding:10px 12px;border-radius:14px;background:rgba(239,68,68,0.14);border:1px solid rgba(239,68,68,0.35);display:flex;gap:10px;align-items:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.phoneMissed }}"></path></svg>
+            <span style="font-size:12px;font-weight:600;color:#FECACA;">Missed call · 10:24 AM</span>
+          </div>
+        </div>
+      </div></sc-if>
+
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(var(--fg-rgb),0.04);border:1px solid rgba(var(--fg-rgb),0.09);">
+          <span style="width:30px;height:30px;flex:none;border-radius:9px;background:rgba(var(--acc-rgb),0.12);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.phoneMissed }}"></path></svg></span>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);">Missed call detected</span>
+        </div>
+        <div style="height:20px;padding-left:28px;"><svg width="2" height="20" aria-hidden="true"><line x1="1" y1="0" x2="1" y2="20" stroke="var(--accent)" stroke-opacity="0.7" stroke-width="2" stroke-dasharray="3 4" style="animation:nbrDash 0.9s linear infinite;"></line></svg></div>
+        <div style="padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid rgba(var(--acc-rgb),0.3);box-shadow:0 12px 30px rgba(var(--acc-rgb),0.08);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;font-weight:700;color:var(--accent);">AI Follow-Up SMS</span>
+            <span style="font-size:11px;color:var(--faint);">now</span>
+          </div>
+          <p style="margin:8px 0 0;font-size:13px;line-height:1.45;color:var(--ink-2);">“Hi! Thanks for calling. What service are you looking for?”</p>
+        </div>
+        <div style="height:20px;padding-left:28px;"><svg width="2" height="20" aria-hidden="true"><line x1="1" y1="0" x2="1" y2="20" stroke="var(--accent)" stroke-opacity="0.7" stroke-width="2" stroke-dasharray="3 4" style="animation:nbrDash 0.9s linear infinite;"></line></svg></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="font-size:12px;font-weight:700;padding:7px 11px;border-radius:999px;background:var(--btn);color:var(--btn-ink);">New booking</span>
+          <span style="font-size:12px;font-weight:500;padding:7px 11px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.14);color:var(--body);">Get a quote</span>
+          <span style="font-size:12px;font-weight:500;padding:7px 11px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.14);color:var(--body);">Question</span>
+          <span style="font-size:12px;font-weight:500;padding:7px 11px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.14);color:var(--body);">Other</span>
+        </div>
+        <div style="height:20px;padding-left:28px;"><svg width="2" height="20" aria-hidden="true"><line x1="1" y1="0" x2="1" y2="20" stroke="var(--accent)" stroke-opacity="0.7" stroke-width="2" stroke-dasharray="3 4" style="animation:nbrDash 0.9s linear infinite;"></line></svg></div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(var(--fg-rgb),0.04);border:1px solid rgba(var(--fg-rgb),0.09);">
+          <span style="width:30px;height:30px;flex:none;border-radius:9px;background:rgba(var(--acc-rgb),0.14);color:var(--accent-2);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.userCheck }}"></path></svg></span>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);">Lead qualified</span>
+        </div>
+        <div style="height:20px;padding-left:28px;"><svg width="2" height="20" aria-hidden="true"><line x1="1" y1="0" x2="1" y2="20" stroke="var(--accent)" stroke-opacity="0.7" stroke-width="2" stroke-dasharray="3 4" style="animation:nbrDash 0.9s linear infinite;"></line></svg></div>
+        <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;background:#F4FBFA;color:#0A0F1A;box-shadow:0 18px 40px rgba(0,0,0,0.4);">
+          <span style="width:36px;height:36px;flex:none;border-radius:10px;background:#E0FBF6;color:#00A88D;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.calendar }}"></path></svg></span>
+          <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-size:14px;font-weight:700;">Appointment Booked</span><span style="font-size:12px;color:#475569;">Tomorrow, 9:00 AM</span></span>
+          <span style="width:24px;height:24px;border-radius:50%;background:var(--btn);color:#fff;display:flex;align-items:center;justify-content:center;animation:nbrPulse 2.4s ease-in-out infinite;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg></span>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+      <div style="padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);display:flex;flex-direction:column;gap:2px;"><span style="font-size:12px;color:var(--faint);">Reply time</span><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">4 sec</span></div>
+      <div style="padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);display:flex;flex-direction:column;gap:2px;"><span style="font-size:12px;color:var(--faint);">Leads answered</span><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">100%</span></div>
+      <div style="padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);display:flex;flex-direction:column;gap:2px;"><span style="font-size:12px;color:var(--faint);">Always on</span><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);">24/7</span></div>
+    </div>
+    </div>
+  </div>
+
+  <!-- benefits -->
+  <ul style="position:relative;list-style:none;margin:clamp(48px,7vw,80px) auto 0;padding:0;max-width:1200px;display:grid;grid-template-columns:{{ benefitCols }};gap:1px;background:rgba(var(--fg-rgb),0.07);border:1px solid rgba(var(--fg-rgb),0.07);border-radius:18px;overflow:hidden;">
+    <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="4">
+      <li style="display:flex;align-items:center;gap:16px;padding:22px 24px;background:var(--bg-2);">
+        <span style="width:46px;height:46px;flex:none;border-radius:50%;border:1px solid rgba(var(--acc-rgb),0.35);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ b.d }}"></path></svg></span>
+        <span style="display:flex;flex-direction:column;line-height:1.3;"><span style="font-size:16px;font-weight:700;color:var(--ink);">{{ b.a }}</span><span style="font-size:15px;color:var(--muted);">{{ b.b }}</span></span>
+      </li>
+    </sc-for>
+  </ul>
+  <div style="position:relative;max-width:1200px;margin:22px auto 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;color:var(--faint);margin-right:6px;">WORKS WITH</span>
+    <span style="padding:7px 12px;border-radius:8px;border:1px solid rgba(var(--fg-rgb),0.1);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink-3);">Google Calendar</span>
+    <span style="padding:7px 12px;border-radius:8px;border:1px solid rgba(var(--fg-rgb),0.1);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink-3);">Gmail</span>
+    <span style="padding:7px 12px;border-radius:8px;border:1px solid rgba(var(--fg-rgb),0.1);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink-3);">WhatsApp</span>
+    <span style="padding:7px 12px;border-radius:8px;border:1px solid rgba(var(--fg-rgb),0.1);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink-3);">SMS</span>
+    <span style="padding:7px 12px;border-radius:8px;border:1px solid rgba(var(--fg-rgb),0.1);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink-3);">Stripe</span>
+    <span style="padding:7px 12px;border-radius:8px;border:1px solid rgba(var(--fg-rgb),0.1);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink-3);">Google Business</span>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.svc }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="Service Page" style="position:relative;padding:clamp(40px,6vw,72px) 24px clamp(56px,8vw,96px);overflow:hidden;">
+  <div style="position:relative;max-width:1200px;margin:0 auto;">
+    <a href="#/services" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;margin:0 0 14px -4px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.16);color:var(--ink-2);font-size:14px;font-weight:600;" style-hover="color:var(--ink);background:rgba(var(--fg-rgb),0.05);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>Back to services</a>
+    <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--faint);">
+      <a href="#/services" style="color:var(--muted);" style-hover="color:var(--ink);">Services</a><span aria-hidden="true">/</span><span style="color:var(--ink-2);" aria-current="page">{{ svc.name }}</span>
+    </nav>
+    <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(36px,5vw,64px);align-items:start;">
+      <div>
+        <span style="width:56px;height:56px;border-radius:16px;background:rgba(var(--acc-rgb),0.1);border:1px solid rgba(var(--acc-rgb),0.3);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ svc.d }}"></path></svg></span>
+        <p style="margin:26px 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">{{ svc.eyebrow }}</p>
+        <h1 style="margin:0;font-size:clamp(38px,5.6vw,64px);line-height:1.03;font-weight:800;letter-spacing:-0.035em;color:var(--ink);text-wrap:balance;">{{ svc.title }} <span style="display:block;color:var(--accent);">{{ svc.accent }}</span></h1>
+        <p style="margin:22px 0 0;max-width:520px;font-size:18px;line-height:1.6;color:var(--body);text-wrap:pretty;">{{ svc.body }}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;">
+          <a href="{{ svc.ctaHref }}" onClick="{{ onHeroCta }}" style="display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 26px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:16px;border-radius:999px;transition:transform .2s, box-shadow .2s;" style-hover="color:var(--btn-ink);background:var(--btn-hover);transform:translateY(-2px);box-shadow:0 12px 32px rgba(var(--acc-rgb),0.35);">{{ svc.ctaLabel }}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+          </a>
+          <a href="#/services" style="display:inline-flex;align-items:center;min-height:52px;padding:0 24px;border:1px solid rgba(var(--fg-rgb),0.2);color:var(--ink);font-weight:600;font-size:16px;border-radius:999px;" style-hover="color:var(--ink);border-color:var(--accent);background:rgba(var(--acc-rgb),0.06);">All services</a>
+        </div>
+      </div>
+      <div style="padding:clamp(22px,3vw,32px);border-radius:22px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);">
+        <h2 style="margin:0;font-size:13px;font-weight:700;letter-spacing:0.14em;color:var(--muted);">WHAT'S INCLUDED</h2>
+        <ul style="list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;">
+          <sc-for list="{{ svc.features }}" as="f" hint-placeholder-count="6">
+            <li style="display:flex;gap:14px;padding:14px 0;border-top:1px solid rgba(var(--fg-rgb),0.06);">
+              <span style="width:26px;height:26px;flex:none;border-radius:50%;background:rgba(var(--acc-rgb),0.12);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg></span>
+              <span style="display:flex;flex-direction:column;gap:3px;"><span style="font-size:16px;font-weight:700;color:var(--ink);">{{ f.t }}</span><span style="font-size:14px;line-height:1.5;color:var(--muted);">{{ f.b }}</span></span>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+    </div>
+    <h2 style="margin:clamp(56px,8vw,88px) 0 0;font-size:clamp(26px,3.2vw,36px);font-weight:800;letter-spacing:-0.025em;color:var(--ink);">How it works</h2>
+    <ol style="list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:16px;">
+      <sc-for list="{{ svc.steps }}" as="s" hint-placeholder-count="4">
+        <li style="padding:24px;border-radius:18px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.08);">
+          <span style="font-size:32px;font-weight:800;letter-spacing:-0.03em;color:var(--accent);line-height:1;">{{ s.n }}</span>
+          <h3 style="margin:18px 0 0;font-size:18px;font-weight:700;color:var(--ink);">{{ s.t }}</h3>
+          <p style="margin:8px 0 0;font-size:15px;line-height:1.55;color:var(--muted);">{{ s.b }}</p>
+        </li>
+      </sc-for>
+    </ol>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.tapcard }}" hint-placeholder-val="{{ false }}">
+<section id="tap-card-demo" data-screen-label="Tap Card Live Demo" style="padding:clamp(64px,9vw,112px) 24px;background:var(--bg-2);">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:clamp(40px,6vw,72px);align-items:center;">
+    <div>
+      <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">LIVE DEMO</p>
+      <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);">Try a real card. <span style="display:block;color:var(--accent);">Designed per profession.</span></h2>
+      <p style="margin:20px 0 0;max-width:460px;font-size:17px;line-height:1.65;color:var(--body);">Each card uses its own colours and layout to fit the person and their business. Pick a sample and tap around inside the phone.</p>
+      <div role="radiogroup" aria-label="Sample card" style="margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;">
+        <sc-for list="{{ tapDemos }}" as="td" hint-placeholder-count="3">
+          <button type="button" role="radio" aria-checked="{{ td.checked }}" onClick="{{ td.pick }}" style="min-height:44px;padding:0 18px;border-radius:999px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;background:{{ td.bg }};color:{{ td.fg }};border:1px solid {{ td.bd }};">{{ td.label }}</button>
+        </sc-for>
+      </div>
+      <div style="margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;">
+        <a href="#/order" style="display:inline-flex;align-items:center;min-height:50px;padding:0 24px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:15px;border-radius:999px;" style-hover="color:var(--btn-ink);background:var(--btn-hover);background:#7DF3FF;">Order your card</a>
+        <a href="{{ tapSrc }}" onClick="{{ openCard }}" style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;">Open full screen
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+      </a>
+      </div>
+    </div>
+    <div style="justify-self:center;width:318px;padding:9px;border-radius:46px;background:linear-gradient(160deg,#2A3446,#0B111C 40%,#1A2232);box-shadow:0 50px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(var(--fg-rgb),0.08);">
+      <div style="position:relative;width:300px;height:620px;border-radius:38px;overflow:hidden;background:#06120d;">
+        <iframe src="{{ tapSrc }}" title="Tap Card live demo" loading="lazy" style="position:absolute;top:0;left:0;width:390px;height:806px;border:0;transform:scale(0.7692);transform-origin:0 0;"></iframe>
+      </div>
+    </div>
+  </div>
+  <sc-if value="{{ cardOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="Digital Business Card full screen" onClick="{{ closeCard }}" style="position:fixed;inset:0;z-index:200;background:rgba(3,7,14,0.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;">
+      <button type="button" onClick="{{ closeCard }}" aria-label="Close" style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+      <iframe src="{{ tapSrc }}" title="Digital Business Card" style="width:min(100%,430px);height:min(100%,880px);border:0;border-radius:24px;background:#06120d;box-shadow:0 40px 100px rgba(0,0,0,0.6);"></iframe>
+    </div>
+  </sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.industries }}" hint-placeholder-val="{{ true }}">
+<!-- INDUSTRIES -->
+<section id="industries" data-screen-label="Industries" style="padding:clamp(56px,8vw,96px) 24px;border-top:1px solid rgba(var(--fg-rgb),0.05);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 40px;">
+      <div>
+        <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">WHO WE HELP</p>
+        <h2 style="margin:0;font-size:clamp(30px,4vw,44px);line-height:1.1;font-weight:800;letter-spacing:-0.025em;color:var(--ink);">Trusted by Local Businesses</h2>
+      </div>
+      <p style="margin:0;max-width:420px;font-size:16px;line-height:1.6;color:var(--muted);">Systems built for businesses that run on phone calls, bookings, and repeat customers.</p>
+    </div>
+    <ul style="list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:12px;">
+      <sc-for list="{{ industries }}" as="it" hint-placeholder-count="8">
+        <li style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:22px 20px;border-radius:16px;background:var(--surface-1);border:1px solid rgba(var(--fg-rgb),0.07);transition:border-color .2s, transform .2s;" style-hover="border-color:rgba(var(--acc-rgb),0.35);transform:translateY(-2px);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ it.d }}"></path></svg>
+          <span style="font-size:15px;font-weight:600;color:var(--ink-2);">{{ it.label }}</span>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.services }}" hint-placeholder-val="{{ true }}">
+<!-- SERVICES -->
+<section id="services" data-screen-label="Services" style="order:{{ ord.services }};padding:clamp(72px,10vw,120px) 24px;background:var(--bg-2);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">OUR SERVICES</p>
+    <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);text-wrap:balance;">Everything Local Businesses <span style="display:block;color:var(--accent);">Need to Grow</span></h2>
+    <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr));gap:16px;">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="4">
+        <a href="{{ s.href }}" onClick="{{ s.onClick }}" style="grid-column:{{ s.span }};display:flex;gap:22px;padding:30px;border-radius:20px;background:linear-gradient(180deg,rgba(var(--fg-rgb),0.035),rgba(var(--fg-rgb),0.01));border:1px solid rgba(var(--fg-rgb),0.08);color:var(--ink-2);transition:border-color .25s, transform .25s, background .25s;" style-hover="color:var(--ink-2);border-color:rgba(var(--acc-rgb),0.4);transform:translateY(-3px);background:linear-gradient(180deg,rgba(var(--acc-rgb),0.06),rgba(var(--fg-rgb),0.01));">
+          <span style="width:52px;height:52px;flex:none;border-radius:14px;background:rgba(var(--acc-rgb),0.1);border:1px solid rgba(var(--acc-rgb),0.25);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ s.d }}"></path></svg></span>
+          <span style="display:flex;flex-direction:column;gap:10px;flex:1;">
+            <span style="font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;">{{ s.title }}</span>
+            <span style="font-size:15px;line-height:1.6;color:var(--muted);text-wrap:pretty;">{{ s.body }}</span>
+            <span style="margin-top:6px;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--accent);">Learn more <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></span>
+          </span>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.missed }}" hint-placeholder-val="{{ false }}">
+<!-- MISSED CALL RECOVERY -->
+<section id="missed-call-recovery" data-screen-label="Missed Call Recovery" style="position:relative;padding:clamp(72px,10vw,128px) 24px;overflow:hidden;">
+  <div style="position:relative;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,80px);align-items:center;">
+    <div>
+      <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">MISSED CALL RECOVERY</p>
+      <h2 style="margin:0;font-size:clamp(34px,5vw,58px);line-height:1.04;font-weight:800;letter-spacing:-0.03em;color:var(--ink);text-wrap:balance;">Turn Missed Calls Into <span style="display:block;color:var(--accent);">Real Customers.</span></h2>
+      <p style="margin:22px 0 0;max-width:500px;font-size:17px;line-height:1.65;color:var(--body);text-wrap:pretty;">When you can't pick up, NexBizRise texts the caller within seconds, asks what they need, and offers an open time on your calendar. The conversation keeps going while you keep working.</p>
+      <ol style="list-style:none;margin:34px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;">
+        <sc-for list="{{ recoverySteps }}" as="st" hint-placeholder-count="7">
+          <li style="display:flex;align-items:center;gap:14px;padding:9px 0;">
+            <span style="width:30px;height:30px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;transition:background .4s, color .4s, border-color .4s;background:{{ st.bg }};color:{{ st.fg }};border:1px solid {{ st.bd }};">{{ st.n }}</span>
+            <span style="font-size:16px;font-weight:500;transition:color .4s;color:{{ st.tc }};">{{ st.label }}</span>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+
+    <div style="justify-self:center;width:100%;max-width:380px;">
+      <div style="--bg:#070B14;--bg-2:#0A0F1A;--surface:#0F1624;--ink:#FFFFFF;--ink-2:#E8EEF5;--ink-3:#C4CEDB;--body:#B4C0CF;--muted:#9FB0C4;--faint:#7D8CA1;--accent:#2DD4BF;--accent-2:#2DD4BF;--btn:#14B8A6;--btn-ink:#04201D;--acc-rgb:45,212,191;--fg-rgb:255,255,255;border-radius:44px;padding:11px;background:linear-gradient(160deg,#2A3446,#0B111C 40%,#1A2232);box-shadow:0 50px 100px rgba(0,0,0,0.6),0 0 0 1px rgba(var(--fg-rgb),0.08);">
+        <div style="border-radius:34px;background:#F3F6F9;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:12px;padding:22px 20px 14px;background:#FFFFFF;border-bottom:1px solid #E3E9EF;">
+            <img src="assets/nexbizrise-mark-t.png" alt="" width="36" height="36" style="width:36px;height:36px;border-radius:50%;">
+            <span style="display:flex;flex-direction:column;"><span style="font-size:14px;font-weight:700;color:#0A0F1A;">NexBizRise AI</span><span style="font-size:12px;color:#64748B;">Business SMS · on behalf of your business</span></span>
+          </div>
+          <div aria-live="polite" style="height:430px;padding:16px 14px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;overflow:hidden;">
+            <sc-if value="{{ chatShowMissed }}" hint-placeholder-val="{{ true }}">
+              <div style="align-self:center;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:#FDECEC;color:#B42318;font-size:12px;font-weight:600;animation:nbrIn .4s ease both;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.phoneMissed }}"></path></svg>
+                Missed call · (402) 555-0187 · 10:24 AM
+              </div>
+            </sc-if>
+            <sc-for list="{{ chatVisible }}" as="m" hint-placeholder-count="3">
+              <sc-if value="{{ m.ai }}">
+                <div style="align-self:flex-start;max-width:80%;padding:10px 13px;border-radius:16px 16px 16px 4px;background:#FFFFFF;border:1px solid #E3E9EF;color:#0A0F1A;font-size:14px;line-height:1.45;animation:nbrIn .4s ease both;">{{ m.text }}</div>
+              </sc-if>
+              <sc-if value="{{ m.me }}">
+                <div style="align-self:flex-end;max-width:80%;padding:10px 13px;border-radius:16px 16px 4px 16px;background:#0A84FF;color:#fff;font-size:14px;line-height:1.45;animation:nbrIn .4s ease both;">{{ m.text }}</div>
+              </sc-if>
+            </sc-for>
+            <sc-if value="{{ chatBooked }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:#FFFFFF;border:1px solid #BDEFE5;box-shadow:0 10px 24px rgba(0,120,100,0.12);animation:nbrIn .5s ease both;">
+                <span style="width:40px;height:40px;flex:none;border-radius:11px;background:#E0FBF6;color:#00A88D;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.calendar }}"></path></svg></span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-size:15px;font-weight:700;color:#0A0F1A;">✓ Appointment Booked</span><span style="font-size:13px;color:#475569;">Tomorrow — 9:00 AM</span></span>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:18px;">
+        <button type="button" onClick="{{ replayChat }}" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;background:transparent;border:1px solid rgba(var(--fg-rgb),0.16);border-radius:999px;color:var(--ink-3);font:inherit;font-size:14px;font-weight:600;cursor:pointer;" style-hover="border-color:var(--accent);color:var(--ink);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.refresh }}"></path></svg>
+          Replay conversation</button>
+      </div>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.how }}" hint-placeholder-val="{{ false }}">
+<!-- HOW IT WORKS -->
+<section id="how-it-works" data-screen-label="How It Works" style="order:{{ ord.how }};padding:clamp(72px,10vw,120px) 24px;background:var(--bg-2);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">HOW IT WORKS</p>
+    <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);">A Simple Process. <span style="display:block;color:var(--accent);">Real Results.</span></h2>
+    <ol style="list-style:none;margin:52px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px;">
+      <sc-for list="{{ process }}" as="p" hint-placeholder-count="4">
+        <li style="position:relative;padding:28px 26px 30px;border-radius:20px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);transition:border-color .25s;" style-hover="border-color:rgba(var(--acc-rgb),0.35);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:40px;font-weight:800;letter-spacing:-0.03em;color:var(--accent);line-height:1;">{{ p.n }}</span>
+            <span style="width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ p.d }}"></path></svg></span>
+          </div>
+          <h3 style="margin:28px 0 0;font-size:21px;font-weight:700;color:var(--ink);">{{ p.title }}</h3>
+          <p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--muted);">{{ p.body }}</p>
+        </li>
+      </sc-for>
+    </ol>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.results }}" hint-placeholder-val="{{ false }}">
+<!-- RESULTS -->
+<section id="results" data-screen-label="Results" style="padding:clamp(72px,10vw,120px) 24px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 40px;">
+      <div>
+        <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">BUSINESS OUTCOMES</p>
+        <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);text-wrap:balance;">Better Leads. Faster Follow-Ups. <span style="color:var(--accent);">More Appointments.</span></h2>
+      </div>
+    </div>
+    <div style="margin-top:44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:16px;">
+      <sc-for list="{{ outcomes }}" as="o" hint-placeholder-count="4">
+        <div style="padding:26px;border-radius:20px;background:var(--surface-1);border:1px solid rgba(var(--fg-rgb),0.08);">
+          <span style="width:46px;height:46px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ o.d }}"></path></svg></span>
+          <h3 style="margin:22px 0 0;font-size:19px;font-weight:700;color:var(--ink);">{{ o.title }}</h3>
+          <p style="margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--muted);text-wrap:pretty;">{{ o.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ showTestimonials }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:56px;">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;">
+          <h3 style="margin:0;font-size:22px;font-weight:700;color:var(--ink);">Customer Stories</h3>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);">Published only with verified results and permission.</span>
+        </div>
+        <div style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;">
+          <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+            <figure style="margin:0;padding:26px;border-radius:20px;border:1px dashed rgba(var(--fg-rgb),0.18);background:repeating-linear-gradient(135deg,rgba(var(--fg-rgb),0.025) 0 10px,transparent 10px 20px);display:flex;flex-direction:column;gap:18px;min-height:190px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;color:var(--accent);">{{ t.slot }}</span>
+              <blockquote style="margin:0;font-size:16px;line-height:1.55;color:var(--faint);font-style:italic;">{{ t.quote }}</blockquote>
+              <figcaption style="margin-top:auto;font-size:13px;color:var(--faint);">— {{ t.name }}, {{ t.business }}</figcaption>
+            </figure>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.websites }}" hint-placeholder-val="{{ false }}">
+<!-- WEBSITES -->
+<section id="websites" data-screen-label="Websites" style="padding:clamp(72px,10vw,120px) 24px;background:var(--bg-2);">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(40px,6vw,72px);align-items:center;">
+    <div>
+      <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">CUSTOM WEBSITES</p>
+      <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);">Modern Websites <span style="display:block;color:var(--accent);">That Convert.</span></h2>
+      <p style="margin:20px 0 0;max-width:460px;font-size:17px;line-height:1.65;color:var(--body);">We design and build fast, clear websites that tell visitors what you do, where you work, and how to book — on any device.</p>
+      <ul style="list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px 20px;">
+        <sc-for list="{{ webFeatures }}" as="f" hint-placeholder-count="6">
+          <li style="display:flex;align-items:center;gap:12px;font-size:16px;font-weight:500;color:var(--ink-2);">
+            <span style="width:32px;height:32px;flex:none;border-radius:9px;background:rgba(var(--acc-rgb),0.1);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ f.d }}"></path></svg></span>
+            {{ f.label }}
+          </li>
+        </sc-for>
+      </ul>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:18px;align-items:end;">
+      <figure style="margin:0;">
+        <figcaption style="margin-bottom:10px;display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.1em;padding:5px 10px;border-radius:6px;background:#334155;color:#E2E8F0;">BEFORE</figcaption>
+        <div aria-label="Example of an outdated local business website" role="img" style="border-radius:12px;overflow:hidden;background:#D9DDE2;border:1px solid #9AA4AF;filter:saturate(0.4);">
+          <div style="display:flex;gap:5px;padding:8px 10px;background:#B8BFC7;"><span style="width:8px;height:8px;border-radius:50%;background:#8C959F;"></span><span style="width:8px;height:8px;border-radius:50%;background:#8C959F;"></span><span style="width:8px;height:8px;border-radius:50%;background:#8C959F;"></span></div>
+          <div style="padding:14px;font-family:'Times New Roman',serif;color:#333;">
+            <div style="font-size:18px;font-weight:700;color:#1C3A8A;">Local Plumbing Services</div>
+            <div style="font-size:10px;color:#555;margin-top:2px;">Home | About Us | Services | Links | Guestbook</div>
+            <div style="margin-top:10px;height:72px;background:#BFC5CC;display:flex;align-items:center;justify-content:center;font-size:10px;color:#666;">[ clip-art banner ]</div>
+            <div style="margin-top:10px;font-size:10px;line-height:1.4;color:#444;">Welcome to our website!! We have been serving the area for many years. Please call during business hours. Click here for more information about our company history...</div>
+            <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;"><div style="height:34px;background:#C9CED4;"></div><div style="height:34px;background:#C9CED4;"></div></div>
+            <div style="margin-top:10px;font-size:9px;color:#777;">No mobile layout · No booking · Slow to load</div>
+          </div>
+        </div>
+      </figure>
+      <figure style="margin:0;">
+        <figcaption style="margin-bottom:10px;display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.1em;padding:5px 10px;border-radius:6px;background:var(--btn);color:var(--btn-ink);">AFTER</figcaption>
+        <div aria-label="Example of a modern NexBizRise-built website" role="img" style="--bg:#070B14;--bg-2:#0A0F1A;--surface:#0F1624;--ink:#FFFFFF;--ink-2:#E8EEF5;--ink-3:#C4CEDB;--body:#B4C0CF;--muted:#9FB0C4;--faint:#7D8CA1;--accent:#2DD4BF;--accent-2:#2DD4BF;--btn:#14B8A6;--btn-ink:#04201D;--acc-rgb:45,212,191;--fg-rgb:255,255,255;border-radius:14px;overflow:hidden;background:#0B1220;border:1px solid rgba(var(--acc-rgb),0.35);box-shadow:0 30px 60px rgba(0,0,0,0.5),0 0 0 6px rgba(var(--acc-rgb),0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(var(--fg-rgb),0.07);">
+            <span style="font-size:11px;font-weight:800;color:var(--ink);">Reliable<span style="color:var(--accent);">Plumbing</span></span>
+            <span style="font-size:9px;font-weight:700;padding:5px 9px;border-radius:999px;background:var(--btn);color:var(--btn-ink);">Book Now</span>
+          </div>
+          <div style="position:relative;height:150px;background:repeating-linear-gradient(135deg,rgba(var(--fg-rgb),0.04) 0 8px,transparent 8px 16px),#111A2B;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;">
+            <span style="position:absolute;top:10px;right:10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--faint);">hero photo</span>
+            <span style="font-size:17px;font-weight:800;line-height:1.1;color:var(--ink);letter-spacing:-0.02em;">Reliable Plumbing Services</span>
+            <span style="font-size:10px;color:var(--body);margin-top:4px;">Same-week appointments · Licensed &amp; insured</span>
+            <span style="align-self:flex-start;margin-top:10px;font-size:10px;font-weight:700;padding:6px 11px;border-radius:999px;background:var(--btn);color:var(--btn-ink);">Get a Free Quote</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;">
+            <div style="padding:10px 6px;border-radius:8px;background:rgba(var(--fg-rgb),0.04);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--accent);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.wrench }}"></path></svg><span style="font-size:9px;color:var(--ink-3);">Repairs</span></div>
+            <div style="padding:10px 6px;border-radius:8px;background:rgba(var(--fg-rgb),0.04);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--accent);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.home }}"></path></svg><span style="font-size:9px;color:var(--ink-3);">Installs</span></div>
+            <div style="padding:10px 6px;border-radius:8px;background:rgba(var(--fg-rgb),0.04);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--accent);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.calendar }}"></path></svg><span style="font-size:9px;color:var(--ink-3);">Book online</span></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.automations }}" hint-placeholder-val="{{ false }}">
+<!-- AI AUTOMATIONS -->
+<section id="automations" data-screen-label="AI Automations" style="padding:clamp(72px,10vw,120px) 24px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px 60px;align-items:end;">
+      <div>
+        <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">AI AUTOMATIONS</p>
+        <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);">Automate Repetitive Tasks <span style="display:block;color:var(--accent);">and Save Time.</span></h2>
+      </div>
+      <p style="margin:0;font-size:17px;line-height:1.65;color:var(--body);text-wrap:pretty;">The follow-ups, reminders, and data entry your team does every day can run on their own. Each workflow is set up around how your business already works.</p>
+    </div>
+
+    <div style="margin-top:52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:24px;align-items:center;padding:clamp(20px,3vw,36px);border-radius:24px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.07);">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--faint);">TRIGGERS</span>
+        <sc-for list="{{ triggers }}" as="t" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ t.d }}"></path></svg>
+            <span style="font-size:14px;font-weight:600;color:var(--ink-2);">{{ t.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px 10px;">
+        <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+          <svg aria-hidden="true" width="100%" height="2" style="position:absolute;left:0;top:50%;overflow:visible;"><line x1="0" y1="1" x2="100%" y2="1" stroke="var(--accent)" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="3 4" style="animation:nbrDash 0.9s linear infinite;"></line></svg>
+        </sc-if>
+        <div style="position:relative;width:120px;height:120px;border-radius:30px;background:var(--bg);border:1px solid rgba(var(--acc-rgb),0.45);box-shadow:0 0 60px rgba(var(--acc-rgb),0.2);display:flex;align-items:center;justify-content:center;">
+          <img src="assets/nexbizrise-mark-t.png" alt="" width="84" height="84" style="width:84px;height:84px;">
+        </div>
+        <span style="position:relative;font-size:15px;font-weight:700;color:var(--ink);background:var(--bg-2);padding:0 10px;">NexBizRise Automation</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--faint);">ACTIONS</span>
+        <sc-for list="{{ actions }}" as="t" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.08);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ t.d }}"></path></svg>
+            <span style="font-size:14px;font-weight:600;color:var(--ink-2);">{{ t.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <ul style="list-style:none;margin:28px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px;">
+      <sc-for list="{{ automationList }}" as="a" hint-placeholder-count="8">
+        <li style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.1);font-size:14px;color:var(--ink-3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>{{ a }}</li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.about }}" hint-placeholder-val="{{ false }}">
+<!-- ABOUT -->
+<section id="about" data-screen-label="About" style="order:{{ ord.about }};padding:clamp(72px,10vw,120px) 24px;background:var(--bg-2);">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,72px);align-items:center;">
+    <div>
+      <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">ABOUT NEXBIZRISE</p>
+      <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);">Your Technology Partner <span style="display:block;color:var(--accent);">for Business Growth.</span></h2>
+      <p style="margin:22px 0 0;font-size:17px;line-height:1.7;color:var(--body);text-wrap:pretty;">NexBizRise helps small and local businesses use modern websites, automation, and AI without needing their own technical team. We design, build, and maintain the systems, and we explain them in plain language so you always know what's running and why.</p>
+      <ul style="list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;">
+        <sc-for list="{{ principles }}" as="p" hint-placeholder-count="4">
+          <li style="display:flex;gap:14px;">
+            <span style="width:36px;height:36px;flex:none;border-radius:10px;background:rgba(var(--acc-rgb),0.1);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ p.d }}"></path></svg></span>
+            <span style="display:flex;flex-direction:column;gap:4px;"><span style="font-size:16px;font-weight:700;color:var(--ink);">{{ p.title }}</span><span style="font-size:14px;line-height:1.55;color:var(--muted);">{{ p.body }}</span></span>
+          </li>
+        </sc-for>
+      </ul>
+    </div>
+    <div role="img" aria-label="Photo placeholder" style="position:relative;aspect-ratio:4/3.4;border-radius:24px;border:1px dashed rgba(var(--fg-rgb),0.18);background:repeating-linear-gradient(135deg,rgba(var(--fg-rgb),0.03) 0 12px,transparent 12px 24px),#0F1624;display:flex;align-items:flex-end;padding:22px;box-sizing:border-box;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);">team / workspace photo — drop real image here</span>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.cta }}" hint-placeholder-val="{{ true }}">
+<!-- FINAL CTA -->
+<section data-screen-label="Final CTA" style="position:relative;padding:clamp(80px,11vw,140px) 24px;overflow:hidden;text-align:center;">
+  <div style="position:relative;max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:center;">
+    <h2 style="margin:0;font-size:clamp(34px,5.4vw,62px);line-height:1.04;font-weight:800;letter-spacing:-0.035em;color:var(--ink);text-wrap:balance;">Ready to Turn More Leads <span style="color:var(--accent);">Into Customers?</span></h2>
+    <p style="margin:22px 0 0;font-size:18px;line-height:1.6;color:var(--body);">Let's show you what NexBizRise can automate for your business.</p>
+    <a href="#/contact" onClick="{{ onHeroCta }}" style="margin-top:34px;display:inline-flex;align-items:center;gap:10px;min-height:56px;padding:0 30px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:17px;border-radius:999px;transition:transform .2s, box-shadow .2s;" style-hover="color:var(--btn-ink);background:var(--btn-hover);transform:translateY(-2px);box-shadow:0 14px 36px rgba(var(--acc-rgb),0.4);">Get a Free Demo
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+    </a>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.contact }}" hint-placeholder-val="{{ false }}">
+<!-- CONTACT -->
+<section id="contact" data-screen-label="Contact / Demo" style="padding:clamp(72px,10vw,120px) 24px;background:var(--bg-2);border-top:1px solid rgba(var(--fg-rgb),0.05);">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(40px,6vw,72px);align-items:start;">
+    <div>
+      <p style="margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">GET A FREE DEMO</p>
+      <h2 style="margin:0;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:var(--ink);">Let's Grow <span style="display:block;color:var(--accent);">Your Business.</span></h2>
+      <p style="margin:20px 0 0;max-width:420px;font-size:17px;line-height:1.65;color:var(--body);">Tell us about your business and we'll show you what NexBizRise can automate. We reply within one business day.</p>
+      <div style="margin-top:36px;display:flex;flex-direction:column;gap:18px;">
+        <a href="mailto:hello@nexbizrise.com" onClick="{{ onEmail }}" style="display:flex;align-items:center;gap:14px;color:var(--ink-2);" style-hover="color:var(--accent);">
+          <span style="width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.mail }}"></path></svg></span>
+          <span style="display:flex;flex-direction:column;"><span style="font-size:12px;color:var(--faint);">Email</span><span style="font-size:16px;font-weight:600;">hello@nexbizrise.com</span></span>
+        </a>
+        <a href="tel:+14025550187" onClick="{{ onPhone }}" style="display:flex;align-items:center;gap:14px;color:var(--ink-2);" style-hover="color:var(--accent);">
+          <span style="width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.phone }}"></path></svg></span>
+          <span style="display:flex;flex-direction:column;"><span style="font-size:12px;color:var(--faint);">Phone</span><span style="font-size:16px;font-weight:600;">(402) 555-0187</span></span>
+        </a>
+        <div style="display:flex;align-items:center;gap:14px;color:var(--ink-2);">
+          <span style="width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.pin }}"></path></svg></span>
+          <span style="display:flex;flex-direction:column;"><span style="font-size:12px;color:var(--faint);">Location</span><span style="font-size:16px;font-weight:600;">Serving businesses across the US</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:clamp(22px,3vw,36px);border-radius:24px;background:var(--surface);border:1px solid rgba(var(--fg-rgb),0.09);box-shadow:0 30px 80px rgba(0,0,0,0.35);">
+      <sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:20px 4px;animation:nbrIn .5s ease both;">
+          <span style="width:56px;height:56px;border-radius:50%;background:rgba(var(--acc-rgb),0.15);color:var(--accent-2);display:flex;align-items:center;justify-content:center;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg></span>
+          <h3 style="margin:0;font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;">Thanks, {{ successName }}. Your demo request is in.</h3>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:var(--body);">We'll reach out by {{ successMethod }} within one business day to schedule a short walkthrough for {{ successBusiness }}.</p>
+          <button type="button" onClick="{{ resetForm }}" style="margin-top:8px;min-height:44px;padding:0 18px;background:transparent;border:1px solid rgba(var(--fg-rgb),0.16);border-radius:999px;color:var(--ink-3);font:inherit;font-size:14px;font-weight:600;cursor:pointer;" style-hover="border-color:var(--accent);color:var(--ink);">Submit another request</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+        <form noValidate="{{ true }}" onSubmit="{{ onSubmit }}" onFocus="{{ onFormFocus }}" aria-label="Request a free demo" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:18px 16px;">
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">Name *
+            <input name="name" autoComplete="name" placeholder="Your full name" aria-invalid="{{ inv.name }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 14px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.name }}</span>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">Business Name *
+            <input name="business_name" autoComplete="organization" placeholder="Your business name" aria-invalid="{{ inv.business_name }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 14px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.business_name }}</span>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">Email *
+            <input name="email" type="email" autoComplete="email" placeholder="you@company.com" aria-invalid="{{ inv.email }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 14px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.email }}</span>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">Phone *
+            <input name="phone" type="tel" autoComplete="tel" placeholder="(555) 123-4567" aria-invalid="{{ inv.phone }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 14px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.phone }}</span>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">Business Type *
+            <select name="business_type" defaultValue="" aria-invalid="{{ inv.business_type }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 12px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
+              <option value="" disabled="">Select business type</option>
+              <sc-for list="{{ businessTypes }}" as="bt" hint-placeholder-count="0"><option value="{{ bt }}">{{ bt }}</option></sc-for>
+            </select>
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.business_type }}</span>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">Website URL
+            <input name="website_url" type="url" autoComplete="url" placeholder="https://yourwebsite.com" aria-invalid="{{ inv.website_url }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 14px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.website_url }}</span>
+          </label>
+          <label style="grid-column:1/-1;display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">What do you need help with? *
+            <textarea name="message" rows="4" placeholder="e.g. We miss calls while on job sites and want to follow up automatically." aria-invalid="{{ inv.message }}" style="width:100%;box-sizing:border-box;padding:12px 14px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;line-height:1.5;outline:none;resize:vertical;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);"></textarea>
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.message }}</span>
+          </label>
+          <fieldset style="grid-column:1/-1;margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:10px;">
+            <legend style="padding:0;margin-bottom:10px;font-size:13px;font-weight:600;color:var(--ink-3);">Preferred Contact Method *</legend>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+              <sc-for list="{{ contactMethods }}" as="cm" hint-placeholder-count="3">
+                <label style="display:flex;align-items:center;gap:9px;min-height:44px;padding:0 16px;border-radius:10px;border:1px solid rgba(var(--fg-rgb),0.13);background:var(--bg-2);font-size:14px;color:var(--ink-2);cursor:pointer;">
+                  <input type="radio" name="preferred_contact_method" value="{{ cm }}" style="accent-color:var(--accent);width:16px;height:16px;margin:0;">{{ cm }}
+                </label>
+              </sc-for>
+            </div>
+            <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.preferred_contact_method }}</span>
+          </fieldset>
+          <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+            <label>Company website (leave blank)<input name="company_site" tabIndex="-1" autoComplete="off"></label>
+          </div>
+          <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;min-height:64px;padding:0 16px;border-radius:10px;border:1px dashed rgba(var(--fg-rgb),0.18);background:repeating-linear-gradient(135deg,rgba(var(--fg-rgb),0.025) 0 8px,transparent 8px 16px);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.shield }}"></path></svg>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);">Cloudflare Turnstile widget</span>
+          </div>
+          <sc-if value="{{ hasFormError }}" hint-placeholder-val="{{ false }}">
+            <p role="alert" style="grid-column:1/-1;margin:0;padding:12px 14px;border-radius:10px;background:rgba(255,90,90,0.08);border:1px solid rgba(255,90,90,0.3);font-size:14px;color:#FFB4B4;">Please fix the highlighted fields and try again.</p>
+          </sc-if>
+          <button type="submit" disabled="{{ isSubmitting }}" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;background:var(--btn);color:var(--btn-ink);border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:box-shadow .2s, opacity .2s;" style-hover="box-shadow:0 12px 32px rgba(var(--acc-rgb),0.35);">{{ submitLabel }}</button>
+          <p style="grid-column:1/-1;margin:0;font-size:12px;line-height:1.5;color:var(--faint);">By submitting, you agree to be contacted about your request. See our <a href="#privacy">Privacy Policy</a>.</p>
+        </form>
+      </sc-if>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+</main>
+
+<sc-if value="{{ show.chrome }}" hint-placeholder-val="{{ true }}">
+<footer style="padding:clamp(56px,8vw,88px) 24px 32px;border-top:1px solid rgba(var(--fg-rgb),0.06);">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:40px;">
+      <div style="grid-column:span 1;min-width:0;">
+        <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:10px;color:var(--ink);">
+          <img src="assets/nexbizrise-mark-t.png" alt="" width="40" height="40" style="width:40px;height:40px;">
+          <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span>
+        </a>
+        <p style="margin:16px 0 0;font-size:15px;line-height:1.5;color:var(--body);">Helping Businesses <span style="color:var(--accent);">Get More Customers.</span></p>
+        <div style="margin-top:20px;display:flex;gap:10px;">
+          <sc-for list="{{ socials }}" as="so" hint-placeholder-count="4">
+            <a href="{{ so.href }}" aria-label="{{ so.label }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(var(--fg-rgb),0.12);color:var(--ink-3);display:flex;align-items:center;justify-content:center;" style-hover="color:var(--accent);border-color:var(--accent);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ so.d }}"></path></svg></a>
+          </sc-for>
+        </div>
+      </div>
+      <nav aria-label="Footer navigation">
+        <h3 style="margin:0 0 16px;font-size:14px;font-weight:700;color:var(--ink);">Navigation</h3>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ footerNav }}" as="l" hint-placeholder-count="6"><li><a href="{{ l.href }}" style="font-size:14px;color:var(--muted);" style-hover="color:var(--ink);">{{ l.label }}</a></li></sc-for>
+        </ul>
+      </nav>
+      <div>
+        <h3 style="margin:0 0 16px;font-size:14px;font-weight:700;color:var(--ink);">Services</h3>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ footerServices }}" as="l" hint-placeholder-count="4"><li><a href="{{ l.href }}" style="font-size:14px;color:var(--muted);" style-hover="color:var(--ink);">{{ l.label }}</a></li></sc-for>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin:0 0 16px;font-size:14px;font-weight:700;color:var(--ink);">Contact</h3>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="mailto:hello@nexbizrise.com" onClick="{{ onEmail }}" style="font-size:14px;color:var(--muted);" style-hover="color:var(--ink);">hello@nexbizrise.com</a></li>
+          <li><a href="tel:+14025550187" onClick="{{ onPhone }}" style="font-size:14px;color:var(--muted);" style-hover="color:var(--ink);">(402) 555-0187</a></li>
+          <li style="font-size:14px;color:var(--muted);">United States</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:56px;padding-top:24px;border-top:1px solid rgba(var(--fg-rgb),0.06);display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px 24px;">
+      <span style="font-size:13px;color:var(--faint);">© 2026 NexBizRise. All rights reserved.</span>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 24px;">
+        <a href="#privacy" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Privacy Policy</a>
+        <a href="#terms" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Terms of Service</a>
+        <a href="#cookies" style="font-size:13px;color:var(--muted);" style-hover="color:var(--ink);">Cookie &amp; Tracking Preferences</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</sc-if>
+
+<sc-if value="{{ showSticky }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:12px;right:12px;bottom:12px;z-index:40;">
+    <a href="#/contact" onClick="{{ onHeroCta }}" style="display:flex;justify-content:center;align-items:center;gap:8px;min-height:54px;border-radius:999px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:16px;box-shadow:0 14px 34px rgba(0,0,0,0.5);">Get a Free Demo →</a>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;chatAutoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;showTestimonialSlots&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;mobileStickyCta&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+const I = {
+  phone: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+  phoneMissed: "M23 1l-6 6M17 1l6 6M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+  message: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
+  calendar: "M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 16l2 2 4-4",
+  chart: "M3 3v18h18M7 16v-4M12 16V8M17 16v-7",
+  wrench: "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z",
+  home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10",
+  utensils: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7",
+  scissors: "M6 3a3 3 0 1 0 0 6 3 3 0 1 0 0-6zM6 15a3 3 0 1 0 0 6 3 3 0 1 0 0-6zM20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12",
+  cart: "M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6M9 20a1 1 0 1 0 0 2 1 1 0 1 0 0-2zM20 20a1 1 0 1 0 0 2 1 1 0 1 0 0-2z",
+  building: "M4 2h16v20H4zM9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01",
+  heart: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7zM3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27",
+  car: "M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2M7 15a2 2 0 1 0 0 4 2 2 0 1 0 0-4zM9 17h6M17 15a2 2 0 1 0 0 4 2 2 0 1 0 0-4z",
+  monitor: "M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 21h8M12 17v4",
+  bot: "M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM2 14h2M20 14h2M15 13v2M9 13v2",
+  zap: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+  search: "M11 3a8 8 0 1 0 0 16 8 8 0 1 0 0-16zM21 21l-4.35-4.35",
+  lock: "M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zM7 11V7a5 5 0 0 1 10 0v4",
+  smartphone: "M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM12 18h.01",
+  target: "M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zM12 6a6 6 0 1 0 0 12 6 6 0 1 0 0-12zM12 10a2 2 0 1 0 0 4 2 2 0 1 0 0-4z",
+  userCheck: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8zM16 11l2 2 4-4",
+  users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+  bell: "M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0",
+  database: "M12 2c4.97 0 9 1.34 9 3s-4.03 3-9 3-9-1.34-9-3 4.03-3 9-3zM21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5",
+  refresh: "M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5",
+  mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM22 6l-10 7L2 6",
+  pin: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 7a3 3 0 1 0 0 6 3 3 0 1 0 0-6z",
+  shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4",
+  clock: "M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zM12 6v6l4 2",
+  form: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5",
+  globe: "M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
+  linkedin: "M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 0 0 4 2 2 0 1 0 0-4z",
+  instagram: "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zM16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01",
+  youtube: "M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33zM9.75 15.02l5.75-3.27-5.75-3.27z",
+  x: "M4 4l16 16M20 4L4 20"
+};
+
+const CHAT = [
+  { ai: true, text: "Hi! Thanks for calling. What service are you looking for?" },
+  { me: true, text: "Need plumbing repair." },
+  { ai: true, text: "Absolutely. When would you like someone to come out?" },
+  { me: true, text: "Tomorrow morning." },
+  { ai: true, text: "Got it. I have an opening tomorrow at 9 AM. Would you like me to book it?" },
+  { me: true, text: "Yes, please." }
+];
+// chat tick (0..8) -> highest completed workflow step
+const TICK_TO_STEP = [0, 1, 2, 4, 4, 4, 5, 5, 6];
+const FINAL_TICK = 8;
+
+// Replace with real, permissioned testimonials. Keep this shape: { quote, name, business }.
+const TESTIMONIALS = [
+  { slot: "TESTIMONIAL SLOT 01", quote: "Customer quote goes here once a client approves it.", name: "Customer name", business: "Business name" },
+  { slot: "TESTIMONIAL SLOT 02", quote: "Customer quote goes here once a client approves it.", name: "Customer name", business: "Business name" },
+  { slot: "TESTIMONIAL SLOT 03", quote: "Customer quote goes here once a client approves it.", name: "Customer name", business: "Business name" }
+];
+
+const PAGES = ["home", "services", "how-it-works", "results", "about", "contact", "admin", "services/websites", "services/missed-call-recovery", "services/automations", "services/tap-card", "order"];
+const PAGE_SECTIONS = {
+  home: ["hero", "services", "cta"],
+  services: ["services", "industries", "cta"],
+  "services/websites": ["svc", "websites", "cta"],
+  "services/missed-call-recovery": ["svc", "missed", "cta"],
+  "services/automations": ["svc", "automations", "cta"],
+  "services/tap-card": ["svc", "tapcard", "cta"],
+  admin: ["admin"],
+  order: ["order"],
+  "how-it-works": ["how", "missed", "cta"],
+  results: ["results", "cta"],
+  about: ["about", "industries", "cta"],
+  contact: ["contact"]
+};
+const SERVICE_PAGES = {
+  "services/websites": {
+    name: "Custom Websites", icon: "monitor", eyebrow: "CUSTOM WEBSITES", title: "Websites That Turn", accent: "Visitors Into Customers.",
+    body: "Modern, mobile-friendly websites that showcase your business, answer the questions customers ask, and make it easy to call, request a quote, or book.",
+    features: [
+      { t: "Custom design", b: "Built around your business, services, and service area. No generic templates." },
+      { t: "Mobile-first build", b: "Most local searches happen on a phone, so we design for it first." },
+      { t: "Local SEO foundations", b: "Page titles, structured data, and speed set up so search engines understand what you do." },
+      { t: "Lead capture built in", b: "Contact, quote, and booking forms connected to your follow-up automations." },
+      { t: "Hosting & security", b: "Fast global hosting with HTTPS and ongoing updates." },
+      { t: "Easy changes", b: "Ask us for updates any time, or edit simple content yourself." }
+    ],
+    steps: [
+      { n: "01", t: "Discover", b: "We learn your services, customers, and what a good lead looks like." },
+      { n: "02", t: "Design", b: "You review a design for desktop and mobile before we build." },
+      { n: "03", t: "Build", b: "We build, connect forms and analytics, and test on real devices." },
+      { n: "04", t: "Launch & maintain", b: "We go live, monitor performance, and keep things up to date." }
+    ]
+  },
+  "services/missed-call-recovery": {
+    name: "Missed Call Recovery", icon: "phoneMissed", eyebrow: "MISSED CALL RECOVERY", title: "Never Lose a", accent: "Customer Again.",
+    body: "When a call goes unanswered, NexBizRise texts the caller within seconds, finds out what they need, and offers an open time on your calendar.",
+    features: [
+      { t: "Instant SMS follow-up", b: "A friendly text goes out automatically after every missed call." },
+      { t: "AI qualifying questions", b: "Asks about the service, timing, and location so you know who's worth calling back." },
+      { t: "Calendar booking", b: "Offers real open times from your Google Calendar and books the appointment." },
+      { t: "Team notifications", b: "You get the lead summary by text or email as soon as it's qualified." },
+      { t: "Your tone of voice", b: "Messages are written to sound like your business, not a robot." },
+      { t: "Conversation history", b: "Every exchange is saved so nothing gets lost between calls." }
+    ],
+    steps: [
+      { n: "01", t: "Capture", b: "A customer calls and you can't pick up." },
+      { n: "02", t: "Automate", b: "An SMS goes out within seconds." },
+      { n: "03", t: "Qualify", b: "AI asks what they need and when." },
+      { n: "04", t: "Convert", b: "The appointment is booked on your calendar." }
+    ]
+  },
+  "services/automations": {
+    name: "AI Automations", icon: "bot", eyebrow: "AI AUTOMATIONS", title: "Automate Repetitive Tasks", accent: "and Save Time.",
+    body: "Smart SMS workflows, FAQ responses, lead qualification, reminders, and CRM updates that run in the background while your team does the work that matters.",
+    features: [
+      { t: "Lead capture & qualification", b: "Every call, form, and message is captured and sorted." },
+      { t: "SMS follow-up", b: "Timely, personal texts without anyone typing them." },
+      { t: "FAQ responses", b: "Common questions about hours, pricing, and service areas answered instantly." },
+      { t: "Appointment booking", b: "Google Calendar integration that books jobs automatically." },
+      { t: "Reminders", b: "Appointment reminders that reduce no-shows." },
+      { t: "CRM updates & notifications", b: "Records updated and your team alerted automatically." }
+    ],
+    steps: [
+      { n: "01", t: "Map", b: "We walk through how leads and customers move through your business today." },
+      { n: "02", t: "Build", b: "We set up workflows around your tools and calendar." },
+      { n: "03", t: "Test", b: "Every path is tested with real scenarios before it goes live." },
+      { n: "04", t: "Improve", b: "We monitor results and adjust messages and rules over time." }
+    ]
+  },
+  "services/tap-card": {
+    name: "Digital Business Card", ctaHref: "#/order", ctaLabel: "Order your card", icon: "smartphone", eyebrow: "DIGITAL BUSINESS CARD", title: "Your Business Card,", accent: "One Tap Away.",
+    body: "A digital business card shared by link or QR code. One tap opens a mobile page where people can save your contact, call, text, WhatsApp, or follow your links.",
+    features: [
+      { t: "One-tap save contact", b: "Downloads your contact with photo straight into their phone." },
+      { t: "Call, text & WhatsApp", b: "Quick-action buttons for the ways your customers reach you." },
+      { t: "Share & QR", b: "Share the link or show an on-screen QR code at any meeting." },
+      { t: "Profession designs", b: "Layouts and colours for real estate, healthcare, services, and more." },
+      { t: "Motion portrait", b: "An optional animated portrait with the Motion Card plan." },
+      { t: "Update any time", b: "Change details without reprinting anything. The same tag keeps working." }
+    ],
+    steps: [
+      { n: "01", t: "Order", b: "Tell us your details, profession, and send a photo." },
+      { n: "02", t: "Design", b: "We build your card in a style that fits your work." },
+      { n: "03", t: "Share", b: "You get your personal link and a QR code to share anywhere." },
+      { n: "04", t: "Update", b: "Ask for changes any time. Your link stays the same." }
+    ]
+  }
+};
+
+const NAV = [
+  { label: "Home", page: "home" }, { label: "Services", page: "services" },
+  { label: "Results", page: "results" }, { label: "About", page: "about" }, { label: "Contact", page: "contact" }
+];
+const hrefFor = (p) => (p === "home" ? "#/" : "#/" + p);
+
+function track(event, props) {
+  try { if (window.posthog && window.posthog.capture) window.posthog.capture(event, props || {}); } catch (e) {}
+  console.info("[analytics]", event, props || {});
+}
+
+function validateLead(v) {
+  const e = {};
+  const s = (k) => String(v[k] || "").trim();
+  if (s("name").length < 2) e.name = "Please enter your name.";
+  if (s("business_name").length < 2) e.business_name = "Please enter your business name.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s("email"))) e.email = "Enter a valid email address.";
+  if (s("phone").replace(/\D/g, "").length < 10) e.phone = "Enter a valid phone number.";
+  if (!s("business_type")) e.business_type = "Select your business type.";
+  if (s("website_url") && !/^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(s("website_url"))) e.website_url = "Enter a valid URL, e.g. https://example.com";
+  if (s("message").length < 10) e.message = "Tell us a little more (10+ characters).";
+  if (!s("preferred_contact_method")) e.preferred_contact_method = "Choose how we should contact you.";
+  return e;
+}
+
+class Component extends DCLogic {
+  state = { w: 1280, theme: "light", scrolled: false, page: "home", menu: false, tick: 0, errors: {}, status: "idle", started: false, lead: null };
+
+  componentDidMount() {
+    this.onScrollSticky = () => { const s = window.scrollY > 560; if (s !== this.state.scrolled) this.setState({ scrolled: s }); };
+    window.addEventListener("scroll", this.onScrollSticky, { passive: true });
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape" && this.state.cardOpen) this.setState({ cardOpen: false }); });
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    this.onResize();
+    window.addEventListener("resize", this.onResize);
+    this.onHash = () => {
+      const hs = window.location.hash || "";
+      if (hs && hs !== "#" && !hs.startsWith("#/")) return;
+      const parts = (window.location.hash || "").replace(/^#\/?/, "").split("/");
+      const two = parts.slice(0, 2).join("/");
+      const page = PAGES.includes(two) ? two : PAGES.includes(parts[0]) ? parts[0] : "home";
+      const anchor = PAGES.includes(two) ? parts[2] : parts[1];
+      this.setState({ page, menu: false }, () => {
+        const el = anchor && document.getElementById(anchor);
+        window.scrollTo({ top: el ? el.getBoundingClientRect().top + window.scrollY - 72 : 0, behavior: "instant" });
+      });
+    };
+    this.onHash();
+    this.setState({ theme: document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark" });
+    window.addEventListener("hashchange", this.onHash);
+    this.reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    this.startChat();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("hashchange", this.onHash);
+    clearInterval(this.timer);
+  }
+  componentDidUpdate(prev) {
+    if (prev.chatAutoplay !== this.props.chatAutoplay) this.startChat();
+  }
+  startChat() {
+    clearInterval(this.timer);
+    const auto = this.props.chatAutoplay ?? true;
+    if (!auto || this.reduced) { this.setState({ tick: FINAL_TICK }); return; }
+    this.setState({ tick: 0 });
+    this.hold = 0;
+    this.timer = setInterval(() => {
+      this.setState((s) => {
+        if (s.tick < FINAL_TICK) return { tick: s.tick + 1 };
+        this.hold += 1;
+        if (this.hold >= 3) { this.hold = 0; return { tick: 0 }; }
+        return null;
+      });
+    }, 1500);
+  }
+
+  onSubmit = (ev) => {
+    ev.preventDefault();
+    const fd = new FormData(ev.currentTarget);
+    const values = Object.fromEntries(fd.entries());
+    if (values.company_site) { this.setState({ status: "success", lead: values }); return; } // honeypot: silently drop
+    const errors = validateLead(values);
+    if (Object.keys(errors).length) { this.setState({ errors, status: "invalid" }); return; }
+    this.setState({ errors: {}, status: "submitting" });
+    // Production: POST to server action / API route (Zod + Turnstile verify + rate limit + Supabase insert + Resend).
+    setTimeout(() => {
+      track("demo_form_submitted", { business_type: values.business_type });
+      this.setState({ status: "success", lead: values });
+    }, 900);
+  };
+
+  renderVals() {
+    const { w, page, menu, tick, errors, status, lead } = this.state;
+    const show = {};
+    (PAGE_SECTIONS[page] || PAGE_SECTIONS.home).forEach((k) => (show[k] = true));
+    show.chrome = page !== "admin";
+    const svcData = SERVICE_PAGES[page] || null;
+    const tapDemo = this.state.tapDemo || "services";
+    const isOn = (p) => p === page || page.indexOf(p + "/") === 0;
+    const nav = NAV.map((n) => ({ label: n.label, href: hrefFor(n.page), color: isOn(n.page) ? "var(--ink)" : "var(--muted)", bar: isOn(n.page) ? "var(--btn)" : "transparent", current: isOn(n.page) ? "page" : "false" }));
+    const mobile = w < 900;
+    const step = TICK_TO_STEP[Math.min(tick, FINAL_TICK)];
+    const recoveryLabels = ["Customer calls your business", "Business misses the call", "NexBizRise instantly sends an SMS", "AI asks qualifying questions", "Customer responds", "Lead is qualified", "Appointment is booked"];
+    const inv = {};
+    Object.keys(errors).forEach((k) => (inv[k] = "true"));
+    const svc = (d, title, body, href) => ({ d, title, body, href, onClick: () => track("service_viewed", { service: title }) });
+
+    return {
+      ic: I,
+      show,
+      themeLabel: this.state.theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
+      themeIcon: this.state.theme === "dark" ? "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 1 0 0-10z" : "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+      toggleTheme: () => { const t = this.state.theme === "dark" ? "light" : "dark"; document.documentElement.setAttribute("data-theme", t); try { localStorage.setItem("nbr-theme", t); } catch (e) {} this.setState({ theme: t }); },
+      svc: svcData ? { ctaHref: "#/contact", ctaLabel: "Get a Free Demo", ...svcData, d: I[svcData.icon] } : { features: [], steps: [], ctaHref: "#/contact", ctaLabel: "Get a Free Demo" },
+      tapSrc: "Tap%20Card.dc.html?demo=" + tapDemo,
+      cardOpen: !!this.state.cardOpen,
+      openCard: (e) => { e.preventDefault(); this.setState({ cardOpen: true }); },
+      closeCard: (e) => { if (e.target === e.currentTarget || e.currentTarget.tagName === "BUTTON") this.setState({ cardOpen: false }); },
+      tapDemos: [["services", "Services"], ["realestate", "Real Estate"], ["healthcare", "Healthcare"]].map(([k, label]) => {
+        const on = k === tapDemo;
+        return { label, checked: on ? "true" : "false", pick: () => this.setState({ tapDemo: k }), bg: on ? "var(--btn)" : "transparent", fg: on ? "#04121A" : "var(--ink-3)", bd: on ? "var(--btn)" : "rgba(var(--fg-rgb),0.16)" };
+      }),
+      ord: { services: page === "services" ? -1 : 0, how: page === "how-it-works" ? -1 : 0, about: page === "about" ? -1 : 0 },
+      desktop: !mobile,
+      mobile,
+      showMenu: mobile && menu,
+      menuOpenStr: menu ? "true" : "false",
+      menuIcon: menu ? "M18 6L6 18M6 6l12 12" : "M3 6h18M3 12h18M3 18h18",
+      toggleMenu: () => this.setState({ menu: !menu }),
+      closeMenu: () => this.setState({ menu: false }),
+      showSticky: false && mobile && this.state.scrolled && page !== "admin" && (this.props.mobileStickyCta ?? true) && status !== "success",
+      navLinks: nav,
+      onHeroCta: () => { this.setState({ menu: false }); track("hero_cta_clicked"); },
+      onEmail: () => track("email_clicked"),
+      onPhone: () => track("phone_clicked"),
+
+      benefitCols: w >= 900 ? "repeat(4,minmax(0,1fr))" : w >= 540 ? "repeat(2,minmax(0,1fr))" : "minmax(0,1fr)",
+      benefits: [
+        { d: I.phone, a: "Capture", b: "Every Call" }, { d: I.message, a: "Automate", b: "Follow-Ups" },
+        { d: I.calendar, a: "Book More", b: "Appointments" }, { d: I.chart, a: "Grow", b: "Your Business" }
+      ],
+      industries: [
+        { d: I.wrench, label: "Contractors" }, { d: I.home, label: "Home Services" }, { d: I.utensils, label: "Restaurants" },
+        { d: I.scissors, label: "Barbers & Salons" }, { d: I.cart, label: "Retail & Stores" }, { d: I.building, label: "Real Estate" },
+        { d: I.heart, label: "Health & Wellness" }, { d: I.car, label: "Auto Services" }
+      ],
+      services: [
+        svc(I.monitor, "Custom Websites", "Modern, mobile-friendly websites that showcase a business and convert visitors into customers.", "#/services/websites"),
+        svc(I.phoneMissed, "Missed Call Recovery", "Never lose a customer again. Automatically follow up with customers when a call is missed.", "#/services/missed-call-recovery"),
+        svc(I.bot, "AI Automations", "Smart SMS workflows, FAQs, lead qualification, and customer follow-up.", "#/services/automations"),
+        svc(I.calendar, "Appointment Booking", "Seamless Google Calendar integration that helps businesses automatically book appointments.", "#/services/automations"),
+        svc(I.smartphone, "Digital Business Card", "A mobile-first digital card shared by link or QR code. Customers can save your contact, call, text, or book in one tap.", "#/services/tap-card")
+      ],
+
+      recoverySteps: recoveryLabels.map((label, i) => {
+        const done = i <= step, current = i === step;
+        return {
+          n: String(i + 1), label,
+          bg: current ? "var(--btn)" : done ? "rgba(var(--acc-rgb),0.12)" : "transparent",
+          fg: current ? "#04121A" : done ? "var(--accent)" : "var(--faint)",
+          bd: done ? "var(--btn)" : "rgba(var(--fg-rgb),0.16)",
+          tc: done ? "var(--ink)" : "var(--faint)"
+        };
+      }),
+      chatShowMissed: tick >= 1,
+      chatVisible: CHAT.slice(0, Math.max(0, Math.min(CHAT.length, tick - 1))),
+      chatBooked: tick >= FINAL_TICK,
+      replayChat: () => { this.reduced = false; clearInterval(this.timer); this.setState({ tick: 0 }); this.hold = 0;
+        this.timer = setInterval(() => this.setState((s) => {
+          if (s.tick < FINAL_TICK) return { tick: s.tick + 1 };
+          if (!(this.props.chatAutoplay ?? true)) { clearInterval(this.timer); return null; }
+          this.hold += 1; if (this.hold >= 3) { this.hold = 0; return { tick: 0 }; } return null;
+        }), 1500); },
+
+      process: [
+        { n: "01", d: I.phone, title: "Capture", body: "Capture calls, website visitors, and leads." },
+        { n: "02", d: I.zap, title: "Automate", body: "Automatically follow up using intelligent workflows." },
+        { n: "03", d: I.message, title: "Qualify", body: "Ask questions and determine what the customer needs." },
+        { n: "04", d: I.calendar, title: "Convert", body: "Book appointments and turn leads into customers." }
+      ],
+      outcomes: [
+        { d: I.users, title: "More Leads Captured", body: "Calls, forms, and texts land in one place instead of slipping through voicemail." },
+        { d: I.zap, title: "Faster Follow-Up", body: "Every new lead gets a response in seconds, day or night, without anyone on your team typing it." },
+        { d: I.target, title: "Fewer Missed Opportunities", body: "Missed calls turn into conversations, so busy hours don't cost you customers." },
+        { d: I.calendar, title: "More Booked Appointments", body: "Qualified leads are offered real open times on your calendar and booked on the spot." }
+      ],
+      showTestimonials: this.props.showTestimonialSlots ?? true,
+      testimonials: TESTIMONIALS,
+
+      webFeatures: [
+        { d: I.zap, label: "Fast" }, { d: I.smartphone, label: "Mobile-first" }, { d: I.search, label: "SEO-friendly" },
+        { d: I.target, label: "Conversion-focused" }, { d: I.lock, label: "Secure" }, { d: I.refresh, label: "Easy to maintain" }
+      ],
+      triggers: [
+        { d: I.phone, label: "Phone calls" }, { d: I.globe, label: "Website leads" },
+        { d: I.form, label: "Form submissions" }, { d: I.message, label: "Text messages" }
+      ],
+      actions: [
+        { d: I.message, label: "Send SMS follow-up" }, { d: I.userCheck, label: "Qualify lead" }, { d: I.calendar, label: "Book appointment" },
+        { d: I.database, label: "Update CRM" }, { d: I.clock, label: "Send reminders" }, { d: I.bell, label: "Notify your team" }
+      ],
+      automationList: ["Lead capture", "SMS follow-up", "Lead qualification", "FAQ responses", "Appointment booking", "Customer reminders", "CRM updates", "Notifications"],
+      principles: [
+        { d: I.bot, title: "Technology-focused", body: "Modern tools, set up properly and kept up to date." },
+        { d: I.home, title: "Built for local businesses", body: "Designed around how service businesses actually run." },
+        { d: I.message, title: "Clear communication", body: "Plain-language updates, no jargon." },
+        { d: I.shield, title: "End-to-end support", body: "From setup to ongoing improvements." }
+      ],
+
+      businessTypes: ["Contractor", "Home Services", "Restaurant", "Barber / Salon", "Retail / Store", "Real Estate", "Health & Wellness", "Auto Services", "Other"],
+      contactMethods: ["Email", "Phone", "Text"],
+      err: errors,
+      inv,
+      hasFormError: status === "invalid",
+      isSubmitting: status === "submitting",
+      submitLabel: status === "submitting" ? "Sending…" : "Request a Free Demo →",
+      isSuccess: status === "success",
+      showForm: status !== "success",
+      successName: lead ? String(lead.name || "").split(" ")[0] : "",
+      successBusiness: lead ? lead.business_name : "",
+      successMethod: lead ? String(lead.preferred_contact_method || "email").toLowerCase() : "",
+      onSubmit: this.onSubmit,
+      onFormFocus: () => { if (!this.state.started) { this.setState({ started: true }); track("demo_form_started"); } },
+      resetForm: () => this.setState({ status: "idle", lead: null, errors: {}, started: false }),
+
+      socials: [
+        { label: "NexBizRise on LinkedIn", href: "#", d: I.linkedin }, { label: "NexBizRise on X", href: "#", d: I.x },
+        { label: "NexBizRise on Instagram", href: "#", d: I.instagram }, { label: "NexBizRise on YouTube", href: "#", d: I.youtube }
+      ],
+      footerNav: nav,
+      footerServices: [
+        { label: "Websites", href: "#/services/websites" }, { label: "Missed Call Recovery", href: "#/services/missed-call-recovery" },
+        { label: "AI Automations", href: "#/services/automations" }, { label: "Appointment Booking", href: "#/services/automations" },
+        { label: "Digital Business Card", href: "#/services/tap-card" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

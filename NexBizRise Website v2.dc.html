@@ -46,8 +46,7 @@ select option{background:var(--surface);color:var(--ink-2);}
 <header style="position:sticky;top:0;z-index:50;transform:{{ headerY }};transition:transform .25s ease;background:var(--header-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(var(--fg-rgb),0.06);">
   <nav aria-label="Primary" style="max-width:1200px;margin:0 auto;padding:{{ navPad }};display:flex;align-items:center;justify-content:space-between;gap:24px;">
     <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:6px;color:var(--ink);">
-      <img src="assets/nexbizrise-logo.png" alt="" width="58" height="44" style="height:{{ logoSize }};width:auto;flex:none;">
-      <span style="font-size:{{ logoFont }};font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span>
+      <x-import component-from-global-scope="nbr-logo" from="./brand.js" height="{{ logoSizeN }}" font="{{ logoFontN }}" hint-size="150px,40px"></x-import>
     </a>
     <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;align-items:center;gap:30px;">
@@ -180,7 +179,7 @@ select option{background:var(--surface);color:var(--ink-2);}
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
       <div style="padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.9);display:flex;flex-direction:column;gap:2px;min-width:0;"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);">4 sec</span><span style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Reply time</span></div>
-      <div style="padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.9);display:flex;flex-direction:column;gap:2px;min-width:0;"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);">100%</span><span style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Calls answered</span></div>
+      <div style="padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.9);display:flex;flex-direction:column;gap:2px;min-width:0;"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);">Every</span><span style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Missed call answered</span></div>
       <div style="padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.9);display:flex;flex-direction:column;gap:2px;min-width:0;"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.15;color:var(--ink);">24/7</span><span style="font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Always on</span></div>
     </div>
     </div>
@@ -210,11 +209,10 @@ select option{background:var(--surface);color:var(--ink-2);}
 <sc-if value="{{ show.svc }}" hint-placeholder-val="{{ false }}">
 <section data-screen-label="Service Page" style="position:relative;padding:clamp(40px,6vw,72px) 24px clamp(56px,8vw,96px);overflow:hidden;">
   <div style="position:relative;max-width:1200px;margin:0 auto;">
-    <a href="#/services" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;margin:0 0 14px -4px;border-radius:999px;border:1px solid rgba(var(--fg-rgb),0.16);color:var(--ink-2);font-size:14px;font-weight:600;" style-hover="color:var(--ink);background:rgba(var(--fg-rgb),0.05);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>Back to services</a>
-    <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--faint);">
+        <nav aria-label="Breadcrumb" style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--faint);">
       <a href="#/services" style="color:var(--muted);" style-hover="color:var(--ink);">Services</a><span aria-hidden="true">/</span><span style="color:var(--ink-2);" aria-current="page">{{ svc.name }}</span>
     </nav>
-    <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(36px,5vw,64px);align-items:start;">
+    <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,4.5vw,64px);align-items:start;">
       <div>
         <span style="width:56px;height:56px;border-radius:16px;background:rgba(var(--acc-rgb),0.1);border:1px solid rgba(var(--acc-rgb),0.3);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ svc.d }}"></path></svg></span>
         <p style="margin:26px 0 14px;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">{{ svc.eyebrow }}</p>
@@ -240,7 +238,7 @@ select option{background:var(--surface);color:var(--ink-2);}
       </div>
     </div>
     <h2 style="margin:clamp(56px,8vw,88px) 0 0;font-size:clamp(26px,3.2vw,36px);font-weight:800;letter-spacing:-0.025em;color:var(--ink);">How it works</h2>
-    <ol style="list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:16px;">
+    <ol style="list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:16px;">
       <sc-for list="{{ svc.steps }}" as="s" hint-placeholder-count="4">
         <li style="padding:24px;border-radius:18px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.08);">
           <span style="font-size:32px;font-weight:800;letter-spacing:-0.03em;color:var(--accent);line-height:1;">{{ s.n }}</span>
@@ -284,6 +282,38 @@ select option{background:var(--surface);color:var(--ink-2);}
       <iframe src="{{ tapSrc }}" title="Digital Business Card" style="width:min(100%,430px);height:min(100%,880px);border:0;border-radius:24px;background:#06120d;box-shadow:0 40px 100px rgba(0,0,0,0.6);"></iframe>
     </div>
   </sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{ show.tapcard }}" hint-placeholder-val="{{ false }}">
+<section id="card-marquee" data-screen-label="Card Marquee" aria-label="Example cards by business type" style="padding:clamp(56px,8vw,96px) 0;background:#101820;overflow:hidden;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 32px;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.18em;color:#2DD4BF;">BUILT FOR YOUR TRADE</p>
+      <h2 style="margin:0;max-width:620px;font-size:clamp(32px,4.6vw,52px);line-height:1.06;font-weight:800;letter-spacing:-0.03em;color:#FFFFFF;text-wrap:balance;">A card that looks like your business.</h2>
+    </div>
+    <a href="#/order" style="flex:none;min-height:52px;padding:0 24px;border-radius:999px;background:#2DD4BF;color:#04201D;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px;" style-hover="background:#5EEAD4;color:#04201D;">Design my card <span aria-hidden="true">→</span></a>
+  </div>
+  <div onMouseEnter="{{ mqPause }}" onMouseLeave="{{ mqPlay }}" style="margin-top:clamp(32px,4vw,44px);display:flex;flex-direction:column;gap:20px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);">
+    <sc-for list="{{ mqLanes }}" as="lane" hint-placeholder-count="2">
+      <div ref="{{ lane.ref }}" style="display:flex;gap:18px;padding-right:18px;width:max-content;will-change:transform;">
+        <sc-for list="{{ lane.cards }}" as="c" hint-placeholder-count="6">
+          <div aria-hidden="{{ c.hidden }}" style="width:292px;flex:none;border-radius:20px;background:#FFFFFF;overflow:hidden;display:flex;">
+            <div style="width:92px;flex:none;background:{{ c.cover }};display:flex;align-items:center;justify-content:center;">
+              <div style="position:relative;width:68px;height:68px;border-radius:50%;border:3px solid #FFFFFF;background:{{ c.tint }};color:{{ c.color }};overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;">{{ c.initials }}<div role="img" aria-label="{{ c.name }}" style="position:absolute;inset:0;background-size:cover;background-position:center top;background-image:{{ c.photo }};"></div></div>
+            </div>
+            <div style="flex:1;min-width:0;padding:14px 16px;display:flex;flex-direction:column;gap:8px;">
+              <span style="align-self:flex-start;padding:3px 8px;border-radius:6px;background:{{ c.tint }};color:{{ c.color }};font-size:10px;font-weight:800;letter-spacing:0.08em;">{{ c.type }}</span>
+              <span style="display:flex;flex-direction:column;gap:1px;"><span style="font-size:16px;font-weight:800;letter-spacing:-0.01em;color:#101820;">{{ c.name }}</span><span style="font-size:12px;color:#5A6068;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ c.company }}</span></span>
+              <span style="display:flex;gap:6px;">
+                <sc-for list="{{ c.rows }}" as="r" hint-placeholder-count="3"><span style="width:26px;height:26px;border-radius:50%;background:{{ c.tint }};color:{{ c.color }};display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ r }}"></path></svg></span></sc-for>
+              </span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
 </section>
 </sc-if>
 
@@ -585,6 +615,21 @@ select option{background:var(--surface);color:var(--ink-2);}
 </section>
 </sc-if>
 
+<sc-if value="{{ show.notfound }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="Not Found" style="padding:clamp(72px,12vw,160px) 24px;">
+  <div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:18px;">
+    <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:0.18em;color:var(--accent);">ERROR 404</p>
+    <h1 style="margin:0;font-size:clamp(36px,5.4vw,60px);line-height:1.04;font-weight:800;letter-spacing:-0.035em;color:var(--ink);">We couldn't find that page.</h1>
+    <p style="margin:0;font-size:18px;line-height:1.6;color:var(--body);">The link may be old or mistyped. Try one of these instead.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
+      <a href="#/" style="display:inline-flex;align-items:center;min-height:52px;padding:0 26px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:16px;border-radius:999px;" style-hover="color:var(--btn-ink);background:var(--btn-hover);">Go to the home page</a>
+      <a href="#/services" style="display:inline-flex;align-items:center;min-height:52px;padding:0 24px;border:1px solid rgba(var(--fg-rgb),0.2);color:var(--ink);font-weight:600;font-size:16px;border-radius:999px;" style-hover="color:var(--ink);border-color:var(--accent);">See our services</a>
+      <a href="#/contact" style="display:inline-flex;align-items:center;min-height:52px;padding:0 24px;border:1px solid rgba(var(--fg-rgb),0.2);color:var(--ink);font-weight:600;font-size:16px;border-radius:999px;" style-hover="color:var(--ink);border-color:var(--accent);">Contact us</a>
+    </div>
+  </div>
+</section>
+</sc-if>
+
 <sc-if value="{{ show.legal }}" hint-placeholder-val="{{ false }}">
 <section id="legal" data-screen-label="Legal" style="padding:clamp(48px,7vw,88px) 24px clamp(64px,9vw,112px);">
   <div style="max-width:760px;margin:0 auto;">
@@ -613,7 +658,7 @@ select option{background:var(--surface);color:var(--ink-2);}
 
 <sc-if value="{{ show.cta }}" hint-placeholder-val="{{ true }}">
 <!-- FINAL CTA -->
-<section data-screen-label="Final CTA" style="position:relative;padding:clamp(80px,11vw,140px) 24px;overflow:hidden;text-align:center;">
+<section data-screen-label="Final CTA" style="position:relative;padding:clamp(72px,10vw,120px) 24px clamp(56px,7vw,88px);overflow:hidden;text-align:center;">
   <div style="position:relative;max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:center;">
     <h2 style="margin:0;font-size:clamp(34px,5.4vw,62px);line-height:1.04;font-weight:800;letter-spacing:-0.035em;color:var(--ink);text-wrap:balance;">Ready to Turn More Leads <span style="color:var(--accent);">Into Customers?</span></h2>
     <p style="margin:22px 0 0;font-size:18px;line-height:1.6;color:var(--body);">Let's show you what NexBizRise can automate for your business.</p>
@@ -637,10 +682,10 @@ select option{background:var(--surface);color:var(--ink-2);}
           <span style="width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.mail }}"></path></svg></span>
           <span style="display:flex;flex-direction:column;"><span style="font-size:12px;color:var(--faint);">Email</span><span style="font-size:16px;font-weight:600;">hello@nexbizrise.com</span></span>
         </a>
-        <a href="tel:+14025550187" onClick="{{ onPhone }}" style="display:flex;align-items:center;gap:14px;color:var(--ink-2);" style-hover="color:var(--accent);">
+        <sc-if value="{{ hasPhone }}" hint-placeholder-val="{{ false }}"><a href="{{ phoneHref }}" onClick="{{ onPhone }}" style="display:flex;align-items:center;gap:14px;color:var(--ink-2);" style-hover="color:var(--accent);">
           <span style="width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.phone }}"></path></svg></span>
-          <span style="display:flex;flex-direction:column;"><span style="font-size:12px;color:var(--faint);">Phone</span><span style="font-size:16px;font-weight:600;">(402) 555-0187</span></span>
-        </a>
+          <span style="display:flex;flex-direction:column;"><span style="font-size:12px;color:var(--faint);">Phone</span><span style="font-size:16px;font-weight:600;">{{ phoneLabel }}</span></span>
+        </a></sc-if>
         <div style="display:flex;align-items:center;gap:14px;color:var(--ink-2);">
           <span style="width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),0.08);color:var(--accent);display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.pin }}"></path></svg></span>
           <span style="display:flex;flex-direction:column;"><span style="font-size:12px;color:var(--faint);">Location</span><span style="font-size:16px;font-weight:600;">Serving businesses across the US</span></span>
@@ -676,7 +721,7 @@ select option{background:var(--surface);color:var(--ink-2);}
             <span style="font-size:12px;font-weight:500;color:var(--danger);">{{ err.phone }}</span>
           </label>
           <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:600;color:var(--ink-3);">Business Type *
-            <select name="business_type" defaultValue="" aria-invalid="{{ inv.business_type }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 12px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font:inherit;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
+            <select name="business_type" defaultValue="" aria-invalid="{{ inv.business_type }}" style="width:100%;box-sizing:border-box;min-height:48px;padding:0 12px;background:var(--bg-2);border:1px solid rgba(var(--fg-rgb),0.13);border-radius:10px;color:var(--ink-2);font-family:inherit;line-height:normal;font-size:15px;font-weight:400;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--acc-rgb),0.18);">
               <option value="" disabled="">Select business type</option>
               <sc-for list="{{ businessTypes }}" as="bt" hint-placeholder-count="0"><option value="{{ bt }}">{{ bt }}</option></sc-for>
             </select>
@@ -704,12 +749,9 @@ select option{background:var(--surface);color:var(--ink-2);}
           <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
             <label>Company website (leave blank)<input name="company_site" tabIndex="-1" autoComplete="off"></label>
           </div>
-          <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;min-height:64px;padding:0 16px;border-radius:10px;border:1px dashed rgba(var(--fg-rgb),0.18);background:repeating-linear-gradient(135deg,rgba(var(--fg-rgb),0.025) 0 8px,transparent 8px 16px);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ ic.shield }}"></path></svg>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);">Cloudflare Turnstile widget</span>
-          </div>
+          <div ref="{{ tsRef }}" style="grid-column:1/-1;display:flex;"></div>
           <sc-if value="{{ hasFormError }}" hint-placeholder-val="{{ false }}">
-            <p role="alert" style="grid-column:1/-1;margin:0;padding:12px 14px;border-radius:10px;background:rgba(255,90,90,0.08);border:1px solid rgba(255,90,90,0.3);font-size:14px;color:#FFB4B4;">Please fix the highlighted fields and try again.</p>
+            <p role="alert" style="grid-column:1/-1;margin:0;padding:12px 14px;border-radius:10px;background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.3);font-size:14px;color:var(--danger);">{{ formErrorText }}</p>
           </sc-if>
           <button type="submit" disabled="{{ isSubmitting }}" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;background:var(--btn);color:var(--btn-ink);border:0;border-radius:999px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:box-shadow .2s, opacity .2s;" style-hover="box-shadow:0 12px 32px rgba(var(--acc-rgb),0.35);">{{ submitLabel }}</button>
           <p style="grid-column:1/-1;margin:0;font-size:12px;line-height:1.5;color:var(--faint);">By submitting, you agree to be contacted about your request. See our <a href="#/legal/privacy">Privacy Policy</a>.</p>
@@ -722,21 +764,20 @@ select option{background:var(--surface);color:var(--ink-2);}
 
 </main>
 
-<sc-if value="{{ show.chrome }}" hint-placeholder-val="{{ true }}">
-<footer style="padding:clamp(56px,8vw,88px) 24px 32px;border-top:1px solid rgba(var(--fg-rgb),0.06);">
+<sc-if value="{{ showFooter }}" hint-placeholder-val="{{ true }}">
+<footer style="padding:clamp(40px,6vw,64px) 24px 32px;border-top:1px solid rgba(var(--fg-rgb),0.06);">
   <div style="max-width:1200px;margin:0 auto;">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:40px;">
       <div style="grid-column:span 1;min-width:0;">
         <a href="#/" aria-label="NexBizRise home" style="display:flex;align-items:center;gap:6px;color:var(--ink);">
-          <img src="assets/nexbizrise-logo.png" alt="" width="66" height="50" style="height:44px;width:auto;flex:none;">
-          <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:var(--accent);">Rise</span></span>
+          <x-import component-from-global-scope="nbr-logo" from="./brand.js" height="44" font="22" hint-size="180px,44px"></x-import>
         </a>
         <p style="margin:16px 0 0;font-size:15px;line-height:1.5;color:var(--body);">Helping Businesses <span style="color:var(--accent);">Get More Customers.</span></p>
-        <div style="margin-top:20px;display:flex;gap:10px;">
+        <sc-if value="{{ hasSocials }}" hint-placeholder-val="{{ false }}"><div style="margin-top:20px;display:flex;gap:10px;">
           <sc-for list="{{ socials }}" as="so" hint-placeholder-count="4">
-            <a href="{{ so.href }}" aria-label="{{ so.label }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(var(--fg-rgb),0.12);color:var(--ink-3);display:flex;align-items:center;justify-content:center;" style-hover="color:var(--accent);border-color:var(--accent);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ so.d }}"></path></svg></a>
+            <a href="{{ so.href }}" target="_blank" rel="noopener" aria-label="{{ so.label }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(var(--fg-rgb),0.12);color:var(--ink-3);display:flex;align-items:center;justify-content:center;" style-hover="color:var(--accent);border-color:var(--accent);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ so.d }}"></path></svg></a>
           </sc-for>
-        </div>
+        </div></sc-if>
       </div>
       <nav aria-label="Footer navigation">
         <h3 style="margin:0 0 16px;font-size:14px;font-weight:700;color:var(--ink);">Navigation</h3>
@@ -754,7 +795,7 @@ select option{background:var(--surface);color:var(--ink-2);}
         <h3 style="margin:0 0 16px;font-size:14px;font-weight:700;color:var(--ink);">Contact</h3>
         <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
           <li><a href="mailto:hello@nexbizrise.com" onClick="{{ onEmail }}" style="font-size:14px;color:var(--muted);" style-hover="color:var(--ink);">hello@nexbizrise.com</a></li>
-          <li><a href="tel:+14025550187" onClick="{{ onPhone }}" style="font-size:14px;color:var(--muted);" style-hover="color:var(--ink);">(402) 555-0187</a></li>
+          <sc-if value="{{ hasPhone }}" hint-placeholder-val="{{ false }}"><li><a href="{{ phoneHref }}" onClick="{{ onPhone }}" style="font-size:14px;color:var(--muted);" style-hover="color:var(--ink);">{{ phoneLabel }}</a></li></sc-if>
           <li style="font-size:14px;color:var(--muted);">United States</li>
         </ul>
       </div>
@@ -855,7 +896,7 @@ const LEGAL = {
   ] },
   "legal/terms": { tab: "Terms", title: "Terms of Service", intro: `These terms are an agreement between you and ${LEGAL_ENTITY}. By ordering a card or using our services you accept them.`, sections: [
     { h: "The service", p: ["NexBizRise provides digital business cards with a permanent QR code, hosting, a Save Contact button and basic analytics, plus optional websites and AI automation services under separate quotes."] },
-    { h: "Plans and pricing", p: ["India: Personal ₹799 per year and Business ₹1,799 per year. United States: $49 per year and $79 per year. Taxes such as GST are added where applicable and shown at checkout.", "Each plan includes one card and one permanent QR code. Personal cards include 1 photo; business cards include up to 5 photos. Video, documents and unlimited storage are not included.", "Changes to your card are made by our team. Digital plans include 2 changes and Motion plans include 4 changes per plan year; unused changes do not carry over. Extra changes may be charged at a small fee, which we will tell you before making the change."] },
+    { h: "Plans and pricing", p: ["India: Personal ₹799 per year and Business ₹1,799 per year. United States: $49 per year and $79 per year. Taxes such as GST are added where applicable and shown at checkout.", "Each plan includes one card and one permanent QR code. Personal cards include 1 photo; business cards include up to 5 photos. Video, documents and unlimited storage are not included.", "Changes to your card are made by our team. Just ask by email or WhatsApp and we will update your card. We may decline requests that amount to a new card for a different person or business."] },
     { h: "Payment and activation", p: ["Your card goes live after your payment is confirmed by our payment provider. Coupon codes are subject to their stated terms and cannot be exchanged for cash."] },
     { h: "Renewal and expiry", p: ["Plans run for one year from activation. We email reminders before expiry. If you do not renew, your card keeps working for a 15-day grace period and is then disabled. Renewing reactivates the same card link and QR code."] },
     { h: "Your content", p: ["You are responsible for the information and photos on your card and confirm you have the right to publish them. You keep ownership of your content and give us permission to host and display it to provide the service.", "You may not use a card for illegal, misleading, hateful or infringing content, impersonation, or spam. We may suspend cards that break these rules."] },
@@ -882,7 +923,7 @@ const LEGAL = {
     { h: "Carriers", p: ["Mobile carriers are not liable for delayed or undelivered messages."] }
   ] }
 };
-const PAGES = ["home", "services", "how-it-works", "results", "about", "contact", "admin", "services/websites", "services/missed-call-recovery", "services/automations", "services/tap-card", "order", "legal/privacy", "legal/terms", "legal/refund", "legal/sms"];
+const PAGES = ["home", "services", "how-it-works", "results", "about", "contact", "admin", "services/websites", "services/missed-call-recovery", "services/automations", "services/tap-card", "services/booking", "order", "legal/privacy", "legal/terms", "legal/refund", "legal/sms"];
 const PAGE_SECTIONS = {
   "legal/privacy": ["legal"], "legal/terms": ["legal"], "legal/refund": ["legal"], "legal/sms": ["legal"],
   home: ["hero", "services", "cta"],
@@ -891,6 +932,8 @@ const PAGE_SECTIONS = {
   "services/missed-call-recovery": ["svc", "missed", "cta"],
   "services/automations": ["svc", "automations", "cta"],
   "services/tap-card": ["svc", "tapcard", "cta"],
+  "services/booking": ["svc", "cta"],
+  notfound: ["notfound"],
   admin: ["admin"],
   order: ["order"],
   "how-it-works": ["how", "missed", "cta"],
@@ -953,11 +996,30 @@ const SERVICE_PAGES = {
       { n: "04", t: "Improve", b: "We monitor results and adjust messages and rules over time." }
     ]
   },
+  "services/booking": {
+    name: "Appointment Booking", icon: "calendar", eyebrow: "APPOINTMENT BOOKING", title: "Let Customers Book", accent: "While You Work.",
+    body: "Customers pick a time from your real Google Calendar availability by text, website or your digital card. Confirmations and reminders go out automatically.",
+    features: [
+      { t: "Google Calendar sync", b: "Only real open times are offered, and new bookings appear on your calendar straight away." },
+      { t: "Book by text", b: "Missed-call and follow-up texts can offer times and book the slot in the same conversation." },
+      { t: "Website & card booking", b: "A booking button on your website and digital card for customers who prefer to pick a time themselves." },
+      { t: "Confirmations", b: "Customers get a confirmation text or email with the time, address and what to bring." },
+      { t: "Reminders", b: "Reminder texts before the appointment reduce no-shows." },
+      { t: "Reschedule & cancel", b: "Customers can move or cancel by replying, and the slot opens up again." }
+    ],
+    steps: [
+      { n: "01", t: "Connect", b: "We connect your Google Calendar and set your hours and service lengths." },
+      { n: "02", t: "Set rules", b: "Buffers, service areas and how far ahead people can book." },
+      { n: "03", t: "Go live", b: "Booking links go on your texts, website and card." },
+      { n: "04", t: "Tune", b: "We review no-shows and timing and adjust reminders." }
+    ]
+  },
   "services/tap-card": {
     name: "Digital Business Card", ctaHref: "#/order", ctaLabel: "Order your card", icon: "smartphone", eyebrow: "DIGITAL BUSINESS CARD", title: "Your Business Card,", accent: "One Tap Away.",
     body: "A digital business card shared by link or QR code. One tap opens a mobile page where people can save your contact, call, text, WhatsApp, or follow your links.",
     features: [
       { t: "One-tap save contact", b: "Downloads your contact with photo straight into their phone." },
+      { t: "Restyle anytime, free", b: "Switch to a new design, add a festive look for the season or pin this week's offer. Your QR code never changes." },
       { t: "Call, text & WhatsApp", b: "Quick-action buttons for the ways your customers reach you." },
       { t: "Share & QR", b: "Share the link or show an on-screen QR code at any meeting." },
       { t: "Profession designs", b: "Layouts and colours for real estate, healthcare, services, and more." },
@@ -973,6 +1035,20 @@ const SERVICE_PAGES = {
   }
 };
 
+/* Business contact details. Leave phone empty to hide it everywhere. Paste a full https:// URL to show that social icon. */
+const CONTACT = { phone: "", phoneLabel: "" };
+const SOCIALS = { instagram: "", linkedin: "" };
+const TURNSTILE_SITE_KEY = "0x4AAAAAAFIAJl64rp47Hazn";
+const VIA_WORKER = () => /(^|\.)nexbizrise\.com$|\.pages\.dev$|\.workers\.dev$/.test(location.hostname);
+const TITLES = {
+  home: "NexBizRise | Websites, Missed Call Recovery & AI Automations for Local Businesses",
+  services: "Services | NexBizRise", "how-it-works": "How It Works | NexBizRise", results: "Results | NexBizRise", about: "About | NexBizRise", contact: "Get a Free Demo | NexBizRise",
+  "services/websites": "Custom Websites for Local Businesses | NexBizRise", "services/missed-call-recovery": "Missed Call Recovery | NexBizRise",
+  "services/automations": "AI Automations | NexBizRise", "services/booking": "Appointment Booking | NexBizRise", "services/tap-card": "Digital Business Cards | NexBizRise",
+  order: "Order Your Digital Card | NexBizRise", "legal/privacy": "Privacy Policy | NexBizRise", "legal/terms": "Terms of Service | NexBizRise",
+  "legal/refund": "Refund Policy | NexBizRise", "legal/sms": "SMS Terms | NexBizRise", notfound: "Page not found | NexBizRise", admin: "Admin | NexBizRise"
+};
+
 const NAV = [
   { label: "Home", page: "home" }, { label: "Services", page: "services" },
   { label: "Results", page: "results" }, { label: "About", page: "about" }, { label: "Contact", page: "contact" }
@@ -981,7 +1057,7 @@ const hrefFor = (p) => (p === "home" ? "#/" : "#/" + p);
 
 function track(event, props) {
   try { if (window.posthog && window.posthog.capture) window.posthog.capture(event, props || {}); } catch (e) {}
-  console.info("[analytics]", event, props || {});
+  try { if (/[?&]debug=1/.test(location.search)) console.info("[analytics]", event, props || {}); } catch (e) {}
 }
 
 function validateLead(v) {
@@ -990,7 +1066,7 @@ function validateLead(v) {
   if (s("name").length < 2) e.name = "Please enter your name.";
   if (s("business_name").length < 2) e.business_name = "Please enter your business name.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s("email"))) e.email = "Enter a valid email address.";
-  if (s("phone").replace(/\D/g, "").length < 10) e.phone = "Enter a valid phone number.";
+  { const dg = s("phone").replace(/\D/g, ""); if (dg.length < 10 || dg.length > 13) e.phone = "Enter a valid phone number with area code."; }
   if (!s("business_type")) e.business_type = "Select your business type.";
   if (s("website_url") && !/^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(s("website_url"))) e.website_url = "Enter a valid URL, e.g. https://example.com";
   if (s("message").length < 10) e.message = "Tell us a little more (10+ characters).";
@@ -998,12 +1074,72 @@ function validateLead(v) {
   return e;
 }
 
+const MQ_IC = {
+  phone: 'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z',
+  mail: 'M3 5h18v14H3z M3 6l9 7 9-7', globe: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M2 12h20 M12 2a15 15 0 0 1 0 20 M12 2a15 15 0 0 0 0 20',
+  cal: 'M3 5h18v16H3z M16 3v4 M8 3v4 M3 10h18', home: 'M3 10l9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z M9 21v-6h6v6',
+  link: 'M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7 M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7', pin: 'M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z M12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+  chat: 'M21 11.5a8.4 8.4 0 0 1-12.3 7.5L3 21l2-5.7A8.4 8.4 0 1 1 21 11.5z', wrench: 'M14.7 6.3a4 4 0 0 0 5 5l-9.4 9.4a2.1 2.1 0 0 1-3-3z', star: 'M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z'
+};
+const MQ_PAL = {
+  teal: ['#0B7C86', '#DDF1F1', 'repeating-linear-gradient(135deg,rgba(255,255,255,0.16) 0 2px,transparent 2px 12px),linear-gradient(160deg,#0B7C86,#13A3A0)'],
+  rose: ['#C53A62', '#FBE3EA', 'radial-gradient(circle,rgba(255,255,255,0.3) 0 2px,transparent 2.5px) 0 0/14px 14px,linear-gradient(160deg,#E0608A,#F29BB2)'],
+  blue: ['#2F5BD3', '#E1E9FB', 'radial-gradient(circle at 80% 110%,transparent 0 30px,rgba(255,255,255,0.2) 30px 33px,transparent 33px 52px,rgba(255,255,255,0.16) 52px 55px,transparent 55px),linear-gradient(160deg,#2F5BD3,#5B8DEF)'],
+  orange: ['#C44A17', '#FCE6DA', 'repeating-linear-gradient(135deg,rgba(255,255,255,0.16) 0 2px,transparent 2px 12px),linear-gradient(160deg,#E4572E,#F4A259)'],
+  green: ['#2B7A3A', '#E0F2E4', 'radial-gradient(circle,rgba(255,255,255,0.3) 0 2px,transparent 2.5px) 0 0/14px 14px,linear-gradient(160deg,#2B8A3E,#69C07A)'],
+  navy: ['#1F3A5F', '#E2E8F0', 'repeating-linear-gradient(90deg,rgba(255,255,255,0.12) 0 1px,transparent 1px 10px),linear-gradient(160deg,#1F3A5F,#3E6A9E)'],
+  gold: ['#8A6212', '#F6ECD4', 'radial-gradient(circle at 80% 110%,transparent 0 30px,rgba(255,255,255,0.22) 30px 33px,transparent 33px 52px,rgba(255,255,255,0.16) 52px 55px,transparent 55px),linear-gradient(160deg,#B8862B,#E0B65A)']
+};
+/* [name, type, company, palette, photo or '', icons] */
+const MQ_CARDS = {
+  IN: [
+    ['Rahul Verma', 'REAL ESTATE', 'Skyline Realty · Pune', 'teal', 'assets/mq-in-realtor.jpg', 'home phone chat'],
+    ['Meera Nair', 'HEALTHCARE', 'CarePlus Hospital · Kochi', 'rose', 'assets/mq-in-nurse.jpg', 'cal phone chat'],
+    ['Arjun Rao', 'PHOTOGRAPHY', 'Arjun Rao Studios · Hyderabad', 'orange', 'assets/mq-in-creative.jpg', 'link chat mail'],
+    ['Kavya Menon', 'SALON', 'Glow Studio · Chennai', 'gold', 'assets/mq-in-salon.jpg', 'cal chat pin'],
+    ['Ananya Sharma', 'STARTUP', 'Lumen Labs · Bengaluru', 'blue', 'assets/mq-in-founder.jpg', 'link mail globe'],
+    ['Rohan Gupta', 'CA & TAX', 'Gupta & Associates · Delhi', 'navy', '', 'cal phone mail'],
+    ['Sneha Patil', 'INTERIORS', 'Nest Interiors · Mumbai', 'green', '', 'link chat pin']
+  ],
+  US: [
+    ['Jordan Lee', 'REAL ESTATE', 'Harbor & Oak Realty · Austin, TX', 'teal', 'assets/us-realtor.jpg', 'home phone mail'],
+    ['Mike Carter', 'PLUMBING', 'Carter Plumbing & Drain · Phoenix', 'blue', 'assets/us-plumber.jpg', 'phone wrench star'],
+    ['Sarah Kim', 'DENTAL', 'Bright Smile Dental · Seattle', 'rose', 'assets/us-dentist.jpg', 'cal phone globe'],
+    ['Dan Brooks', 'HVAC', 'Brooks Heating & Air · Denver', 'orange', 'assets/us-hvac.jpg', 'phone cal star'],
+    ['Emily Davis', 'LAW', 'Davis Family Law · Chicago', 'navy', 'assets/us-lawyer.jpg', 'cal mail globe'],
+    ['Chris Morales', 'FITNESS', 'Iron Peak Gym · San Diego', 'green', 'assets/us-trainer.jpg', 'cal pin link'],
+    ['Rachel Nguyen', 'INSURANCE', 'Nguyen Insurance Group · Dallas', 'gold', 'assets/us-insurance.jpg', 'phone mail globe']
+  ]
+};
+const mqCard = ([name, type, company, pal, photo, ic], hidden) => { const [color, tint, cover] = MQ_PAL[pal]; return { name, type, company, color, tint, cover, hidden: hidden ? 'true' : 'false', initials: name.split(' ').map(w => w[0]).join('').slice(0, 2), photo: photo ? 'url("' + photo + '")' : 'none', rows: ic.split(' ').map(k => MQ_IC[k]) }; };
+
 class Component extends DCLogic {
+  mqA = React.createRef();
+  mqB = React.createRef();
+  mqDetect = async () => {
+    let reg = '';
+    try { const rq = (new URLSearchParams(location.search).get('region') || '').toUpperCase(); if (rq === 'IN' || rq === 'US') reg = rq; } catch (e) {}
+    if (!reg) { try { const r = await fetch('/cdn-cgi/trace', { cache: 'no-store' }); if (r.ok) { const m = (await r.text()).match(/loc=([A-Z]{2})/); if (m) reg = m[1] === 'IN' ? 'IN' : 'US'; } } catch (e) {} }
+    if (!reg) { try { const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; reg = /Kolkata|Calcutta/.test(tz) || /-IN$/i.test(navigator.language || '') ? 'IN' : 'US'; } catch (e) { reg = 'US'; } }
+    this.setState({ mqRegion: reg });
+  };
+  mqStart = () => {
+    if (this.reduceMotion) return;
+    let off = 0, last = performance.now();
+    const loop = now => {
+      const dt = Math.min(now - last, 60); last = now;
+      if (!this.mqPaused) off += dt * 0.032;
+      [[this.mqA, -1], [this.mqB, 1]].forEach(([r, dir]) => { const el = r.current; if (!el) return; const half = el.scrollWidth / 2; if (!half) return; const x = off % half; el.style.transform = 'translateX(' + (dir < 0 ? -x : x - half) + 'px)'; });
+      this.mqRaf = requestAnimationFrame(loop);
+    };
+    this.mqRaf = requestAnimationFrame(loop);
+  };
   state = { w: typeof window !== 'undefined' ? window.innerWidth : 1280, fontsReady: false, theme: "light", scrolled: false, page: "home", menu: false, tick: 0, errors: {}, status: "idle", started: false, lead: null };
 
   componentDidMount() {
     { let done = false; const go = () => { if (!done) { done = true; this.setState({ fontsReady: true }); } }; try { document.fonts && document.fonts.ready.then(go); } catch (e) {} setTimeout(go, 900); }
     this.reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.mqDetect(); this.mqStart();
     if (!this.reduceMotion) { this.setState({ wf: 0 }); this.wfT = setInterval(() => this.setState(s => ({ wf: ((s.wf || 0) + 1) % 11 })), 1100); }
     this.onScrollSticky = () => { const s = window.scrollY > 560; if (s !== this.state.scrolled) this.setState({ scrolled: s }); };
     window.addEventListener("scroll", this.onScrollSticky, { passive: true });
@@ -1018,7 +1154,8 @@ class Component extends DCLogic {
       if (hs && hs !== "#" && !hs.startsWith("#/")) return;
       const parts = (window.location.hash || "").replace(/^#\/?/, "").split("/");
       const two = parts.slice(0, 2).join("/");
-      const page = PAGES.includes(two) ? two : PAGES.includes(parts[0]) ? parts[0] : "home";
+      const page = PAGES.includes(two) ? two : PAGES.includes(parts[0]) ? parts[0] : !parts[0] ? "home" : "notfound";
+      
       const anchor = PAGES.includes(two) ? parts[2] : parts[1];
       if (page === "order" && this.state.page && this.state.page !== "order") this.orderFrom = hs.startsWith("#/order") ? (this.lastHash || "#/") : this.orderFrom;
       if (page !== "order") this.lastHash = hs || "#/";
@@ -1034,13 +1171,24 @@ class Component extends DCLogic {
     this.startChat();
   }
   componentWillUnmount() {
+    cancelAnimationFrame(this.mqRaf);
     clearInterval(this.wfT);
     window.removeEventListener("resize", this.onResize);
     window.removeEventListener("hashchange", this.onHash);
     clearInterval(this.timer);
+    try { this.titleObs && this.titleObs.disconnect(); } catch (e) {}
   }
   componentDidUpdate(prev) {
     if (prev.chatAutoplay !== this.props.chatAutoplay) this.startChat();
+    this.syncTitle();
+    if (this.tsRef.current && !this.tsRef.current.childElementCount) this.renderTs();
+  }
+  syncTitle() {
+    const want = TITLES[this.state.page] || TITLES.home;
+    clearTimeout(this.titleT);
+    const set = () => { try { if (document.title !== want) document.title = want; } catch (e) {} };
+    set(); this.titleT = setTimeout(set, 60);
+    if (!this.titleObs && typeof MutationObserver !== "undefined") { try { const el = document.querySelector("head > title") || document.head; this.titleObs = new MutationObserver(() => { const w = TITLES[this.state.page] || TITLES.home; if (document.title !== w) document.title = w; }); this.titleObs.observe(document.head, { subtree: true, childList: true, characterData: true }); } catch (e) {} }
   }
   startChat() {
     clearInterval(this.timer);
@@ -1065,13 +1213,27 @@ class Component extends DCLogic {
     if (values.company_site) { this.setState({ status: "success", lead: values }); return; } // honeypot: silently drop
     const errors = validateLead(values);
     if (Object.keys(errors).length) { this.setState({ errors, status: "invalid" }); return; }
-    this.setState({ errors: {}, status: "submitting" });
-    // Production: POST to server action / API route (Zod + Turnstile verify + rate limit + Supabase insert + Resend).
-    setTimeout(() => {
-      track("demo_form_submitted", { business_type: values.business_type });
-      this.setState({ status: "success", lead: values });
-    }, 900);
+    this.setState({ errors: {}, status: "submitting", sendError: "" });
+    if (!VIA_WORKER()) { setTimeout(() => this.setState({ status: "success", lead: values }), 600); return; }
+    const body = { name: values.name, business_name: values.business_name, email: values.email, phone: values.phone, business_type: values.business_type, website_url: values.website_url || "", message: values.message, preferred_contact_method: values.preferred_contact_method, page: location.hash || "#/" };
+    fetch("/api/demo", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ts: this.tsToken || "", body: { p: body } }) })
+      .then(async (r) => {
+        const j = await r.json().catch(() => ({}));
+        if (r.ok && j.ok) { track("demo_form_submitted", { business_type: values.business_type }); this.setState({ status: "success", lead: values }); return; }
+        this.resetTs();
+        const m = /bot check/i.test(j.message || "") ? "Please complete the security check and try again." : /too many/i.test(j.message || "") ? "You've sent a few requests already. Please try again later or email hello@nexbizrise.com." : /phone/i.test(j.message || "") ? "Please check your phone number." : "We couldn't send your request. Please try again, or email hello@nexbizrise.com.";
+        this.setState({ status: "invalid", sendError: m });
+      })
+      .catch(() => { this.resetTs(); this.setState({ status: "invalid", sendError: "No connection. Please check your internet and try again." }); });
   };
+  tsRef = React.createRef();
+  renderTs = () => {
+    if (!TURNSTILE_SITE_KEY || !VIA_WORKER()) return;
+    const go = () => { const el = this.tsRef.current; if (!el || !window.turnstile || el.childElementCount) return; this.tsToken = ""; this.tsWidget = window.turnstile.render(el, { sitekey: TURNSTILE_SITE_KEY, theme: "light", callback: (tk) => { this.tsToken = tk; }, "expired-callback": () => { this.tsToken = ""; } }); };
+    if (window.turnstile) { setTimeout(go, 50); return; }
+    if (!document.getElementById("cf-ts")) { const s = document.createElement("script"); s.id = "cf-ts"; s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"; s.async = true; s.onload = go; document.head.appendChild(s); } else setTimeout(go, 400);
+  };
+  resetTs = () => { try { if (window.turnstile && this.tsWidget != null) window.turnstile.reset(this.tsWidget); } catch (e) {} this.tsToken = ""; };
 
   renderVals() {
     const wfN = this.reduceMotion || this.state.wf == null ? 99 : this.state.wf;
@@ -1081,6 +1243,10 @@ class Component extends DCLogic {
     const picked = wfN >= 4;
     Object.assign(wf, { chipBg: picked ? 'var(--btn)' : 'transparent', chipFg: picked ? 'var(--btn-ink)' : 'var(--body)', chipBd: picked ? 'var(--btn)' : 'rgba(var(--fg-rgb),0.14)', chipT: wfN === 4 ? 'scale(1.08)' : 'none' });
     const { w, page, menu, tick, errors, status, lead } = this.state;
+    const mqSet = MQ_CARDS[this.state.mqRegion === 'IN' ? 'IN' : 'US'];
+    const mqRow = (arr) => [...arr.map(c => mqCard(c, false)), ...arr.map(c => mqCard(c, true))];
+    const mqLanes = [{ ref: this.mqA, cards: mqRow(mqSet) }, { ref: this.mqB, cards: mqRow([...mqSet.slice(3), ...mqSet.slice(0, 3)]) }];
+    const mqPause = () => { this.mqPaused = true; }, mqPlay = () => { this.mqPaused = false; };
     const show = {};
     (PAGE_SECTIONS[page] || PAGE_SECTIONS.home).forEach((k) => (show[k] = true));
     show.chrome = page !== "admin";
@@ -1097,6 +1263,7 @@ class Component extends DCLogic {
     const svc = (d, title, body, href) => ({ d, title, body, href, onClick: () => track("service_viewed", { service: title }) });
 
     return {
+      mqLanes, mqPause, mqPlay,
       wf, h1Wrap: (typeof window !== 'undefined' ? window.innerWidth : this.state.w) < 700 ? 'nowrap' : 'normal', h1Play: this.state.fontsReady ? 'running' : 'paused',
       ic: I,
       show,
@@ -1119,8 +1286,9 @@ class Component extends DCLogic {
       desktop: !mobile,
       mobile,
       showHeader: show.chrome && !(mobOrder && this.state.orderImm),
+      showFooter: show.chrome && !mobOrder,
       headerY: mobOrder && this.state.orderHide ? "translateY(-100%)" : "none",
-      navPad: mobOrder ? "8px 16px" : "14px 24px", logoSize: mobOrder ? "32px" : "38px", logoFont: mobOrder ? "18px" : "20px",
+      navPad: mobOrder ? "8px 16px" : "14px 24px", logoSize: mobOrder ? "32px" : "38px", logoFont: mobOrder ? "18px" : "20px", logoSizeN: mobOrder ? 32 : 38, logoFontN: mobOrder ? 18 : 20,
       orderExit: mobOrder, orderExitHref: this.orderFrom || "#/services/tap-card", orderExitLabel: this.orderFrom && this.orderFrom !== "#/" && this.orderFrom !== "#" ? "Close and go back" : "Leave and go to the home page", mobileMenuBtn: mobile && !mobOrder,
       showMenu: mobile && menu && !mobOrder,
       menuOpenStr: menu ? "true" : "false",
@@ -1147,7 +1315,7 @@ class Component extends DCLogic {
         svc(I.monitor, "Custom Websites", "Modern, mobile-friendly websites that showcase a business and convert visitors into customers.", "#/services/websites"),
         svc(I.phoneMissed, "Missed Call Recovery", "Never lose a customer again. Automatically follow up with customers when a call is missed.", "#/services/missed-call-recovery"),
         svc(I.bot, "AI Automations", "Smart SMS workflows, FAQs, lead qualification, and customer follow-up.", "#/services/automations"),
-        svc(I.calendar, "Appointment Booking", "Seamless Google Calendar integration that helps businesses automatically book appointments.", "#/services/automations"),
+        svc(I.calendar, "Appointment Booking", "Seamless Google Calendar integration that helps businesses automatically book appointments.", "#/services/booking"),
         svc(I.smartphone, "Digital Business Card", "A mobile-first digital card shared by link or QR code. Customers can save your contact, call, text, or book in one tap.", "#/services/tap-card")
       ],
 
@@ -1206,11 +1374,15 @@ class Component extends DCLogic {
         { d: I.shield, title: "End-to-end support", body: "From setup to ongoing improvements." }
       ],
 
-      businessTypes: ["Contractor", "Home Services", "Restaurant", "Barber / Salon", "Retail / Store", "Real Estate", "Health & Wellness", "Auto Services", "Other"],
+      businessTypes: ["Home Services / Contractor", "Real Estate", "Healthcare", "Beauty & Wellness", "Restaurant", "Retail / Store", "Auto Services", "Legal / Finance", "Consultant / Coach", "Interior / Design services", "Other"],
       contactMethods: ["Email", "Phone", "Text"],
       err: errors,
       inv,
       hasFormError: status === "invalid",
+      formErrorText: this.state.sendError || "Please fix the highlighted fields and try again.",
+      tsRef: this.tsRef,
+      hasPhone: !!CONTACT.phone, phoneHref: "tel:" + CONTACT.phone, phoneLabel: CONTACT.phoneLabel || CONTACT.phone,
+      hasSocials: Object.values(SOCIALS).some(Boolean),
       isSubmitting: status === "submitting",
       submitLabel: status === "submitting" ? "Sending…" : "Request a Free Demo →",
       isSuccess: status === "success",
@@ -1223,13 +1395,12 @@ class Component extends DCLogic {
       resetForm: () => this.setState({ status: "idle", lead: null, errors: {}, started: false }),
 
       socials: [
-        { label: "NexBizRise on LinkedIn", href: "#", d: I.linkedin }, { label: "NexBizRise on X", href: "#", d: I.x },
-        { label: "NexBizRise on Instagram", href: "#", d: I.instagram }, { label: "NexBizRise on YouTube", href: "#", d: I.youtube }
-      ],
+        { label: "NexBizRise on Instagram", href: SOCIALS.instagram, d: I.instagram }, { label: "NexBizRise on LinkedIn", href: SOCIALS.linkedin, d: I.linkedin }
+      ].filter((s) => s.href),
       footerNav: nav,
       footerServices: [
         { label: "Websites", href: "#/services/websites" }, { label: "Missed Call Recovery", href: "#/services/missed-call-recovery" },
-        { label: "AI Automations", href: "#/services/automations" }, { label: "Appointment Booking", href: "#/services/automations" },
+        { label: "AI Automations", href: "#/services/automations" }, { label: "Appointment Booking", href: "#/services/booking" },
         { label: "Digital Business Card", href: "#/services/tap-card" }
       ]
     };

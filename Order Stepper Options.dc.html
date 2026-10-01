@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<style>body{margin:0;background:#DCD7CE;font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}a{color:#0B7C86;text-decoration:none;}a:hover{color:#086670;}button{font-family:inherit;}</style>
+</helmet>
+<section style="padding:48px;display:flex;flex-direction:column;gap:24px;">
+  <div style="display:flex;flex-direction:column;gap:6px;max-width:720px;">
+    <h1 style="margin:0;font-size:24px;font-weight:800;color:#101820;">Order step indicator: 4 styles</h1>
+    <p style="margin:0;font-size:14px;line-height:1.5;color:#5A6068;">The header, logo and colours stay the same. Tap Back or Next to see each one move between steps.</p>
+    <div style="display:flex;gap:8px;margin-top:6px;">
+      <button type="button" onClick="{{ prev }}" style="height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(16,24,32,0.18);background:#fff;color:#101820;font-weight:600;cursor:pointer;">← Back</button>
+      <button type="button" onClick="{{ next }}" style="height:40px;padding:0 16px;border-radius:999px;border:0;background:#101820;color:#F5F2EC;font-weight:700;cursor:pointer;">Next →</button>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+
+    <div id="4a" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">4a</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Numbered dots + line</span></div>
+      <div style="width:375px;border-radius:28px;overflow:hidden;background:#F5F2EC;box-shadow:0 20px 40px rgba(40,30,15,0.14);">
+        <div style="height:62px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(16,24,32,0.08);"><span style="display:flex;align-items:center;gap:10px;"><img src="assets/nexbizrise-mark-t.png" alt="" width="34" height="34"><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#101820;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;background:#EDE8DF;font-size:12.5px;font-weight:600;color:#2E3440;">Create your card</span></div>
+        <div style="padding:18px 22px 22px;">
+          <div style="position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));">
+            <span aria-hidden="true" style="position:absolute;top:13px;left:12.5%;right:12.5%;height:2px;background:#E2DDD3;"></span>
+            <span aria-hidden="true" style="position:absolute;top:13px;left:12.5%;height:2px;width:{{ a.line }};background:#101820;transition:width .35s ease;"></span>
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+              <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <span style="width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:{{ s.dotBg }};color:{{ s.dotFg }};box-shadow:{{ s.dotRing }};transition:all .3s;">{{ s.mark }}</span>
+                <span style="font-size:12px;font-weight:{{ s.w }};color:{{ s.fg }};">{{ s.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">Classic checkout pattern. Completed steps show a tick, and the line fills as you go. It's the clearest of the four.</p>
+    </div>
+
+    <div id="4b" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">4b</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Step title + thin bar</span></div>
+      <div style="width:375px;border-radius:28px;overflow:hidden;background:#F5F2EC;box-shadow:0 20px 40px rgba(40,30,15,0.14);">
+        <div style="height:62px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(16,24,32,0.08);"><span style="display:flex;align-items:center;gap:10px;"><img src="assets/nexbizrise-mark-t.png" alt="" width="34" height="34"><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#101820;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;background:#EDE8DF;font-size:12.5px;font-weight:600;color:#2E3440;">Create your card</span></div>
+        <div style="padding:18px 22px 22px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;">
+            <span style="font-size:15px;font-weight:700;color:#101820;">{{ cur.label }}</span>
+            <span style="font-size:12px;font-weight:600;color:#6B7078;">Step {{ cur.n }} of 4 · Next: {{ cur.next }}</span>
+          </div>
+          <div aria-hidden="true" style="height:4px;border-radius:2px;background:#E2DDD3;overflow:hidden;"><div style="height:100%;width:{{ b.pct }};background:#101820;border-radius:2px;transition:width .35s ease;"></div></div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">One focused line with the step name, "Step 2 of 4" and what's next, above one progress bar. It's the calmest and uses the least space on a phone.</p>
+    </div>
+
+    <div id="4c" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">4c</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Segmented pill</span></div>
+      <div style="width:375px;border-radius:28px;overflow:hidden;background:#F5F2EC;box-shadow:0 20px 40px rgba(40,30,15,0.14);">
+        <div style="height:62px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(16,24,32,0.08);"><span style="display:flex;align-items:center;gap:10px;"><img src="assets/nexbizrise-mark-t.png" alt="" width="34" height="34"><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#101820;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;background:#EDE8DF;font-size:12.5px;font-weight:600;color:#2E3440;">Create your card</span></div>
+        <div style="padding:16px 18px 20px;">
+          <div style="position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:4px;border-radius:999px;background:#EDE8DF;">
+            <span aria-hidden="true" style="position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 4);border-radius:999px;background:#101820;transform:translateX({{ c.x }});transition:transform .35s cubic-bezier(.3,.7,.2,1);"></span>
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+              <span style="position:relative;z-index:1;height:34px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:700;color:{{ s.pillFg }};transition:color .25s;">{{ s.pillMark }}{{ s.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">A dark pill slides along the track to the current step, and finished steps get a tick. It feels app-like and pairs with the collection switcher.</p>
+    </div>
+
+    <div id="4d" style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">4d</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Progress ring</span></div>
+      <div style="width:375px;border-radius:28px;overflow:hidden;background:#F5F2EC;box-shadow:0 20px 40px rgba(40,30,15,0.14);">
+        <div style="height:62px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(16,24,32,0.08);"><span style="display:flex;align-items:center;gap:10px;"><img src="assets/nexbizrise-mark-t.png" alt="" width="34" height="34"><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#101820;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span><span style="display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;background:#EDE8DF;font-size:12.5px;font-weight:600;color:#2E3440;">Create your card</span></div>
+        <div style="padding:16px 22px 20px;display:flex;align-items:center;gap:14px;">
+          <span style="position:relative;display:block;width:46px;height:46px;flex:none;">
+            <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true" style="transform:rotate(-90deg);"><circle cx="23" cy="23" r="19" fill="none" stroke="#E2DDD3" stroke-width="4"></circle><circle cx="23" cy="23" r="19" fill="none" stroke="#101820" stroke-width="4" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="{{ d.off }}" style="transition:stroke-dashoffset .4s ease;"></circle></svg>
+            <span style="position:absolute;inset:0;display:grid;place-items:center;white-space:nowrap;font-size:12px;font-weight:800;color:#101820;">{{ cur.n }}/4</span>
+          </span>
+          <span style="display:flex;flex-direction:column;gap:2px;min-width:0;">
+            <span style="font-size:16px;font-weight:700;color:#101820;">{{ cur.label }}</span>
+            <span style="font-size:12.5px;color:#6B7078;">Next: {{ cur.next }}</span>
+          </span>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">A small ring fills up as you move through the steps, with the step name next to it. It's compact and modern, but it doesn't show every step name.</p>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const LABELS = ['Plan', 'Your card', 'Preview', 'Payment'];
+class Component extends DCLogic {
+  state = { i: 0 };
+  renderVals() {
+    const i = this.state.i, n = LABELS.length;
+    const go = d => this.setState({ i: Math.max(0, Math.min(n - 1, i + d)) });
+    return {
+      prev: () => go(-1), next: () => go(1),
+      cur: { n: i + 1, label: LABELS[i], next: i < n - 1 ? LABELS[i + 1] : 'Done' },
+      steps: LABELS.map((label, k) => {
+        const done = k < i, on = k === i;
+        return {
+          label,
+          mark: done ? '✓' : String(k + 1),
+          dotBg: done || on ? '#101820' : '#F5F2EC', dotFg: done || on ? '#F5F2EC' : '#6B7078',
+          dotRing: on ? '0 0 0 4px rgba(16,24,32,0.12)' : done ? 'none' : 'inset 0 0 0 1.5px #D5CFC3',
+          w: on ? 700 : 600, fg: on || done ? '#101820' : '#6B7078',
+          pillFg: on ? '#F5F2EC' : done ? '#101820' : '#6B7078', pillMark: done ? '✓ ' : ''
+        };
+      }),
+      a: { line: (i / (n - 1) * 75) + '%' },
+      b: { pct: ((i + 1) / n * 100) + '%' },
+      c: { x: (i * 100) + '%' },
+      d: { off: String(119.4 * (1 - (i + 1) / n)) }
+    };
+  }
+}
+</script>
+</body>
+</html>

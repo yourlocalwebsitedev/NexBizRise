@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+  <style>body{margin:0;background:#EDE8E0;color:#101820;} a{color:#0B7C86;} a:hover{color:#08565d;}</style>
+</helmet>
+<section id="turn-1" style="padding:56px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
+  <div style="max-width:760px;display:flex;flex-direction:column;gap:10px;margin-bottom:36px;">
+    <span style="font-size:13px;font-weight:700;letter-spacing:0.16em;color:#0B7C86;">BUSINESS PICKER · 3 OPTIONS</span>
+    <h1 style="margin:0;font-size:38px;line-height:1.1;font-weight:800;letter-spacing:-0.02em;">A lighter “What's your business?”</h1>
+    <p style="margin:0;font-size:16px;line-height:1.6;color:#4A515C;">Each option shows the closed field as it sits in the form, and the open state below it. They're sized for a phone.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;">
+
+    <div id="1a" style="width:340px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1a</span><span style="font-size:14px;font-weight:700;">Inline row</span></div>
+      <div style="background:#FFFFFF;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <div style="height:48px;padding:0 14px;border-radius:12px;border:1px solid rgba(16,24,32,0.14);display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <span style="font-size:14px;color:#5B6270;">Business</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:700;">Real Estate<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6270" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+        </div>
+        <div style="height:1px;background:rgba(16,24,32,0.08);"></div>
+        <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;color:#8A8F99;">OPEN</span>
+        <div style="border-radius:14px;border:1px solid rgba(16,24,32,0.10);box-shadow:0 18px 36px -20px rgba(16,24,32,0.35);overflow:hidden;">
+          <div style="padding:11px 14px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,124,134,0.08);"><span style="display:flex;flex-direction:column;"><span style="font-size:14.5px;font-weight:700;">Real Estate</span><span style="font-size:12px;color:#5B6270;">Agents, brokers, builders</span></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B7C86" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></div>
+          <div style="padding:11px 14px;border-top:1px solid rgba(16,24,32,0.07);display:flex;flex-direction:column;"><span style="font-size:14.5px;font-weight:700;">Health &amp; Clinics</span><span style="font-size:12px;color:#5B6270;">Doctors, dentists, clinics</span></div>
+          <div style="padding:11px 14px;border-top:1px solid rgba(16,24,32,0.07);display:flex;flex-direction:column;"><span style="font-size:14.5px;font-weight:700;">Beauty &amp; Wellness</span><span style="font-size:12px;color:#5B6270;">Salons, stylists, spas</span></div>
+          <div style="padding:11px 14px;border-top:1px solid rgba(16,24,32,0.07);font-size:13px;color:#8A8F99;">+ 4 more</div>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">One slim line like any other field, with the label on the left and the value on the right. The descriptions only appear when it's open.</p>
+    </div>
+
+    <div id="1b" style="width:340px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1b</span><span style="font-size:14px;font-weight:700;">Sentence</span></div>
+      <div style="background:#FFFFFF;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <p style="margin:0;font-size:17px;line-height:1.5;font-weight:600;color:#101820;">I work in <span style="display:inline-flex;align-items:center;gap:4px;padding:2px 10px 2px 12px;border-radius:999px;background:#ECE7DF;font-weight:800;">Real Estate<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></p>
+        <div style="height:1px;background:rgba(16,24,32,0.08);"></div>
+        <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;color:#8A8F99;">OPEN</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="padding:8px 14px;border-radius:999px;background:#101820;color:#FFFFFF;font-size:14px;font-weight:700;">Real Estate</span>
+          <span style="padding:8px 14px;border-radius:999px;background:#ECE7DF;font-size:14px;font-weight:600;">Health</span>
+          <span style="padding:8px 14px;border-radius:999px;background:#ECE7DF;font-size:14px;font-weight:600;">Beauty</span>
+          <span style="padding:8px 14px;border-radius:999px;background:#ECE7DF;font-size:14px;font-weight:600;">Legal &amp; Finance</span>
+          <span style="padding:8px 14px;border-radius:999px;background:#ECE7DF;font-size:14px;font-weight:600;">Home Services</span>
+          <span style="padding:8px 14px;border-radius:999px;background:#ECE7DF;font-size:14px;font-weight:600;">Corporate</span>
+          <span style="padding:8px 14px;border-radius:999px;background:#ECE7DF;font-size:14px;font-weight:600;">Other</span>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">Reads like a sentence and takes the least space. Tapping the chip opens a short list of choices right there.</p>
+    </div>
+
+    <div id="1c" style="width:340px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1c</span><span style="font-size:14px;font-weight:700;">Icon strip</span></div>
+      <div style="background:#FFFFFF;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <span style="font-size:14px;font-weight:700;">Your business</span>
+        <div style="display:flex;gap:8px;overflow:hidden;">
+          <span style="width:64px;flex:none;padding:10px 0 8px;border-radius:14px;background:#101820;color:#FFFFFF;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11.5px;font-weight:700;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21H3z"></path></svg>Property</span>
+          <span style="width:64px;flex:none;padding:10px 0 8px;border-radius:14px;background:#ECE7DF;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11.5px;font-weight:600;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Health</span>
+          <span style="width:64px;flex:none;padding:10px 0 8px;border-radius:14px;background:#ECE7DF;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11.5px;font-weight:600;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"></path></svg>Beauty</span>
+          <span style="width:64px;flex:none;padding:10px 0 8px;border-radius:14px;background:#ECE7DF;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11.5px;font-weight:600;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"></path></svg>Legal</span>
+          <span style="width:64px;flex:none;padding:10px 0 8px;border-radius:14px;background:#ECE7DF;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11.5px;font-weight:600;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"></path></svg>Trades</span>
+        </div>
+        <span style="font-size:12.5px;color:#5B6270;">Real Estate · agents, brokers, builders. Swipe for more.</span>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">A strip of icon tiles you swipe sideways. The choice is visible in one glance and there's no list to open.</p>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@500;600;700&family=DM+Serif+Display&family=Figtree:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap">
+  <script src="./image-slot.js"></script>
+  <style>body{margin:0;background:#EDE8E0;color:#101820;} a{color:#0B7C86;} a:hover{color:#08565d;}</style>
+</helmet>
+
+<section id="turn-1" style="padding:64px 56px 96px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
+  <div style="max-width:860px;display:flex;flex-direction:column;gap:12px;margin-bottom:40px;">
+    <span style="font-size:13px;font-weight:700;letter-spacing:0.16em;color:#0B7C86;">REAL ESTATE · ROUND 1</span>
+    <h1 style="margin:0;font-size:44px;line-height:1.08;font-weight:800;letter-spacing:-0.02em;">Six real estate cards</h1>
+    <p style="margin:0;font-size:17px;line-height:1.6;color:#4A515C;text-wrap:pretty;">Built from your references. Each one leads with what buyers and sellers need: the agent's face, the brokerage, and a fast way to call or book a visit. Drop your own photos onto any photo area.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;margin-bottom:36px;">
+    <div role="group" aria-label="Client country" style="display:flex;gap:4px;padding:4px;border-radius:999px;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,24,32,0.08);">
+      <sc-for list="{{ regions }}" as="g" hint-placeholder-count="2"><button type="button" aria-pressed="{{ g.pressed }}" onClick="{{ g.pick }}" style="height:40px;padding:0 18px;border:0;border-radius:999px;background:{{ g.bg }};color:{{ g.ink }};font:inherit;font-size:14px;font-weight:700;cursor:pointer;">{{ g.label }}</button></sc-for>
+    </div>
+    <div style="flex:1 1 420px;max-width:760px;background:#FFFFFF;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;">
+      <span style="font-size:15px;font-weight:800;">{{ specTitle }}</span>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 20px;">
+        <sc-for list="{{ spec }}" as="f" hint-placeholder-count="8"><span style="display:flex;flex-direction:column;gap:1px;font-size:13.5px;"><span style="font-weight:700;color:#101820;">{{ f.k }}</span><span style="color:#5B6270;">{{ f.v }}</span></span></sc-for>
+      </div>
+    </div>
+  </div>
+  <div id="re-grid" style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+
+    <div id="1a" style="width:340px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1a</span><span style="font-size:14px;font-weight:700;">Home Photo</span></div>
+      <div style="position:relative;width:340px;height:790px;border-radius:26px;overflow:hidden;background:#EFE9E1;box-shadow:0 22px 50px -28px rgba(16,24,32,0.45);font-family:Montserrat,system-ui,sans-serif;">
+        <image-slot id="r1-bg" shape="rect" placeholder="Drop a home interior photo" style="position:absolute;inset:0;width:100%;height:100%;"></image-slot>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.35),rgba(255,255,255,0.7) 40%,rgba(255,255,255,0.55));pointer-events:none;"></div>
+        <div style="position:relative;display:flex;flex-direction:column;align-items:center;padding-top:34px;pointer-events:none;">
+          <div style="width:170px;height:170px;border-radius:50%;padding:7px;background:#FFFFFF;box-shadow:0 12px 30px -14px rgba(0,0,0,0.4);pointer-events:auto;"><image-slot id="r1-photo" shape="circle" src="./portrait.jpg" placeholder="Photo" style="width:156px;height:156px;"></image-slot></div>
+          <span style="margin-top:16px;font-family:'Playfair Display',serif;font-size:30px;font-weight:700;letter-spacing:0.02em;color:#3A3A3A;">{{ r.nameUp }}</span>
+          <span style="margin-top:4px;font-size:11px;font-weight:600;letter-spacing:0.28em;color:#5A5A5A;">REAL ESTATE AGENT</span>
+          <span style="margin-top:6px;font-size:10.5px;font-weight:700;letter-spacing:0.14em;color:#6B5A48;">{{ r.lic }}</span>
+        </div>
+        <div style="position:absolute;left:24px;right:24px;top:330px;background:#FFFFFF;border-radius:16px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 30px -18px rgba(0,0,0,0.35);">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <svg width="92" height="34" viewBox="0 0 92 34" fill="none" stroke="#3A3A3A" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 32 34 4l18 17M40 32 64 8l24 24"></path></svg>
+            <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#3A3A3A;">SKYLINE REALTY</span>
+            <span style="width:170px;height:1.5px;background:#3A3A3A;"></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:13px;color:#4A4A4A;">
+            <span style="display:flex;align-items:center;gap:12px;"><span style="width:26px;height:26px;border-radius:50%;background:#5A5A5A;color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg></span>{{ r.phone }}</span>
+            <span style="display:flex;align-items:center;gap:12px;"><span style="width:26px;height:26px;border-radius:50%;background:#5A5A5A;color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 7l9 6 9-6"></path></svg></span>{{ r.email }}</span>
+            <span style="display:flex;align-items:center;gap:12px;"><span style="width:26px;height:26px;border-radius:50%;background:#5A5A5A;color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path></svg></span>{{ r.loc }}</span>
+            <span style="display:flex;align-items:center;gap:12px;"><span style="width:26px;height:26px;border-radius:50%;background:#5A5A5A;color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M3 12h18"></path></svg></span>{{ r.web }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;"><span style="height:52px;border-radius:10px;background:#F3F0EB;color:#3A3A3A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;letter-spacing:0.06em;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"></path></svg>{{ r.msgUp }}</span><span style="height:52px;border-radius:10px;background:#F3F0EB;color:#3A3A3A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;letter-spacing:0.06em;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2"></path></svg>SHOW QR</span><span style="height:52px;border-radius:10px;background:#F3F0EB;color:#3A3A3A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;letter-spacing:0.06em;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"></path></svg>SHARE</span></div>
+          <span style="height:48px;border-radius:10px;background:#3A3A3A;color:#FFFFFF;font-size:13px;font-weight:700;letter-spacing:0.12em;display:flex;align-items:center;justify-content:center;gap:8px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>SAVE CONTACT</span>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:56px;background:#E9A866;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;letter-spacing:0.3em;color:#3A2A1A;">SKYLINE REALTY</div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">Soft home photo behind a large round portrait, a white details card with the logo, and a brand-coloured footer.</p>
+    </div>
+
+    <div id="1b" style="width:340px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1b</span><span style="font-size:14px;font-weight:700;">Brush</span></div>
+      <div style="position:relative;width:340px;border-radius:26px;overflow:hidden;background:#FBF7F2;box-shadow:0 22px 50px -28px rgba(16,24,32,0.45);font-family:Figtree,system-ui,sans-serif;">
+        <div style="position:relative;height:300px;">
+          <div style="position:absolute;left:-30px;top:170px;width:260px;height:96px;background:#F2B544;border-radius:60% 40% 55% 45% / 60% 50% 50% 40%;transform:rotate(-6deg);"></div>
+          <div style="position:absolute;right:-40px;top:-30px;width:180px;height:130px;background:#F4D9A8;border-radius:50% 50% 40% 60%;"></div>
+          <div style="position:absolute;left:20px;top:30px;width:168px;height:214px;border-radius:22px;overflow:hidden;border:6px solid #FFFFFF;box-shadow:0 16px 30px -16px rgba(0,0,0,0.4);transform:rotate(-3deg);"><image-slot id="r2-photo" shape="rect" src="./portrait.jpg" placeholder="Photo" style="width:100%;height:100%;"></image-slot></div>
+          <span style="position:absolute;left:210px;right:14px;top:70px;font-family:Allura,cursive;font-size:40px;line-height:1.05;color:#2E2A26;text-align:right;">{{ r.first }}<br>{{ r.last }}</span>
+          <span style="position:absolute;left:34px;top:262px;padding:6px 12px;background:#2E2A26;color:#FBF7F2;font-size:11px;font-weight:700;letter-spacing:0.22em;">REAL ESTATE AGENT</span>
+        </div>
+        <div style="padding:22px 26px 22px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;gap:16px;">
+            <span style="width:3px;border-radius:3px;background:#F2B544;"></span>
+            <div style="flex:1;display:flex;flex-direction:column;gap:12px;font-size:14.5px;color:#2E2A26;">
+              <span style="display:flex;align-items:center;gap:12px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C98A1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>{{ r.phone }}</span>
+              <span style="display:flex;align-items:center;gap:12px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C98A1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 7l9 6 9-6"></path></svg>{{ r.email }}</span>
+              <span style="display:flex;align-items:center;gap:12px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C98A1B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18M3 12h18"></path></svg>{{ r.web }}</span>
+            </div>
+          </div>
+          <span style="height:50px;border-radius:999px;background:#2E2A26;color:#FFFFFF;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;">{{ r.cta }}</span>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+            <span style="height:44px;border-radius:999px;background:#F2B544;color:#2E2A26;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ r.msg }}</span>
+            <span style="height:44px;border-radius:999px;border:1.5px solid #2E2A26;color:#2E2A26;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;">Save contact</span>
+          </div>
+          <div style="display:flex;justify-content:center;gap:10px;padding-top:4px;">
+            <span style="width:34px;height:34px;border-radius:50%;background:#2E2A26;color:#FBF7F2;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle></svg></span>
+            <span style="width:34px;height:34px;border-radius:50%;background:#2E2A26;color:#FBF7F2;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;">in</span>
+            <span style="width:34px;height:34px;border-radius:50%;background:#2E2A26;color:#FBF7F2;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;">f</span>
+          </div>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">Warm and friendly. A tilted photo on painted shapes, a handwritten-style name and a gold accent line.</p>
+    </div>
+
+    <div id="1c" style="width:340px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1c</span><span style="font-size:14px;font-weight:700;">Featured Listing</span></div>
+      <div style="width:340px;border-radius:26px;overflow:hidden;background:#FFFFFF;box-shadow:0 22px 50px -28px rgba(16,24,32,0.45);font-family:Figtree,system-ui,sans-serif;">
+        <div style="padding:18px 18px 14px;display:flex;align-items:center;gap:12px;">
+          <div style="width:58px;height:58px;border-radius:50%;flex:none;"><image-slot id="r3-photo" shape="circle" src="./portrait.jpg" placeholder="Photo" style="width:58px;height:58px;"></image-slot></div>
+          <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-size:18px;font-weight:800;color:#12202F;">{{ r.name }}</span><span style="font-size:13px;color:#5B6270;">{{ r.brokerLine }}</span></span>
+        </div>
+        <div style="margin:0 14px;border-radius:18px;overflow:hidden;border:1px solid #E7E4DE;">
+          <div style="position:relative;height:190px;background:#DCE3EA;"><image-slot id="r3-listing" shape="rect" placeholder="Drop a listing photo" style="width:100%;height:100%;"></image-slot><span style="position:absolute;left:12px;top:12px;padding:5px 10px;border-radius:999px;background:#0E7C66;color:#FFFFFF;font-size:11.5px;font-weight:800;letter-spacing:0.06em;pointer-events:none;">FEATURED</span></div>
+          <div style="padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;">
+            <span style="font-size:21px;font-weight:800;color:#12202F;">{{ r.price }}</span>
+            <span style="font-size:14px;color:#3A4250;">{{ r.listing }}</span>
+            <div style="display:flex;gap:14px;font-size:13px;color:#5B6270;"><span>{{ r.beds }}</span><span>{{ r.baths }}</span><span>{{ r.area }}</span></div>
+          </div>
+        </div>
+        <div style="padding:14px 18px 20px;display:flex;flex-direction:column;gap:10px;">
+          <span style="height:52px;border-radius:14px;background:#0E7C66;color:#FFFFFF;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;">{{ r.cta }}</span>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <span style="height:46px;border-radius:12px;background:#EEF4F2;color:#12202F;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;">Call</span>
+            <span style="height:46px;border-radius:12px;background:#EEF4F2;color:#12202F;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ r.msg }}</span>
+            <span style="height:46px;border-radius:12px;background:#EEF4F2;color:#12202F;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;">Save</span>
+          </div>
+          <span style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;border:1px solid #E7E4DE;font-size:14.5px;font-weight:700;color:#12202F;">See all 12 listings<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></span>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">A featured listing sits at the centre of the card, with price and details, and <b>{{ r.cta }}</b> below. The agent can change the featured property any time.</p>
+    </div>
+
+    <div id="1d" style="width:340px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1d</span><span style="font-size:14px;font-weight:700;">Luxury</span></div>
+      <div style="width:340px;border-radius:26px;overflow:hidden;background:#0D0D0D;box-shadow:0 22px 50px -28px rgba(16,24,32,0.55);font-family:Figtree,system-ui,sans-serif;">
+        <div style="padding:30px 28px 26px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
+          <span style="font-size:10.5px;font-weight:600;letter-spacing:0.42em;color:#C8A96A;">SKYLINE · PRIVATE ESTATES</span>
+          <div style="width:180px;height:230px;border-radius:90px;padding:4px;border:1px solid #C8A96A;"><div style="width:100%;height:100%;border-radius:88px;overflow:hidden;"><image-slot id="r4-photo" shape="rect" src="./portrait.jpg" placeholder="Photo" style="width:100%;height:100%;"></image-slot></div></div>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1;font-weight:600;color:#F3EBDD;">{{ r.name }}</span>
+          <span style="display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:0.3em;color:#C8A96A;"><span style="width:28px;height:1px;background:#C8A96A;"></span>LUXURY HOMES ADVISOR<span style="width:28px;height:1px;background:#C8A96A;"></span></span>
+          <span style="font-size:10.5px;font-weight:600;letter-spacing:0.2em;color:#8F8778;">{{ r.lic }}</span>
+          <p style="margin:0;font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.4;font-style:italic;color:#BDB5A6;">{{ r.lux }}</p>
+        </div>
+        <div style="border-top:1px solid #2A2620;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));">
+          <span style="height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#C8A96A;border-right:1px solid #2A2620;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span style="font-size:11px;letter-spacing:0.2em;color:#E8E0D2;">CALL</span></span>
+          <span style="height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#C8A96A;border-right:1px solid #2A2620;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"></path></svg><span style="font-size:11px;letter-spacing:0.2em;color:#E8E0D2;">{{ r.msgUp }}</span></span>
+          <span style="height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#C8A96A;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18v14H3zM3 7l9 6 9-6"></path></svg><span style="font-size:11px;letter-spacing:0.2em;color:#E8E0D2;">EMAIL</span></span>
+        </div>
+        <div style="padding:18px 22px 22px;display:flex;flex-direction:column;gap:10px;">
+          <span style="height:52px;background:#C8A96A;color:#0D0D0D;font-size:13.5px;font-weight:800;letter-spacing:0.16em;display:flex;align-items:center;justify-content:center;">{{ r.ctaLux }}</span>
+          <div style="display:grid;grid-template-columns:48px 48px minmax(0,1fr);gap:8px;"><span style="height:48px;border-radius:0;border:1.5px solid #C8A96A;color:#C8A96A;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2"></path></svg></span><span style="height:48px;border-radius:0;border:1.5px solid #C8A96A;color:#C8A96A;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"></path></svg></span><span style="height:48px;border:1px solid #C8A96A;color:#C8A96A;font-size:13px;font-weight:700;letter-spacing:0.16em;display:flex;align-items:center;justify-content:center;">SAVE CONTACT</span></div>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">Black and gold for premium agents: an arched portrait, a serif name and a <b>Book a private viewing</b> button.</p>
+    </div>
+
+    <div id="1e" style="width:340px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1e</span><span style="font-size:14px;font-weight:700;">Yard Sign</span></div>
+      <div style="width:340px;border-radius:26px;overflow:hidden;background:#FFFFFF;box-shadow:0 22px 50px -28px rgba(16,24,32,0.45);font-family:Figtree,system-ui,sans-serif;">
+        <div style="background:#B3261E;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;">
+          <span style="display:flex;flex-direction:column;"><span style="font-size:20px;font-weight:800;letter-spacing:0.02em;color:#FFFFFF;">SKYLINE</span><span style="font-size:10.5px;font-weight:700;letter-spacing:0.34em;color:#FFD9D6;">REALTY</span></span>
+          <span style="padding:6px 10px;border:2px solid #FFFFFF;color:#FFFFFF;font-size:11px;font-weight:800;letter-spacing:0.16em;">{{ r.signTag }}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 138px;">
+          <div style="padding:20px 14px 18px 22px;display:flex;flex-direction:column;gap:6px;justify-content:center;">
+            <span style="font-size:26px;line-height:1.05;font-weight:800;color:#1B1B1B;">{{ r.first }}<br>{{ r.last }}</span>
+            <span style="font-size:13.5px;color:#5B6270;">{{ r.local }}</span>
+          </div>
+          <div style="height:190px;border-left:6px solid #B3261E;"><image-slot id="r5-photo" shape="rect" src="./portrait.jpg" placeholder="Photo" style="width:100%;height:100%;"></image-slot></div>
+        </div>
+        <div style="padding:16px 18px 20px;display:flex;flex-direction:column;gap:10px;border-top:6px solid #1B1B1B;">
+          <span style="height:56px;border-radius:12px;background:#B3261E;color:#FFFFFF;font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>{{ r.phone }}</span>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+            <span style="height:48px;border-radius:12px;background:#1B1B1B;color:#FFFFFF;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;">I want to buy</span>
+            <span style="height:48px;border-radius:12px;background:#1B1B1B;color:#FFFFFF;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;">I want to sell</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+            <span style="height:42px;border-radius:10px;border:1.5px solid #E1DEDA;color:#1B1B1B;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ r.msg }}</span>
+            <span style="height:42px;border-radius:10px;border:1.5px solid #E1DEDA;color:#1B1B1B;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">Email</span>
+            <span style="height:42px;border-radius:10px;border:1.5px solid #E1DEDA;color:#1B1B1B;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;">Save</span>
+          </div>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">Styled like a real estate yard sign: a big phone number, and <b>I want to buy</b> / <b>I want to sell</b> buttons that open the lead form with the choice already filled in.</p>
+    </div>
+
+    <div id="1f" style="width:340px;display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:12.5px;font-weight:800;padding:4px 9px;border-radius:7px;background:#101820;color:#F5F2EC;">1f</span><span style="font-size:14px;font-weight:700;">Blueprint</span></div>
+      <div style="width:340px;border-radius:26px;overflow:hidden;background:#F3F1EC;box-shadow:0 22px 50px -28px rgba(16,24,32,0.45);font-family:Figtree,system-ui,sans-serif;">
+        <div style="position:relative;height:250px;background-color:#1F3A5F;background-image:linear-gradient(rgba(255,255,255,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.07) 1px,transparent 1px);background-size:22px 22px;">
+          <span style="position:absolute;left:22px;top:22px;font-size:11px;font-weight:700;letter-spacing:0.28em;color:#9FB7D6;">SKYLINE REALTY</span>
+          <span style="position:absolute;left:22px;top:52px;max-width:170px;font-family:'DM Serif Display',serif;font-size:34px;line-height:1.02;color:#FFFFFF;">{{ r.name }}</span>
+          <span style="position:absolute;left:22px;top:136px;max-width:160px;font-size:13.5px;line-height:1.4;color:#C9D6E6;">Senior Property Consultant</span>
+          <span style="position:absolute;left:22px;top:180px;font-size:11px;font-weight:700;letter-spacing:0.12em;color:#9FB7D6;">{{ r.lic }}</span>
+          <div style="position:absolute;right:20px;bottom:-54px;width:150px;height:190px;border-radius:14px;overflow:hidden;border:5px solid #F3F1EC;box-shadow:0 14px 30px -14px rgba(0,0,0,0.5);"><image-slot id="r6-photo" shape="rect" src="./portrait.jpg" placeholder="Photo" style="width:100%;height:100%;"></image-slot></div>
+        </div>
+        <div style="padding:20px 20px 22px;display:flex;flex-direction:column;gap:12px;">
+          <div style="max-width:150px;display:flex;flex-direction:column;gap:4px;min-height:40px;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.2em;color:#6B7A8C;">AREAS</span>
+            <span style="font-size:14px;font-weight:600;color:#1F3A5F;">{{ r.areas }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px;">
+            <span style="height:74px;border-radius:14px;background:#FFFFFF;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding:0 14px;color:#1F3A5F;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg><span style="font-size:14px;font-weight:700;">Call</span></span>
+            <span style="height:74px;border-radius:14px;background:#FFFFFF;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding:0 14px;color:#1F3A5F;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"></path></svg><span style="font-size:14px;font-weight:700;">{{ r.msg }}</span></span>
+            <span style="height:74px;border-radius:14px;background:#FFFFFF;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding:0 14px;color:#1F3A5F;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21H3z"></path></svg><span style="font-size:14px;font-weight:700;">Listings</span></span>
+            <span style="height:74px;border-radius:14px;background:#FFFFFF;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;padding:0 14px;color:#1F3A5F;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path></svg><span style="font-size:14px;font-weight:700;">Office</span></span>
+          </div>
+          <span style="height:52px;border-radius:14px;background:#1F3A5F;color:#FFFFFF;font-size:15.5px;font-weight:800;display:flex;align-items:center;justify-content:center;">{{ r.cta }}</span>
+          <div style="display:grid;grid-template-columns:46px 46px minmax(0,1fr);gap:8px;"><span style="height:46px;border-radius:14px;border:1.5px solid #1F3A5F;color:#1F3A5F;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2"></path></svg></span><span style="height:46px;border-radius:14px;border:1.5px solid #1F3A5F;color:#1F3A5F;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"></path></svg></span><span style="height:46px;border-radius:14px;border:1.5px solid #1F3A5F;color:#1F3A5F;font-size:14.5px;font-weight:700;display:flex;align-items:center;justify-content:center;">Save contact</span></div>
+        </div>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:1.5;color:#4A515C;">A blueprint-grid header with the photo overlapping its edge, the areas the agent covers, and four big action tiles.</p>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { region: 'IN' };
+  renderVals() {
+    const IN = { name: 'Rahul Sharma', first: 'Rahul', last: 'Sharma', lic: 'RERA · A51800012345', brokerLine: 'Skyline Realty · RERA A51800012345', phone: '+91 98765 43210', loc: 'Bandra West, Mumbai', cta: 'Book a site visit', ctaLux: 'BOOK A PRIVATE VIEWING', msg: 'WhatsApp', msgUp: 'WHATSAPP', price: '₹ 2.4 Cr', listing: '3 BHK Sea-view Apartment · Bandra West', beds: '3 BHK', baths: '3 bath', area: '1,650 sq ft', local: 'Your local property expert in Bandra and Khar', areas: 'Bandra · Khar · Santacruz', lux: 'Sea-facing homes and penthouses across Bandra and Juhu.', email: 'rahul@skylinerealty.in', web: 'skylinerealty.in', signTag: 'FOR SALE · RENT' };
+    const US = { name: 'Jordan Hayes', first: 'Jordan', last: 'Hayes', lic: 'NE LIC. #20190123 · EHO', brokerLine: 'Skyline Realty Group · NE Lic. #20190123', phone: '+1 (402) 555-0142', loc: 'Dundee, Omaha, NE', cta: 'Schedule a showing', ctaLux: 'SCHEDULE A PRIVATE SHOWING', msg: 'Text me', msgUp: 'TEXT ME', price: '$485,000', listing: '4 bd Craftsman · Dundee, Omaha', beds: '4 bd', baths: '3 ba', area: '2,380 sq ft', local: 'Helping Omaha families buy and sell since 2012', areas: 'Dundee · Benson · Midtown', lux: 'Historic homes and new builds across Omaha and Elkhorn.', email: 'jordan@skylinerealty.com', web: 'skylinerealty.com', signTag: 'FOR SALE · SOLD' };
+    const us = this.state.region === 'US';
+    const specIN = [['Registration', 'RERA number (required on ads)'], ['Messaging', 'WhatsApp first, then call'], ['Main button', 'Book a site visit'], ['Price format', '₹ Lakh / Crore, BHK, sq ft'], ['Phone', '+91, 10 digits'], ['Location', 'Locality, city, pincode'], ['Extras', 'Builder projects, home loan partner'], ['Language', 'English + optional Hindi / regional line']];
+    const specUS = [['License', 'State license # (required), brokerage name'], ['Messaging', 'Text (SMS) and call. WhatsApp optional'], ['Main button', 'Schedule a showing'], ['Price format', '$, bd / ba, sq ft'], ['Phone', '+1 (xxx) xxx-xxxx'], ['Location', 'Neighborhood, city, state, ZIP'], ['Compliance', 'Equal Housing Opportunity mark; REALTOR® only if NAR member'], ['Extras', 'Zillow / Realtor.com reviews, MLS search link, open house']];
+    return {
+      r: (x => ({ ...x, nameUp: x.name.toUpperCase() }))(us ? US : IN),
+      regions: [['IN', 'India client'], ['US', 'USA client']].map(([k, label]) => { const on = this.state.region === k; return { label, pressed: on ? 'true' : 'false', bg: on ? '#101820' : 'transparent', ink: on ? '#FFFFFF' : '#4A515C', pick: () => this.setState({ region: k }) }; }),
+      specTitle: us ? 'USA fields on the order form' : 'India fields on the order form',
+      spec: (us ? specUS : specIN).map(([k, v]) => ({ k, v })),
+    };
+  }
+}
+</script>
+</body>
+</html>

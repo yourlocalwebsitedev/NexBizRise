@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#E7E1D6;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#101820;}a{color:#0B7C86;text-decoration:none;}a:hover{color:#101820;}</style>
+</helmet>
+<section style="padding:48px;display:flex;flex-direction:column;gap:28px;">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:980px;">
+    <h1 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-0.02em;">Order flow: warmer look (design only)</h1>
+    <p style="margin:0;font-size:16px;line-height:1.55;color:#4A525C;"><b>v2:</b> team tile added, photo box kept, preview unchanged, payment summary matches your reference. Same steps, fields and buttons as today. What changes: warm cream surfaces, teal for "selected", gold for small highlights, step pills with ticks, a mini card on each plan, softer cards and icons.</p>
+  </div>
+
+  <div id="1a" style="display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start;">
+
+    <!-- ============ 1 PLAN ============ -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <span style="font-size:14px;font-weight:800;color:#4A525C;">1 · Plan</span>
+      <div style="width:360px;height:780px;border-radius:40px;background:#F7F3EC;box-shadow:0 0 0 9px #0E141C,0 30px 60px -30px rgba(0,0,0,0.55);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:18px 18px 0;display:flex;align-items:center;justify-content:space-between;">
+          <span style="display:flex;align-items:center;gap:8px;"><img src="assets/nexbizrise-logo.png" alt="" style="height:26px;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span>
+          <span style="width:36px;height:36px;display:grid;place-items:center;font-size:20px;color:#101820;">✕</span>
+        </div>
+        <div style="margin:14px 16px 0;padding:4px;border-radius:999px;background:#EDE7DC;display:grid;grid-template-columns:repeat(4,1fr);font-size:12.5px;font-weight:700;">
+          <span style="height:34px;border-radius:999px;background:#101820;color:#F7F3EC;display:grid;place-items:center;">Plan</span>
+          <span style="height:34px;display:grid;place-items:center;color:#4A525C;">Your card</span>
+          <span style="height:34px;display:grid;place-items:center;color:#4A525C;">Preview</span>
+          <span style="height:34px;display:grid;place-items:center;color:#4A525C;">Payment</span>
+        </div>
+        <div style="flex:1;padding:18px 16px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden;">
+          <span style="font-size:11px;font-weight:800;letter-spacing:0.16em;color:#B7893E;">STEP 1 OF 4</span>
+          <h2 style="margin:-6px 0 0;font-size:26px;font-weight:800;letter-spacing:-0.025em;">Choose a plan</h2>
+          <p style="margin:-4px 0 0;font-size:13.5px;line-height:1.5;color:#4A525C;">Every card includes your personal link, QR code and social links. Restyle anytime, free.</p>
+          <div style="padding:14px;border-radius:18px;border:2px solid #0B7C86;background:#EEF6F4;display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:10px;">
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <span style="display:flex;align-items:center;gap:8px;"><span style="font-size:16px;font-weight:800;">Digital Card</span><span style="padding:3px 8px;border-radius:999px;background:#D6ECE8;color:#0B6F78;font-size:10px;font-weight:800;letter-spacing:0.06em;">POPULAR</span></span>
+              <span style="display:flex;align-items:baseline;gap:6px;"><span style="font-size:14px;color:#8A9098;text-decoration:line-through;">$69</span><span style="font-size:26px;font-weight:800;letter-spacing:-0.02em;">$49</span><span style="font-size:12.5px;color:#4A525C;">/ year</span></span>
+              <span style="display:flex;flex-direction:column;gap:3px;font-size:12px;line-height:1.3;color:#2E3440;"><span>✓ Your photo, name and title</span><span>✓ One-tap save contact</span><span>✓ Call, text, WhatsApp, email</span></span>
+            </div>
+            <div style="position:relative;height:122px;border-radius:12px;background:#101820;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 18px -8px rgba(16,24,32,0.45);">
+              <span style="position:relative;height:66px;flex:none;background-image:url('portrait.jpg');background-size:cover;background-position:center 25%;"><span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,24,32,0) 40%,#101820 100%);"></span></span>
+              <span style="position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:50%;background:#0B7C86;box-shadow:inset 0 0 0 3.5px #FFFFFF;"></span>
+              <span style="padding:0 7px;margin-top:-8px;position:relative;display:flex;flex-direction:column;"><span style="font-size:8.5px;font-weight:700;color:#fff;line-height:1.2;">Sandeep Koppisetty</span><span style="font-size:6.5px;color:rgba(255,255,255,0.7);">Realtor</span></span>
+              <span style="padding:5px 7px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;"><span style="height:14px;border-radius:4px;background:rgba(255,255,255,0.14);color:#fff;font-size:5.5px;font-weight:700;display:grid;place-items:center;">Call</span><span style="height:14px;border-radius:4px;background:rgba(255,255,255,0.14);color:#fff;font-size:5.5px;font-weight:700;display:grid;place-items:center;">Text</span><span style="height:14px;border-radius:4px;background:rgba(255,255,255,0.14);color:#fff;font-size:5.5px;font-weight:700;display:grid;place-items:center;">Email</span></span>
+              <span style="padding:4px 7px 0;"><span style="height:14px;border-radius:999px;background:#F5F2EC;color:#101820;font-size:5.5px;font-weight:800;display:grid;place-items:center;">Save contact</span></span>
+            </div>
+          </div>
+          <div style="padding:14px;border-radius:18px;border:1px solid rgba(16,24,32,0.08);background:#FFFFFF;display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:10px;">
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <span style="font-size:16px;font-weight:800;">Motion Card</span>
+              <span style="display:flex;align-items:baseline;gap:6px;"><span style="font-size:14px;color:#8A9098;text-decoration:line-through;">$99</span><span style="font-size:26px;font-weight:800;letter-spacing:-0.02em;">$79</span><span style="font-size:12.5px;color:#4A525C;">/ year</span></span>
+              <span style="display:flex;flex-direction:column;gap:3px;font-size:12px;line-height:1.3;color:#2E3440;"><span>✓ Everything in Digital Card</span><span>✓ Moving portrait at the top</span><span>✓ Selfie video or GIF, up to 10 s</span></span>
+            </div>
+            <div style="position:relative;height:122px;border-radius:12px;background:#101820;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 18px -8px rgba(16,24,32,0.45);">
+              <span style="position:relative;height:66px;flex:none;background-image:url('portrait.gif');background-size:cover;background-position:center 25%;"><span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,24,32,0) 40%,#101820 100%);"></span></span>
+              <span style="position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.8);"></span><span style="position:absolute;top:22px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.28);display:grid;place-items:center;color:#fff;font-size:9px;">▶</span>
+              <span style="padding:0 7px;margin-top:-8px;position:relative;display:flex;flex-direction:column;"><span style="font-size:8.5px;font-weight:700;color:#fff;line-height:1.2;">Sandeep Koppisetty</span><span style="font-size:6.5px;color:rgba(255,255,255,0.7);">Realtor</span></span>
+              <span style="padding:5px 7px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;"><span style="height:14px;border-radius:4px;background:rgba(255,255,255,0.14);color:#fff;font-size:5.5px;font-weight:700;display:grid;place-items:center;">Call</span><span style="height:14px;border-radius:4px;background:rgba(255,255,255,0.14);color:#fff;font-size:5.5px;font-weight:700;display:grid;place-items:center;">Text</span><span style="height:14px;border-radius:4px;background:rgba(255,255,255,0.14);color:#fff;font-size:5.5px;font-weight:700;display:grid;place-items:center;">Email</span></span>
+              <span style="padding:4px 7px 0;"><span style="height:14px;border-radius:999px;background:#F5F2EC;color:#101820;font-size:5.5px;font-weight:800;display:grid;place-items:center;">Save contact</span></span>
+            </div>
+          </div>
+          <div style="padding:12px 14px;border-radius:18px;background:#F3E9D8;border:1px solid #EAD7B4;display:flex;align-items:center;gap:12px;">
+            <span style="width:40px;height:40px;flex:none;border-radius:12px;background:#EAD7B4;color:#6B4A1C;display:grid;place-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.4"></circle><path d="M3 19a6 6 0 0 1 12 0M14.5 19a4.5 4.5 0 0 1 6.5-4"></path></svg></span>
+            <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-size:15px;font-weight:800;color:#3F2A0E;">Team cards</span><span style="font-size:12px;line-height:1.35;color:#6B4A1C;">5+ people · matching design · one invoice</span></span>
+            <span style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;"><span style="font-size:15px;font-weight:800;color:#3F2A0E;">$39<span style="font-size:11px;font-weight:600;"> /person</span></span><span style="font-size:12px;font-weight:800;color:#0B6F78;">Get a quote →</span></span>
+          </div>
+        </div>
+        <div style="padding:12px 16px 20px;background:#F7F3EC;box-shadow:0 -10px 24px -14px rgba(16,24,32,0.3);border-radius:22px 22px 0 0;">
+          <span style="height:52px;border-radius:999px;background:#101820;color:#F7F3EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Continue →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 2 YOUR CARD ============ -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <span style="font-size:14px;font-weight:800;color:#4A525C;">2 · Your card</span>
+      <div style="width:360px;height:780px;border-radius:40px;background:#F7F3EC;box-shadow:0 0 0 9px #0E141C,0 30px 60px -30px rgba(0,0,0,0.55);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:18px 18px 0;display:flex;align-items:center;justify-content:space-between;">
+          <span style="display:flex;align-items:center;gap:8px;"><img src="assets/nexbizrise-logo.png" alt="" style="height:26px;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span>
+          <span style="width:36px;height:36px;display:grid;place-items:center;font-size:20px;">✕</span>
+        </div>
+        <div style="margin:14px 16px 0;padding:4px;border-radius:999px;background:#EDE7DC;display:grid;grid-template-columns:repeat(4,1fr);font-size:12.5px;font-weight:700;">
+          <span style="height:34px;display:grid;place-items:center;color:#0B6F78;">✓ Plan</span>
+          <span style="height:34px;border-radius:999px;background:#101820;color:#F7F3EC;display:grid;place-items:center;">Your card</span>
+          <span style="height:34px;display:grid;place-items:center;color:#4A525C;">Preview</span>
+          <span style="height:34px;display:grid;place-items:center;color:#4A525C;">Payment</span>
+        </div>
+        <div style="flex:1;padding:18px 16px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden;">
+          <span style="font-size:11px;font-weight:800;letter-spacing:0.16em;color:#B7893E;">STEP 2 OF 4</span>
+          <h2 style="margin:-6px 0 0;font-size:26px;font-weight:800;letter-spacing:-0.025em;">Your details</h2>
+          <div style="height:52px;padding:0 14px 0 8px;border-radius:14px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.1);display:flex;align-items:center;gap:10px;">
+            <span style="width:36px;height:36px;border-radius:10px;background:#101820;color:#F7F3EC;display:grid;place-items:center;font-size:15px;">⌂</span>
+            <span style="flex:1;font-size:15px;font-weight:700;">Real Estate</span><span style="color:#4A525C;">⌄</span>
+          </div>
+          <div style="padding:18px 16px 16px;border-radius:16px;border:1px dashed rgba(16,24,32,0.18);background:#FFFFFF;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;">
+            <span style="position:relative;width:84px;height:84px;margin-bottom:6px;border-radius:50%;background:#EDE7DC;display:grid;place-items:center;"><svg width="84" height="84" viewBox="0 0 104 104" aria-hidden="true" style="border-radius:50%;"><circle cx="52" cy="42" r="18" fill="rgba(16,24,32,0.14)"></circle><path d="M18 96c4-20 18-30 34-30s30 10 34 30z" fill="rgba(16,24,32,0.14)"></path></svg><span style="position:absolute;right:-2px;bottom:2px;width:30px;height:30px;border-radius:50%;background:#FFFFFF;box-shadow:0 2px 8px -2px rgba(0,0,0,0.25);display:grid;place-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></span></span>
+            <span style="font-size:15px;font-weight:700;">Add your photo</span>
+            <span style="font-size:12.5px;color:#4A525C;">Front-facing photo, square works best.</span>
+            <span style="margin-top:6px;height:42px;padding:0 18px;border-radius:12px;border:1px solid rgba(16,24,32,0.18);font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;">↑ Upload photo</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <span style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12.5px;font-weight:700;color:#2E3440;">First name *</span><span style="height:46px;padding:0 12px;border-radius:12px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.12);font-size:15px;display:flex;align-items:center;">Sandeep</span></span>
+            <span style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12.5px;font-weight:700;color:#2E3440;">Last name</span><span style="height:46px;padding:0 12px;border-radius:12px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.12);font-size:15px;display:flex;align-items:center;">Koppisetty</span></span>
+          </div>
+          <span style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12.5px;font-weight:700;color:#2E3440;">Job title *</span><span style="height:46px;padding:0 12px;border-radius:12px;background:#FFFFFF;border:2px solid #0B7C86;box-shadow:0 0 0 4px rgba(11,124,134,0.12);font-size:15px;display:flex;align-items:center;">Realtor</span></span>
+        </div>
+        <div style="padding:12px 16px 20px;display:grid;grid-template-columns:1fr 1.5fr;gap:10px;">
+          <span style="height:52px;border-radius:999px;border:1px solid rgba(16,24,32,0.18);background:#FFFFFF;font-size:15px;font-weight:700;display:grid;place-items:center;">← Back</span>
+          <span style="height:52px;border-radius:999px;background:#101820;color:#F7F3EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Continue →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 3 PREVIEW ============ -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <span style="font-size:14px;font-weight:800;color:#4A525C;">3 · Preview</span>
+      <div style="width:360px;height:780px;border-radius:40px;background:#F7F3EC;box-shadow:0 0 0 9px #0E141C,0 30px 60px -30px rgba(0,0,0,0.55);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:32px;box-sizing:border-box;text-align:center;">
+        <span style="width:52px;height:52px;border-radius:50%;background:#EDE7DC;display:grid;place-items:center;font-size:20px;">✓</span>
+        <span style="font-size:18px;font-weight:800;">No change</span>
+        <span style="font-size:13.5px;line-height:1.5;color:#4A525C;">The preview step stays exactly as it is now: big live card, pinned style bar with the handle, dots and Continue. Only the step pill on top gets the new ticks.</span>
+      </div>
+    </div>
+
+    <!-- ============ 4 PAYMENT ============ -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <span style="font-size:14px;font-weight:800;color:#4A525C;">4 · Payment</span>
+      <div style="width:360px;height:780px;border-radius:40px;background:#F7F3EC;box-shadow:0 0 0 9px #0E141C,0 30px 60px -30px rgba(0,0,0,0.55);overflow:hidden;display:flex;flex-direction:column;">
+        <div style="padding:18px 18px 0;display:flex;align-items:center;justify-content:space-between;">
+          <span style="display:flex;align-items:center;gap:8px;"><img src="assets/nexbizrise-logo.png" alt="" style="height:26px;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span>
+          <span style="width:36px;height:36px;display:grid;place-items:center;font-size:20px;">✕</span>
+        </div>
+        <div style="margin:14px 16px 0;padding:4px;border-radius:999px;background:#EDE7DC;display:grid;grid-template-columns:repeat(4,1fr);font-size:12.5px;font-weight:700;">
+          <span style="height:34px;display:grid;place-items:center;color:#0B6F78;">✓ Plan</span>
+          <span style="height:34px;display:grid;place-items:center;color:#0B6F78;">✓ Card</span>
+          <span style="height:34px;display:grid;place-items:center;color:#0B6F78;">✓ Preview</span>
+          <span style="height:34px;border-radius:999px;background:#101820;color:#F7F3EC;display:grid;place-items:center;">Payment</span>
+        </div>
+        <div style="flex:1;padding:18px 16px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden;">
+          <span style="font-size:11px;font-weight:800;letter-spacing:0.16em;color:#B7893E;">STEP 4 OF 4</span>
+          <h2 style="margin:-6px 0 0;font-size:26px;font-weight:800;letter-spacing:-0.025em;">Complete your card</h2>
+          <p style="margin:-4px 0 0;font-size:13.5px;color:#4A525C;">One simple payment for the year. Restyle anytime, free.</p>
+          <div style="padding:12px;border-radius:20px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.07);display:flex;flex-direction:column;gap:12px;">
+            <div style="display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;">
+              <span style="height:150px;border-radius:14px;background:radial-gradient(120% 70% at 80% 10%,#23483a 0%,#0a1712 65%);padding:8px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;">
+                <span style="align-self:center;margin-bottom:auto;margin-top:6px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(216,179,106,0.7);color:#e2c27f;font-family:'Cormorant Garamond',serif;font-size:20px;display:grid;place-items:center;">SK</span>
+                <span style="font-family:'Cormorant Garamond',serif;font-size:12.5px;line-height:1;color:#f5efe3;">Sandeep<br>Koppisetty</span>
+                <span style="height:14px;border-radius:5px;background:#f2c98a;"></span>
+                <span style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;"><span style="height:12px;border-radius:4px;background:rgba(255,255,255,0.1);"></span><span style="height:12px;border-radius:4px;background:rgba(255,255,255,0.1);"></span><span style="height:12px;border-radius:4px;background:rgba(255,255,255,0.1);"></span></span>
+              </span>
+              <span style="display:flex;flex-direction:column;gap:6px;min-width:0;">
+                <span style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;"><span style="display:flex;flex-direction:column;"><span style="font-size:15px;font-weight:800;">Digital Card</span><span style="font-size:12.5px;color:#4A525C;">1 year</span></span><span style="display:flex;flex-direction:column;align-items:flex-end;"><span style="font-size:20px;font-weight:800;">$49</span><span style="font-size:12px;color:#8A9098;text-decoration:line-through;">$69</span></span></span>
+                <span style="display:flex;flex-direction:column;gap:3px;font-size:11.5px;line-height:1.3;color:#2E3440;"><span><b style="color:#0B7C86;">✓</b> Personal link &amp; QR code</span><span><b style="color:#0B7C86;">✓</b> Photo, name and title</span><span><b style="color:#0B7C86;">✓</b> Call, text, WhatsApp, email</span><span><b style="color:#0B7C86;">✓</b> Restyle anytime, free</span></span>
+              </span>
+            </div>
+            <div style="padding:12px 14px;border-radius:14px;background:#EEF6F4;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:15px;font-weight:800;">Total due today</span><span style="font-size:26px;font-weight:800;color:#0B6F78;">$49</span></div>
+          </div>
+          <div style="padding:10px 12px;border-radius:14px;background:#EEF6F4;display:flex;align-items:center;gap:10px;">
+            <span style="width:30px;height:30px;border-radius:50%;background:#D6ECE8;color:#0B6F78;display:grid;place-items:center;font-size:13px;">🔒</span>
+            <span style="display:flex;flex-direction:column;"><span style="font-size:13px;font-weight:800;">Secure checkout with Stripe</span><span style="font-size:12px;color:#4A525C;">Card, Apple Pay or Google Pay</span></span>
+          </div>
+          <span style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:12.5px;font-weight:700;color:#2E3440;">Coupon code <span style="font-weight:500;color:#8A9098;">(optional)</span></span><span style="display:grid;grid-template-columns:1fr auto;gap:8px;"><span style="height:46px;padding:0 12px;border-radius:12px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.12);font-size:14.5px;color:#9AA0A6;display:flex;align-items:center;">Enter code</span><span style="height:46px;padding:0 18px;border-radius:12px;border:1px solid rgba(16,24,32,0.18);background:#FFFFFF;font-size:14px;font-weight:700;display:grid;place-items:center;">Apply</span></span></span>
+        </div>
+        <div style="padding:12px 16px 20px;display:grid;grid-template-columns:1fr 1.5fr;gap:10px;">
+          <span style="height:52px;border-radius:999px;border:1px solid rgba(16,24,32,0.18);background:#FFFFFF;font-size:15px;font-weight:700;display:grid;place-items:center;">← Back</span>
+          <span style="height:52px;border-radius:999px;background:#101820;color:#F7F3EC;font-size:16px;font-weight:700;display:grid;place-items:center;">Pay $49 →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 5 DONE ============ -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <span style="font-size:14px;font-weight:800;color:#4A525C;">5 · After order</span>
+      <div style="position:relative;width:360px;height:780px;border-radius:40px;background:#F7F3EC;box-shadow:0 0 0 9px #0E141C,0 30px 60px -30px rgba(0,0,0,0.55);overflow:hidden;display:flex;flex-direction:column;">
+        <span aria-hidden="true" style="position:absolute;inset:0 0 auto 0;height:330px;background:radial-gradient(90% 60% at 50% 0%,#F1E2C4 0%,rgba(241,226,196,0) 70%);"></span>
+        <span aria-hidden="true" style="position:absolute;left:-120px;top:150px;width:360px;height:220px;border-radius:50%;border-top:26px solid rgba(233,207,160,0.35);transform:rotate(-14deg);"></span>
+        <span aria-hidden="true" style="position:absolute;right:-150px;top:110px;width:380px;height:240px;border-radius:50%;border-top:34px solid rgba(233,207,160,0.28);transform:rotate(18deg);"></span>
+        <span aria-hidden="true" style="position:absolute;right:-60px;top:190px;width:260px;height:180px;border-radius:50%;border-top:10px solid rgba(215,178,110,0.25);transform:rotate(22deg);"></span>
+        <span aria-hidden="true" style="position:absolute;left:78px;top:92px;width:5px;height:9px;border-radius:2px;background:#D9B06A;transform:rotate(-30deg);"></span>
+        <span aria-hidden="true" style="position:absolute;left:58px;top:136px;width:4px;height:8px;border-radius:2px;background:#E5C48A;transform:rotate(25deg);"></span>
+        <span aria-hidden="true" style="position:absolute;left:112px;top:128px;width:6px;height:6px;border-radius:50%;background:#EAD3A2;"></span>
+        <span aria-hidden="true" style="position:absolute;right:92px;top:86px;width:5px;height:10px;border-radius:2px;background:#D9B06A;transform:rotate(35deg);"></span>
+        <span aria-hidden="true" style="position:absolute;right:62px;top:132px;width:4px;height:9px;border-radius:2px;background:#C9A45C;transform:rotate(-20deg);"></span>
+        <span aria-hidden="true" style="position:absolute;right:120px;top:140px;width:5px;height:5px;border-radius:50%;background:#9FD3CC;"></span>
+        <div style="position:relative;padding:18px 18px 0;display:flex;align-items:center;justify-content:space-between;">
+          <span style="display:flex;align-items:center;gap:8px;"><img src="assets/nexbizrise-logo.png" alt="" style="height:26px;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;">NexBiz<span style="color:#0B7C86;">Rise</span></span></span>
+        </div>
+        <div style="position:relative;flex:1;padding:26px 16px 0;display:flex;flex-direction:column;align-items:center;gap:12px;overflow:hidden;">
+          <span style="width:66px;height:66px;border-radius:50%;background:#E3F1E6;border:1px solid #BFDCC6;box-shadow:0 0 0 10px rgba(227,241,230,0.5);color:#1F6B3A;display:grid;place-items:center;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+          <h2 style="margin:10px 0 0;font-size:30px;font-weight:800;letter-spacing:-0.03em;text-align:center;">Your card is ready!</h2>
+          <p style="margin:-4px 0 6px;max-width:280px;font-size:14px;line-height:1.5;color:#4A525C;text-align:center;">Your digital card is live. Share it by message, or print the QR code on anything.</p>
+          <div style="width:100%;box-sizing:border-box;padding:14px;border-radius:22px;background:#FFFFFF;box-shadow:0 12px 30px -18px rgba(90,60,20,0.35);display:flex;flex-direction:column;gap:12px;">
+            <div style="display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px;align-items:center;">
+              <span style="height:100px;padding:8px;box-sizing:border-box;border-radius:16px;border:1px solid #EAD7B4;background:#FFFDF9;display:grid;place-items:center;"><img alt="QR code" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=https%3A%2F%2Fcard.nexbizrise.com%2Fc%2Fnbr_7f3a91" style="width:82px;height:82px;display:block;"></span>
+              <span style="display:flex;flex-direction:column;gap:6px;min-width:0;"><span style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;color:#8A9098;">YOUR CARD LINK</span><span style="font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">card.nexbizrise.com/c/nbr_7f3a91</span><span style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.4;color:#4A525C;"><span style="width:22px;height:22px;flex:none;border-radius:50%;background:#F3E9D8;color:#8A5A1C;display:grid;place-items:center;font-size:11px;">∞</span>This link never changes.</span></span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+              <span style="height:46px;border-radius:12px;border:1px solid rgba(16,24,32,0.15);font-size:13px;font-weight:700;display:grid;place-items:center;">Open card</span>
+              <span style="height:46px;border-radius:12px;background:#101820;color:#F7F3EC;font-size:13px;font-weight:700;display:grid;place-items:center;box-shadow:0 8px 16px -10px rgba(16,24,32,0.6);">Copy link</span>
+              <span style="height:46px;border-radius:12px;border:1px solid rgba(16,24,32,0.15);font-size:13px;font-weight:700;display:grid;place-items:center;">Download QR</span>
+            </div>
+          </div>
+          <div style="width:100%;box-sizing:border-box;padding:14px;border-radius:20px;background:linear-gradient(120deg,#E4F2EF 0%,#F7F3EC 100%);display:flex;align-items:center;gap:12px;">
+            <span style="width:42px;height:42px;flex:none;border-radius:50%;background:#CFE8E3;color:#0B6F78;display:grid;place-items:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></span>
+            <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-size:15px;font-weight:800;">Restyle anytime, free</span><span style="font-size:12.5px;color:#4A525C;">Your private edit link is in your email.</span></span>
+          </div>
+          <div style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:18px;background:#FFFFFF;box-shadow:0 8px 20px -16px rgba(90,60,20,0.35);display:flex;align-items:center;gap:12px;">
+            <span style="width:38px;height:38px;flex:none;border-radius:50%;background:#F3E9D8;color:#8A5A1C;display:grid;place-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6zM9 11h6M9 15h6"></path></svg></span>
+            <span style="flex:1;display:flex;flex-direction:column;"><span style="font-size:12px;color:#8A9098;">Order number</span><span style="font-size:15px;font-weight:800;letter-spacing:0.02em;">NBR-K7Q2XP</span></span>
+            <span style="height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(16,24,32,0.15);font-size:13px;font-weight:700;display:grid;place-items:center;">Copy</span>
+          </div>
+        </div>
+        <div style="position:relative;padding:12px 16px 22px;display:flex;align-items:center;justify-content:space-between;">
+          <span style="height:46px;padding:0 20px;border-radius:999px;border:1px solid rgba(16,24,32,0.18);background:#FFFFFF;font-size:14px;font-weight:700;display:grid;place-items:center;">＋ Order another card</span>
+          <a href="#" style="font-size:14px;font-weight:700;color:#0B7C86;">Back to home →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

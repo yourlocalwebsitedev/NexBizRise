@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<style>
+body{margin:0;background:#DCD7CE;font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:#0B7C86;text-decoration:none;}a:hover{color:#086670;}
+@keyframes blobA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-40px,50px) scale(1.15);}}
+@keyframes blobB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(50px,-30px) scale(0.9);}}
+@keyframes floatUp{0%{transform:translateY(0);opacity:0;}15%{opacity:1;}85%{opacity:1;}100%{transform:translateY(-220px);opacity:0;}}
+@keyframes gridPan{from{background-position:0 0;}to{background-position:0 40px;}}
+@keyframes sweepGlow{0%,100%{opacity:.55;transform:translateX(-20%);}50%{opacity:.9;transform:translateX(20%);}}
+@keyframes ringPulse{0%{transform:scale(.6);opacity:.7;}100%{transform:scale(2.4);opacity:0;}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+</helmet>
+<section style="padding:48px;display:flex;flex-direction:column;gap:28px;">
+  <div style="display:flex;flex-direction:column;gap:6px;max-width:760px;">
+    <h1 style="margin:0;font-size:24px;font-weight:800;color:#101820;">Mobile hero: 4 background directions</h1>
+    <p style="margin:0;font-size:14px;line-height:1.5;color:#5A6068;">All keep the ivory and ink brand. The backgrounds move slowly. They're shown at iPhone width (375px).</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start;">
+
+    <!-- 3a AURORA -->
+    <div id="3a" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">3a</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Soft aurora</span></div>
+      <div style="position:relative;width:375px;height:740px;border-radius:36px;overflow:hidden;background:#F5F2EC;box-shadow:0 30px 60px rgba(40,30,15,0.18);">
+        <div aria-hidden="true" style="position:absolute;top:-80px;right:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(11,124,134,0.38),rgba(11,124,134,0) 65%);filter:blur(10px);animation:blobA 14s ease-in-out infinite;"></div>
+        <div aria-hidden="true" style="position:absolute;top:260px;left:-140px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(214,176,112,0.45),rgba(214,176,112,0) 65%);filter:blur(10px);animation:blobB 16s ease-in-out infinite;"></div>
+        <div aria-hidden="true" style="position:absolute;bottom:-120px;right:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(11,124,134,0.22),rgba(11,124,134,0) 65%);animation:blobA 18s ease-in-out infinite reverse;"></div>
+        <div style="position:relative;height:56px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#101820;">NexBiz<span style="color:#0B7C86;">Rise</span></span><span style="font-size:20px;color:#101820;">☰</span></div>
+        <div style="position:relative;padding:40px 22px 0;display:flex;flex-direction:column;gap:18px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.16em;color:#0B7C86;">— AGENTIC AI FOR GROWING BUSINESSES</span>
+          <h2 style="margin:0;font-size:38px;line-height:1.02;font-weight:800;letter-spacing:-0.035em;color:#101820;">Helping Businesses <span style="display:block;color:#0B7C86;">Get More Customers.</span></h2>
+          <p style="margin:0;font-size:16px;line-height:1.55;color:#3A4048;">Beautiful websites, AI-powered automations, and missed call recovery systems that turn more leads into real customers.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;"><span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font-weight:700;">Get a Free Demo →</span><span style="height:52px;border-radius:999px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border:1px solid rgba(16,24,32,0.14);color:#101820;display:flex;align-items:center;justify-content:center;font-weight:600;">See How It Works</span></div>
+          <div style="margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.72);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.9);display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:#101820;"><span style="width:30px;height:30px;border-radius:9px;background:rgba(11,124,134,0.12);"></span>Missed call detected</div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">Large soft teal and sand glows drift slowly behind the content. The cards become frosted glass. It's calm and premium, with the least risk.</p>
+    </div>
+
+    <!-- 3b DARK BAND -->
+    <div id="3b" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">3b</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Ink hero band</span></div>
+      <div style="position:relative;width:375px;height:740px;border-radius:36px;overflow:hidden;background:#F5F2EC;box-shadow:0 30px 60px rgba(40,30,15,0.18);">
+        <div style="position:relative;background:#101820;border-radius:0 0 32px 32px;padding-bottom:30px;overflow:hidden;">
+          <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(245,242,236,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(245,242,236,0.05) 1px,transparent 1px);background-size:40px 40px;animation:gridPan 6s linear infinite;mask-image:linear-gradient(180deg,#000,transparent 90%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 90%);"></div>
+          <div aria-hidden="true" style="position:absolute;top:-60px;left:10%;width:80%;height:260px;border-radius:50%;background:radial-gradient(ellipse,rgba(11,124,134,0.55),transparent 70%);animation:sweepGlow 9s ease-in-out infinite;"></div>
+          <div style="position:relative;height:56px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#F5F2EC;">NexBiz<span style="color:#5FC6CE;">Rise</span></span><span style="font-size:20px;color:#F5F2EC;">☰</span></div>
+          <div style="position:relative;padding:36px 22px 0;display:flex;flex-direction:column;gap:18px;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.16em;color:#5FC6CE;">— AGENTIC AI FOR GROWING BUSINESSES</span>
+            <h2 style="margin:0;font-size:38px;line-height:1.02;font-weight:800;letter-spacing:-0.035em;color:#F5F2EC;">Helping Businesses <span style="display:block;color:#5FC6CE;">Get More Customers.</span></h2>
+            <p style="margin:0;font-size:16px;line-height:1.55;color:#C9CDD2;">Beautiful websites, AI-powered automations, and missed call recovery systems that turn more leads into real customers.</p>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;"><span style="height:52px;border-radius:999px;background:#F5F2EC;color:#101820;display:flex;align-items:center;justify-content:center;font-weight:700;">Get a Free Demo →</span><span style="height:52px;border-radius:999px;border:1px solid rgba(245,242,236,0.25);color:#F5F2EC;display:flex;align-items:center;justify-content:center;font-weight:600;">See How It Works</span></div>
+          </div>
+        </div>
+        <div style="padding:22px 22px 0;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#5A6068;">AFTER A MISSED CALL</span>
+          <div style="padding:12px 14px;border-radius:14px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.08);display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:#101820;"><span style="width:30px;height:30px;border-radius:9px;background:rgba(11,124,134,0.12);"></span>Missed call detected</div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">A deep ink first screen with a slowly moving grid and a teal glow, curving into the ivory page. The strongest "real website" feel, and it matches the dark phone mockups.</p>
+    </div>
+
+    <!-- 3c FLOATING MESSAGES -->
+    <div id="3c" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">3c</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Floating messages</span></div>
+      <div style="position:relative;width:375px;height:740px;border-radius:36px;overflow:hidden;background:linear-gradient(180deg,#EFEBE3,#F5F2EC 60%);box-shadow:0 30px 60px rgba(40,30,15,0.18);">
+        <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;">
+          <span style="position:absolute;top:300px;right:-18px;padding:8px 12px;border-radius:14px 14px 4px 14px;background:#FFFFFF;box-shadow:0 8px 20px rgba(40,30,15,0.08);font-size:12px;color:#5A6068;opacity:.5;animation:floatUp 9s linear infinite;">Can you come Tuesday?</span>
+          <span style="position:absolute;top:360px;left:-10px;padding:8px 12px;border-radius:14px 14px 14px 4px;background:#101820;color:#F5F2EC;font-size:12px;opacity:.35;animation:floatUp 11s linear 2s infinite;">Booked ✓ 9:00 AM</span>
+          <span style="position:absolute;top:320px;left:150px;padding:8px 12px;border-radius:14px;background:rgba(11,124,134,0.14);color:#086670;font-size:12px;font-weight:600;animation:floatUp 10s linear 5s infinite;">Missed call · 10:24</span>
+          <span style="position:absolute;top:380px;right:30px;padding:8px 12px;border-radius:14px;background:#FFFFFF;font-size:12px;color:#5A6068;opacity:.5;animation:floatUp 12s linear 7s infinite;">Need a quote</span>
+        </div>
+        <div style="position:relative;height:56px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#101820;">NexBiz<span style="color:#0B7C86;">Rise</span></span><span style="font-size:20px;color:#101820;">☰</span></div>
+        <div style="position:relative;padding:40px 22px 0;display:flex;flex-direction:column;gap:18px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.16em;color:#0B7C86;">— AGENTIC AI FOR GROWING BUSINESSES</span>
+          <h2 style="margin:0;font-size:38px;line-height:1.02;font-weight:800;letter-spacing:-0.035em;color:#101820;">Helping Businesses <span style="display:block;color:#0B7C86;">Get More Customers.</span></h2>
+          <p style="margin:0;font-size:16px;line-height:1.55;color:#3A4048;">Beautiful websites, AI-powered automations, and missed call recovery systems that turn more leads into real customers.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;"><span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font-weight:700;">Get a Free Demo →</span><span style="height:52px;border-radius:999px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.14);color:#101820;display:flex;align-items:center;justify-content:center;font-weight:600;">See How It Works</span></div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">Faint customer messages ("Missed call", "Need a quote", "Booked ✓") drift upward behind the content. It tells the product story without extra words, but it's the busiest option.</p>
+    </div>
+
+    <!-- 3d SIGNAL RINGS -->
+    <div id="3d" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="padding:3px 8px;border-radius:6px;background:#101820;color:#fff;font-size:12px;font-weight:800;">3d</span><span style="font-size:14px;font-weight:700;color:#1A222B;">Signal rings + teal footer</span></div>
+      <div style="position:relative;width:375px;height:740px;border-radius:36px;overflow:hidden;background:#F5F2EC;box-shadow:0 30px 60px rgba(40,30,15,0.18);">
+        <div aria-hidden="true" style="position:absolute;top:70px;right:-60px;width:220px;height:220px;">
+          <span style="position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(11,124,134,0.35);animation:ringPulse 4s ease-out infinite;"></span>
+          <span style="position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(11,124,134,0.35);animation:ringPulse 4s ease-out 1.33s infinite;"></span>
+          <span style="position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(11,124,134,0.35);animation:ringPulse 4s ease-out 2.66s infinite;"></span>
+          <span style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px;border-radius:50%;background:#0B7C86;"></span>
+        </div>
+        <div style="position:relative;height:56px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#101820;">NexBiz<span style="color:#0B7C86;">Rise</span></span><span style="font-size:20px;color:#101820;">☰</span></div>
+        <div style="position:relative;padding:40px 22px 0;display:flex;flex-direction:column;gap:18px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.16em;color:#0B7C86;">— AGENTIC AI FOR GROWING BUSINESSES</span>
+          <h2 style="margin:0;font-size:38px;line-height:1.02;font-weight:800;letter-spacing:-0.035em;color:#101820;">Helping Businesses <span style="display:block;color:#0B7C86;">Get More Customers.</span></h2>
+          <p style="margin:0;font-size:16px;line-height:1.55;color:#3A4048;">Beautiful websites, AI-powered automations, and missed call recovery systems that turn more leads into real customers.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;"><span style="height:52px;border-radius:999px;background:#101820;color:#F5F2EC;display:flex;align-items:center;justify-content:center;font-weight:700;">Get a Free Demo →</span><span style="height:52px;border-radius:999px;background:#FFFFFF;border:1px solid rgba(16,24,32,0.14);color:#101820;display:flex;align-items:center;justify-content:center;font-weight:600;">See How It Works</span></div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:150px;box-sizing:border-box;background:#0B5E66;border-radius:32px 32px 0 0;padding:20px 22px;display:flex;flex-direction:column;gap:10px;">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:#BFE3E6;">AFTER A MISSED CALL</span>
+          <div style="padding:12px 14px;border-radius:14px;background:#FFFFFF;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;color:#101820;"><span style="width:30px;height:30px;border-radius:9px;background:rgba(11,124,134,0.12);"></span>Missed call detected</div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:375px;font-size:13px;line-height:1.5;color:#5A6068;">Teal "incoming call" rings pulse at the top right, and the workflow sits on a deep teal panel, which splits the screen into clear bands.</p>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

@@ -88,6 +88,14 @@ alter table public.orders add column if not exists coupon text;
 alter table public.orders add column if not exists discount numeric not null default 0;
 alter table public.orders add column if not exists idem text;
 create unique index if not exists orders_idem_key on public.orders (idem) where idem is not null;
+-- Payment (Stripe for US, Razorpay for India). Cards go live only after payment is confirmed.
+alter table public.orders add column if not exists pay_status text not null default 'unpaid';
+alter table public.orders drop constraint if exists orders_pay_status_check;
+alter table public.orders add constraint orders_pay_status_check check (pay_status in ('unpaid','paid','refunded','waived'));
+alter table public.orders add column if not exists paid_at timestamptz;
+alter table public.orders add column if not exists pay_provider text;
+alter table public.orders add column if not exists pay_ref text;
+alter table public.orders add column if not exists amount_paid numeric;
 alter table public.orders enable row level security;
 create index if not exists orders_created_idx on public.orders (created_at desc);
 drop policy if exists "admins manage orders" on public.orders;
@@ -225,7 +233,7 @@ grant execute on function public.check_coupon(text, text, text, text) to anon, a
 
 -- ================================================================
 -- ORDERS: public entry point. Creates the order AND its client card in one step.
--- Builder orders go live immediately; "design it for me" cards start paused until delivered.
+-- Every card starts paused. Payment confirmed -> self-built cards go live; "design it for me" cards go live when delivered.
 -- ================================================================
 create or replace function public.place_order_core(payload jsonb)
 returns jsonb language plpgsql security definer set search_path = public as $$
@@ -249,8 +257,8 @@ begin
   -- Same order sent twice (double tap, or retry after a dropped connection): return the first one instead of making a duplicate.
   if coalesce(payload->>'idem', '') ~ '^[a-f0-9-]{36}$' then
     declare p_prev record; begin
-      select o.order_no, o.discount, o.total, c.slug, c.public_id into p_prev from orders o left join cards c on c.id = o.card_id where o.idem = payload->>'idem';
-      if found then return jsonb_build_object('order_no', p_prev.order_no, 'slug', p_prev.slug, 'public_id', p_prev.public_id, 'discount', p_prev.discount, 'total', p_prev.total, 'repeat', true); end if;
+      select o.order_no, o.discount, o.total, o.pay_status, c.slug, c.public_id into p_prev from orders o left join cards c on c.id = o.card_id where o.idem = payload->>'idem';
+      if found then return jsonb_build_object('order_no', p_prev.order_no, 'slug', p_prev.slug, 'public_id', p_prev.public_id, 'discount', p_prev.discount, 'total', p_prev.total, 'pay_status', p_prev.pay_status, 'repeat', true); end if;
     end;
   end if;
   if v_mode not in ('builder','dfm') or v_plan not in ('basic','motion') then raise exception 'invalid order'; end if;
@@ -259,17 +267,20 @@ begin
   while exists (select 1 from cards where slug = v_slug) loop
     v_slug := v_base || (10 + floor(random() * 90))::int;
   end loop;
-  v_card := v_card || jsonb_build_object('region', v_region, 'slug', v_slug, 'active', v_mode = 'builder', 'renewal', (current_date + interval '1 year')::date);
+  v_card := v_card || jsonb_build_object('region', v_region, 'slug', v_slug, 'active', false, 'renewal', (current_date + interval '1 year')::date);
 
   -- Server-side input hardening (never trust the browser)
   v_ex := case when jsonb_typeof(v_card->'extras') = 'object' then v_card->'extras' else '{}'::jsonb end;
   v_ex := v_ex || jsonb_build_object(
     'facebook',     case when v_ex->>'facebook'     ~* '^https://[^\s<>"'']+$' then left(v_ex->>'facebook', 500)     else '' end,
+    'x_url',        case when v_ex->>'x_url'        ~* '^https://(www\.)?(x|twitter)\.com/[A-Za-z0-9_]{1,30}/?$' then v_ex->>'x_url' else '' end,
     'listings_url', case when v_ex->>'listings_url' ~* '^https://[^\s<>"'']+$' then left(v_ex->>'listings_url', 500) else '' end,
     'booking_url',  case when v_ex->>'booking_url'  ~* '^https://[^\s<>"'']+$' then left(v_ex->>'booking_url', 500)  else '' end,
     'iabs_url',     case when v_ex->>'iabs_url'     ~* '^https://[^\s<>"'']+$' then left(v_ex->>'iabs_url', 500)     else '' end);
   -- Business-specific fields (health, beauty, legal, trades, corporate)
   v_ex := v_ex || jsonb_build_object('meeting_url', case when v_ex->>'meeting_url' ~* '^https://[^\s<>"'']+$' then left(v_ex->>'meeting_url', 500) else '' end, 'reg_no', left(coalesce(v_ex->>'reg_no', ''), 60), 'quals', left(coalesce(v_ex->>'quals', ''), 120), 'hours', left(coalesce(v_ex->>'hours', ''), 80), 'services', left(coalesce(v_ex->>'services', ''), 300), 'practice', left(coalesce(v_ex->>'practice', ''), 200), 'service_area', left(coalesce(v_ex->>'service_area', ''), 120), 'insured', left(coalesce(v_ex->>'insured', ''), 20), 'emergency', left(coalesce(v_ex->>'emergency', ''), 20));
+  -- Link-preview image (square JPG made in the browser from the photo or a video frame)
+  v_ex := v_ex || jsonb_build_object('og_image', case when coalesce(v_ex->>'og_image', '') ~ '^https://((img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}|hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+)\.jpg$' then v_ex->>'og_image' else '' end);
   v_card := v_card || jsonb_build_object(
     'extras', v_ex,
     'website',   case when v_card->>'website'   ~* '^https?://[^\s<>"'']+$' then left(v_card->>'website', 500)   else '' end,
@@ -287,6 +298,11 @@ begin
     'quote', left(coalesce(v_card->>'quote',''), 300), 'bio', left(coalesce(v_card->>'bio',''), 1200),
     'city', left(coalesce(v_card->>'city',''), 80), 'notes', left(coalesce(v_card->>'notes',''), 2000));
   if length(regexp_replace(v_card->>'phone', '\D', '', 'g')) < 7 then raise exception 'missing fields'; end if;
+  -- Phone must be a real number for the order's country: India 10 digits (optionally 91/0), US 10 digits (optionally 1)
+  declare d text := regexp_replace(v_card->>'phone', '\D', '', 'g'); begin
+    if v_region = 'IN' and not (d ~ '^[6-9][0-9]{9}$' or d ~ '^91[6-9][0-9]{9}$' or d ~ '^0[6-9][0-9]{9}$') then raise exception 'invalid phone'; end if;
+    if v_region = 'US' and not (d ~ '^[2-9][0-9]{9}$' or d ~ '^1[2-9][0-9]{9}$') then raise exception 'invalid phone'; end if;
+  end;
 
   insert into cards (extras, region, layout, photo_x, photo_y, photo_zoom, phone_display, signature, titles, contact_photo_url, show_powered_by,
     profession, profession_other, city, notes, slug, prefix, first_name, last_name, title, company, preset, colour, category, tagline,
@@ -312,9 +328,55 @@ begin
     left(payload->>'customer_name', 120), left(payload->>'customer_email', 200), left(payload->>'customer_phone', 40), left(payload->>'notes', 4000),
     v_card, v_card_id, v_coupon, v_disc);
 
-  return jsonb_build_object('order_no', v_no, 'slug', v_slug, 'public_id', v_pid, 'edit_token', v_tok, 'discount', v_disc, 'total', v_price - v_disc + v_tax);
+  -- 100% coupon (partners, sales agents, influencers): nothing to pay, so the order counts as paid now.
+  if v_price - v_disc + v_tax <= 0 then
+    update orders set pay_status = 'waived', paid_at = now(), pay_provider = 'coupon' where order_no = v_no;
+    if v_mode = 'builder' then update cards set active = true where id = v_card_id; end if;
+    return jsonb_build_object('order_no', v_no, 'slug', v_slug, 'public_id', v_pid, 'edit_token', v_tok, 'discount', v_disc, 'total', 0, 'pay_status', 'waived');
+  end if;
+  return jsonb_build_object('order_no', v_no, 'slug', v_slug, 'public_id', v_pid, 'edit_token', v_tok, 'discount', v_disc, 'total', v_price - v_disc + v_tax, 'pay_status', 'unpaid');
 end $$;
 revoke all on function public.place_order_core(jsonb) from public, anon, authenticated;
+
+-- PAYMENTS: called only by the site worker (needs the 'worker' secret row in app_secrets).
+-- The worker checks the Stripe/Razorpay signature, then calls this. Amount and currency must match the order.
+create or replace function public.mark_order_paid(p_order_no text, p_provider text, p_ref text, p_amount_minor bigint, p_currency text)
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare o record; c record; v_first boolean := false; v_tok text := '';
+begin
+  if not from_worker() then raise exception 'not allowed'; end if;
+  select * into o from orders where order_no = p_order_no for update;
+  if not found then raise exception 'order not found'; end if;
+  if upper(coalesce(p_currency, '')) <> o.currency then raise exception 'currency mismatch'; end if;
+  if coalesce(p_amount_minor, 0) < round(coalesce(o.total, o.price) * 100) then raise exception 'amount mismatch'; end if;
+  if o.pay_status <> 'paid' then
+    update orders set pay_status = 'paid', paid_at = now(), pay_provider = left(coalesce(p_provider, ''), 20), pay_ref = left(coalesce(p_ref, ''), 120), amount_paid = p_amount_minor / 100.0 where id = o.id;
+    if o.mode = 'builder' and o.card_id is not null then update cards set active = true where id = o.card_id; end if;
+    -- Fresh private edit link for the "paid" email (the one made at checkout is never stored in plain text)
+    if o.card_id is not null then v_tok := new_edit_token(); update cards set edit_hash = edit_hash_of(v_tok) where id = o.card_id; end if;
+    v_first := true;
+  end if;
+  select slug, public_id into c from cards where id = o.card_id;
+  return jsonb_build_object('ok', true, 'first', v_first, 'order_no', o.order_no, 'mode', o.mode, 'plan', o.plan, 'region', o.region, 'total', o.total, 'currency', o.currency,
+    'customer_email', o.customer_email, 'customer_name', o.customer_name, 'customer_phone', o.customer_phone, 'notes', o.notes, 'slug', c.slug, 'public_id', c.public_id, 'edit_token', v_tok);
+end $$;
+revoke all on function public.mark_order_paid(text, text, text, bigint, text) from public;
+grant execute on function public.mark_order_paid(text, text, text, bigint, text) to anon, authenticated;
+
+-- Look up an order to start (or retry) payment. Needs the order number AND the browser's order key (idem).
+create or replace function public.get_order_for_pay(p_order_no text, p_idem text)
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare o record; c record;
+begin
+  if not from_worker() then raise exception 'not allowed'; end if;
+  select * into o from orders where order_no = p_order_no and idem is not null and idem = p_idem;
+  if not found then raise exception 'order not found'; end if;
+  select slug, public_id into c from cards where id = o.card_id;
+  return jsonb_build_object('order_no', o.order_no, 'mode', o.mode, 'plan', o.plan, 'region', o.region, 'total', o.total, 'currency', o.currency, 'pay_status', o.pay_status,
+    'customer_email', o.customer_email, 'customer_phone', o.customer_phone, 'slug', c.slug, 'public_id', c.public_id);
+end $$;
+revoke all on function public.get_order_for_pay(text, text) from public;
+grant execute on function public.get_order_for_pay(text, text) to anon, authenticated;
 
 -- Production TODO: move photo data URLs into the "photos" storage bucket, add a bot check (Turnstile), email alert via Resend.
 
@@ -371,12 +433,45 @@ begin
   select id, email, first_name into v_card, v_email, v_owner from cards where slug = lower(p_slug) and active is not false and coalesce((extras->>'lead_capture')::boolean, true);
   if v_card is null then raise exception 'card not found'; end if;
   if length(coalesce(trim(p_name),'')) = 0 or length(regexp_replace(v_phone, '\D', '', 'g')) < 7 then raise exception 'missing fields'; end if;
+  if length(regexp_replace(v_phone, '\D', '', 'g')) not between 10 and 15 then raise exception 'invalid phone'; end if;
   if (select count(*) from leads where card_id = v_card and phone = v_phone and created_at > now() - interval '1 day') >= 5 then raise exception 'too many'; end if;
   insert into leads (card_id, slug, name, phone, email, topic, message, source)
   values (v_card, lower(p_slug), left(trim(p_name), 120), v_phone, left(coalesce(p_email,''), 200), left(coalesce(p_topic,''), 40), left(coalesce(p_message,''), 1000), left(coalesce(p_source,'card'), 40));
   return jsonb_build_object('ok', true, 'owner_email', coalesce(v_email, ''), 'owner_name', coalesce(v_owner, ''));
 end $$;
 revoke all on function public.submit_lead_core(text, text, text, text, text, text, text) from public, anon, authenticated;
+
+-- Demo requests from the website contact form (nexbizrise.com/#/contact). Sent through the site worker.
+create table if not exists public.site_leads (
+  id uuid primary key default gen_random_uuid(),
+  name text not null, business_name text not null, email text not null, phone text not null,
+  business_type text default '', website_url text default '', message text default '', preferred_contact text default '',
+  page text default '', status text not null default 'new' check (status in ('new','contacted','closed')),
+  created_at timestamptz not null default now()
+);
+create index if not exists site_leads_at_idx on public.site_leads (created_at desc);
+alter table public.site_leads enable row level security;
+drop policy if exists "admins manage site leads" on public.site_leads;
+create policy "admins manage site leads" on public.site_leads for all
+  using (exists (select 1 from public.admins a where a.user_id = auth.uid()))
+  with check (exists (select 1 from public.admins a where a.user_id = auth.uid()));
+create or replace function public.submit_site_lead(p jsonb) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare v_phone text := left(regexp_replace(coalesce(p->>'phone',''), '[^0-9+]', '', 'g'), 20); v_email text := lower(trim(coalesce(p->>'email','')));
+begin
+  perform bot_gate(); perform rate_check('site_lead', 5, interval '1 hour');
+  if length(trim(coalesce(p->>'name',''))) < 2 or length(trim(coalesce(p->>'business_name',''))) < 2 then raise exception 'missing fields'; end if;
+  if v_email !~* '^[^\s@<>]+@[^\s@<>]+\.[a-z]{2,}$' then raise exception 'invalid email'; end if;
+  if length(regexp_replace(v_phone, '\D', '', 'g')) not between 10 and 15 then raise exception 'invalid phone'; end if;
+  if length(trim(coalesce(p->>'message',''))) < 10 then raise exception 'missing fields'; end if;
+  if (select count(*) from site_leads where email = v_email and created_at > now() - interval '1 day') >= 3 then raise exception 'too many'; end if;
+  insert into site_leads (name, business_name, email, phone, business_type, website_url, message, preferred_contact, page)
+  values (left(trim(p->>'name'), 120), left(trim(p->>'business_name'), 160), left(v_email, 200), v_phone, left(coalesce(p->>'business_type',''), 60),
+    left(coalesce(p->>'website_url',''), 300), left(trim(p->>'message'), 2000), left(coalesce(p->>'preferred_contact_method',''), 20), left(coalesce(p->>'page',''), 80));
+  return jsonb_build_object('ok', true);
+end $$;
+revoke all on function public.submit_site_lead(jsonb) from public;
+grant execute on function public.submit_site_lead(jsonb) to anon, authenticated;
 
 
 -- ================================================================
@@ -399,10 +494,10 @@ drop view if exists public.public_card_extras;
 create view public.public_card_extras as
   select public_id, slug, jsonb_strip_nulls(jsonb_build_object(
     'brokerage', extras->'brokerage', 'license_no', extras->'license_no', 'license_state', extras->'license_state',
-    'facebook', extras->'facebook', 'listings_url', extras->'listings_url', 'booking_url', extras->'booking_url',
+    'facebook', extras->'facebook', 'x_url', extras->'x_url', 'listings_url', extras->'listings_url', 'booking_url', extras->'booking_url',
     'office_address', extras->'office_address', 'iabs_url', extras->'iabs_url', 'lead_capture', extras->'lead_capture',
     'seasonal', extras->'seasonal', 'seasonal_addon', extras->'seasonal_addon', 'greeting', extras->'greeting', 'motion', to_jsonb(plan = 'motion'),
-    'meeting_url', extras->'meeting_url', 'reg_no', extras->'reg_no', 'quals', extras->'quals', 'hours', extras->'hours', 'services', extras->'services', 'practice', extras->'practice', 'service_area', extras->'service_area', 'insured', extras->'insured', 'emergency', extras->'emergency')) as extras
+    'meeting_url', extras->'meeting_url', 'reg_no', extras->'reg_no', 'quals', extras->'quals', 'hours', extras->'hours', 'services', extras->'services', 'practice', extras->'practice', 'service_area', extras->'service_area', 'insured', extras->'insured', 'emergency', extras->'emergency', 'og_image', extras->'og_image')) as extras
   from public.cards where active is not false;
 grant select on public.public_card_extras to anon, authenticated;
 
@@ -474,7 +569,7 @@ begin
   v_ex := coalesce(r.extras, '{}'::jsonb) || jsonb_build_object(
     'brokerage', left(coalesce(v_in->>'brokerage', ''), 120), 'license_no', left(coalesce(v_in->>'license_no', ''), 40),
     'license_state', upper(left(coalesce(v_in->>'license_state', ''), 2)), 'office_address', left(coalesce(v_in->>'office_address', ''), 200),
-    'facebook', safe_https(v_in->>'facebook', 500), 'listings_url', safe_https(v_in->>'listings_url', 500),
+    'facebook', safe_https(v_in->>'facebook', 500), 'x_url', safe_https(v_in->>'x_url', 200), 'listings_url', safe_https(v_in->>'listings_url', 500),
     'booking_url', safe_https(v_in->>'booking_url', 500), 'iabs_url', safe_https(v_in->>'iabs_url', 500),
     'greeting', left(coalesce(v_in->>'greeting', ''), 60), 'seasonal', coalesce(v_in->>'seasonal', 'true') <> 'false',
     'meeting_url', safe_https(v_in->>'meeting_url', 500), 'reg_no', left(coalesce(v_in->>'reg_no', ''), 60), 'quals', left(coalesce(v_in->>'quals', ''), 120), 'hours', left(coalesce(v_in->>'hours', ''), 80), 'services', left(coalesce(v_in->>'services', ''), 300), 'practice', left(coalesce(v_in->>'practice', ''), 200), 'service_area', left(coalesce(v_in->>'service_area', ''), 120), 'insured', left(coalesce(v_in->>'insured', ''), 20), 'emergency', left(coalesce(v_in->>'emergency', ''), 20));
@@ -483,6 +578,9 @@ begin
     when v->>'photo_url' ~ '^https://hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+$'
       or v->>'photo_url' ~ '^https://(img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}\.(webp|jpg|png|gif|mp4|webm)$' then v->>'photo_url'
     else r.photo_url end;
+  v_ex := v_ex || jsonb_build_object('og_image', case when v_photo = '' then ''
+    when coalesce(v_in->>'og_image', '') ~ '^https://((img\.nexbizrise\.com|(www\.|card\.)?nexbizrise\.com/img)/p/[a-f0-9]{24}|hyaqvmrtqafqhbhcdecd\.supabase\.co/storage/v1/object/public/photos/orders/[A-Za-z0-9._-]+)\.jpg$' then v_in->>'og_image'
+    when v_photo = r.photo_url then coalesce(r.extras->>'og_image', '') else '' end);
   update cards set
     first_name = left(trim(v->>'first_name'), 60), last_name = left(coalesce(v->>'last_name', ''), 60),
     title = left(coalesce(v->>'title', ''), 120), company = left(coalesce(v->>'company', ''), 120),
@@ -583,8 +681,30 @@ begin
   return coalesce(new, old);
 end $$;
 do $$ declare t text; begin
-  foreach t in array array['cards', 'coupons', 'orders', 'leads'] loop
+  foreach t in array array['cards', 'coupons', 'orders', 'leads', 'site_leads'] loop
     execute format('drop trigger if exists %I on public.%I', t || '_admin_log', t);
     execute format('create trigger %I after insert or update or delete on public.%I for each row execute function public.log_admin_change()', t || '_admin_log', t);
   end loop;
 end $$;
+
+
+-- ================================================================
+-- ONE-TIME LAUNCH CLEANUP (v131): removes all test data, keeps only these three cards and their orders.
+-- Runs once. Re-running this file afterwards skips it (flag in app_flags).
+-- ================================================================
+create table if not exists public.app_flags (key text primary key, at timestamptz not null default now());
+alter table public.app_flags enable row level security;
+revoke all on public.app_flags from anon, authenticated;
+do $$ begin
+  if not exists (select 1 from public.app_flags where key = 'purge_test_data_v131') then
+    delete from public.leads where card_id is null or card_id not in (select id from public.cards where slug in ('neeharika7747', 'swamy3649', 'sandeep3649'));
+    delete from public.orders where card_id is null or card_id not in (select id from public.cards where slug in ('neeharika7747', 'swamy3649', 'sandeep3649'));
+    delete from public.cards where slug not in ('neeharika7747', 'swamy3649', 'sandeep3649');
+    delete from public.site_leads;
+    delete from public.coupon_redemptions where order_no not in (select order_no from public.orders);
+    update public.coupons c set uses = (select count(*) from public.coupon_redemptions r where r.code = c.code);
+    update public.orders set pay_status = 'waived' where pay_status = 'unpaid';   -- the three kept cards are yours
+    insert into public.app_flags (key) values ('purge_test_data_v131');
+  end if;
+end $$;
+select slug, first_name, last_name, active from public.cards order by slug;
